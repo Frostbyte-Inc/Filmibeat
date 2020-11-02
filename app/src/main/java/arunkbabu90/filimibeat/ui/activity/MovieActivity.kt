@@ -1,12 +1,12 @@
-package arunkbabu90.filimibeat.ui
+package arunkbabu90.filimibeat.ui.activity
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import arunkbabu90.filimibeat.R
 
-class LoginActivity : AppCompatActivity() {
+class MovieActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_login)
+        setContentView(R.layout.activity_movie)
     }
 }
