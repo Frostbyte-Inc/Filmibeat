@@ -4,5 +4,4 @@ Filmibeat shows the Popular, Top-Rated and Now Playing Hollywood movies. You can
 # 🎑 How to use
  * First, You need to obtain an API key from https://www.themoviedb.org/
  * Then, define the API key as a Gradle Global property under MovieDbApiKey="YourAPIKey" for security purposes
-    OR you can directly define it in the project but it's perfectly unsafe and is not encouraged
  * After that the project will compile properly
