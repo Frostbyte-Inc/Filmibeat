@@ -9,8 +9,16 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Filmibeat">
-        <activity android:name=".ui.MovieActivity"></activity>
-        <activity android:name=".ui.LoginActivity">
+        <activity android:name=".ui.activity.ProfileActivity"></activity>
+        <activity android:name=".ui.activity.MovieDetailsActivity" />
+        <activity android:name=".ui.activity.MovieActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".ui.activity.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
