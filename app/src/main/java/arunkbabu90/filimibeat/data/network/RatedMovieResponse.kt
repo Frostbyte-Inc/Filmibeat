@@ -1,4 +1,4 @@
-package arunkbabu90.filimibeat.data.model
+package arunkbabu90.filimibeat.data.network
 
 import arunkbabu90.filimibeat.data.database.MovieTopRated
 import com.google.gson.annotations.SerializedName
