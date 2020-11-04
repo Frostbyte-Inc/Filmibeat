@@ -1,4 +1,4 @@
-# Filmibeat
+# Filmibeat 📽
 Filmibeat shows the Popular, Top-Rated and Now Playing Hollywood movies. You can read movie reviews, plot, trailers, cast etc. The app uses theMovieDb API to get the movies and also use many popular libraries such as Glide, Retrofit etc.. and uses Room library to cache data offline
 
 # How to use
