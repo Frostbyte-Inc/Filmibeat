@@ -17,9 +17,9 @@ class MovieDetailsDataSource(private val apiService: TMDBInterface,
     val networkState: LiveData<NetworkState>
         get() = _networkState
 
-    private val _movieDetailsLiveData = MutableLiveData<MovieDetails>()
-    val movieDetailsLiveData: LiveData<MovieDetails>
-        get() = _movieDetailsLiveData
+    private val _fetchedMovieDetails = MutableLiveData<MovieDetails>()
+    val fetchedMovieDetails: LiveData<MovieDetails>
+        get() = _fetchedMovieDetails
 
     fun fetchMovieDetails(movieId: Int) {
         _networkState.postValue(NetworkState.LOADING)
@@ -29,7 +29,7 @@ class MovieDetailsDataSource(private val apiService: TMDBInterface,
                 .subscribeOn(Schedulers.io())
                 .subscribe(
                     { movieDetails ->
-                        _movieDetailsLiveData.postValue(movieDetails)
+                        _fetchedMovieDetails.postValue(movieDetails)
                         _networkState.postValue(NetworkState.LOADED)
                     },
                     { e ->
