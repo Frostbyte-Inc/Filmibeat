@@ -9,14 +9,14 @@ import arunkbabu90.filimibeat.data.network.POSTER_BASE_URL
 import com.google.gson.annotations.SerializedName
 
 @Entity(tableName = "NowPlayingMovies")
-class MovieNowPlaying(
-    @SerializedName("id") @ColumnInfo(name = "movieId") @PrimaryKey var movieId: Int,
-    @SerializedName("poster_path") @ColumnInfo(name = "poster_path") var posterPath: String,
-    @SerializedName("backdrop_path") @ColumnInfo(name = "backdrop_path") var backdropPath: String,
+data class MovieNowPlaying(
+    @PrimaryKey @SerializedName("id") @ColumnInfo(name = "movieId") var movieId: Int,
+    @SerializedName("poster_path") @ColumnInfo(name = "posterPath") var posterPath: String,
+    @SerializedName("backdrop_path") @ColumnInfo(name = "backdropPath") var backdropPath: String,
     @SerializedName("title") @ColumnInfo(name = "title") var movieTitle: String,
     @SerializedName("vote_average") @ColumnInfo(name = "rating") var rating: String,
     @SerializedName("overview") @ColumnInfo(name = "overview") var overview: String,
-    @SerializedName("release_date") @ColumnInfo(name = "release_date") var releaseDate: String
+    @SerializedName("release_date") @ColumnInfo(name = "releaseDate") var releaseDate: String
 ) {
     val posterUrl: String
         get() = POSTER_BASE_URL + IMG_SIZE_MID + posterPath

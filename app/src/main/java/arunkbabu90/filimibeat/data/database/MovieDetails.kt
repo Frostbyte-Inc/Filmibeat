@@ -1,23 +1,35 @@
 package arunkbabu90.filimibeat.data.database
 
+import androidx.room.ColumnInfo
+import androidx.room.Entity
+import androidx.room.Ignore
+import androidx.room.PrimaryKey
 import arunkbabu90.filimibeat.data.network.*
 import com.google.gson.annotations.SerializedName
 
-data class MovieDetails(val id: Int,
-                        val overview: String,
-                        val popularity: Double,
-                        val budget: Long,
-                        val revenue: Long,
-                        val runtime: Int,
-                        val status: String,
-                        val video: Boolean, val genres: List<Genre>,
-                        @SerializedName("poster_path") private val posterPath: String,
-                        @SerializedName("backdrop_path") private val backdropPath: String,
-                        @SerializedName("production_companies") val productionCompanies: List<Company>,
-                        @SerializedName("release_date") val releaseDate: String,
-                        @SerializedName("vote_average") val rating: String,
-                        @SerializedName("original_language") val language: String,
+@Entity
+data class MovieDetails(@PrimaryKey @ColumnInfo(name = "movieId") var id: Int?,
+                        @ColumnInfo(name = "title") var title: String?,
+                        @ColumnInfo(name = "overview") var overview: String?,
+                        @ColumnInfo(name = "popularity") var popularity: Double?,
+                        @ColumnInfo(name = "budget") var budget: Long?,
+                        @ColumnInfo(name = "revenue") var revenue: Long?,
+                        @ColumnInfo(name = "runtime") var runtime: Int?,
+                        @ColumnInfo(name = "status") var status: String?,
+                        @ColumnInfo(name = "video") var video: Boolean?,
+                        @SerializedName("poster_path") @ColumnInfo(name = "posterPath") var posterPath: String?,
+                        @SerializedName("backdrop_path") @ColumnInfo(name = "backdropPath") var backdropPath: String?,
+                        @SerializedName("release_date") @ColumnInfo(name = "releaseDate") var releaseDate: String?,
+                        @SerializedName("vote_average") @ColumnInfo(name = "rating") var rating: String?,
+                        @SerializedName("original_language") @ColumnInfo(name = "language") var language: String?,
 ) {
+    @Ignore
+    var genres: List<Genre> = listOf()
+
+    @SerializedName("production_companies")
+    @Ignore
+    var productionCompanies: List<Company> = listOf()
+
     val posterUrl: String
         get() = POSTER_BASE_URL + IMG_SIZE_MID + posterPath
 
@@ -27,7 +39,7 @@ data class MovieDetails(val id: Int,
     val releaseYear: String
         get() {
             // Extract only the release Year from the Release Date. Like: 2018-02-01 To 2018
-            val yrIndex = releaseDate.indexOf("-")
-            return if (yrIndex == -1) releaseDate else releaseDate.substring(0, yrIndex)
+            val yrIndex = releaseDate?.indexOf("-")
+            return if (yrIndex == -1) releaseDate ?: "" else releaseDate?.substring(0, yrIndex ?: -1) ?: ""
         }
 }

@@ -9,12 +9,8 @@ import io.reactivex.disposables.CompositeDisposable
 
 class MovieDetailsRepository(private val apiService: TMDBInterface, private val context: Context) {
 
-    lateinit var movieDetailsDataSource: MovieDetailsDataSource
-    private lateinit var db: MovieDatabase
-
-    init {
-        // TODO: Create db here
-    }
+    private lateinit var movieDetailsDataSource: MovieDetailsDataSource
+    private var db: MovieDatabase = MovieDatabase.getInstance(context)
 
     fun fetchMovieDetails(disposable: CompositeDisposable, movieId: Int): LiveData<MovieDetails> {
         movieDetailsDataSource = MovieDetailsDataSource(apiService, disposable)

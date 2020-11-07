@@ -1,10 +1,9 @@
-package arunkbabu90.popmovies.database;
+package arunkbabu90.filimibeat.data.database;
 
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
-public class AppExecutor
-{
+public class AppExecutor {
     private static final Object LOCK = new Object();
     private static AppExecutor sInstance;
     private final Executor diskIO;
