@@ -7,7 +7,6 @@ import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface TMDBInterface {
-
     @GET("movie/popular")
     fun getPopularMovies(@Query("page") page: Int): Single<PopularMovieResponse>
 
