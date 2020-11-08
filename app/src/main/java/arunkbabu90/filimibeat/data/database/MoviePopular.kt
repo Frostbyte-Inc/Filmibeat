@@ -13,7 +13,7 @@ data class MoviePopular(
     @PrimaryKey @SerializedName("id") @ColumnInfo(name = "movieId") var movieId: Int,
     @SerializedName("poster_path") @ColumnInfo(name = "posterPath") var posterPath: String,
     @SerializedName("backdrop_path") @ColumnInfo(name = "backdropPath") var backdropPath: String,
-    @SerializedName("title") @ColumnInfo(name = "title") var movieTitle: String,
+    @SerializedName("title") @ColumnInfo(name = "title") var title: String,
     @SerializedName("vote_average") @ColumnInfo(name = "rating") var rating: String,
     @SerializedName("overview") @ColumnInfo(name = "overview") var overview: String,
     @SerializedName("release_date") @ColumnInfo(name = "releaseDate") var releaseDate: String

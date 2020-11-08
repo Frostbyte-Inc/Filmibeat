@@ -10,7 +10,7 @@
 
     <!-- Collapsing AppBar -->
     <com.google.android.material.appbar.AppBarLayout
-        android:id="@+id/app_bar"
+        android:id="@+id/appBar_details"
         android:layout_width="match_parent"
         android:layout_height="@dimen/collapsing_appbar_height"
         android:fitsSystemWindows="true"
@@ -18,15 +18,15 @@
         app:elevation="12dp">
 
         <com.google.android.material.appbar.CollapsingToolbarLayout
-            android:id="@+id/detail_collapsing_toolbar"
+            android:id="@+id/movie_detail_collapsing_toolbar"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:fitsSystemWindows="true"
-            app:contentScrim="?attr/colorPrimary"
+            app:contentScrim="@color/colorDarkerGrey"
             app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
             <ImageView
-                android:id="@+id/iv_collapsing_cover"
+                android:id="@+id/iv_movie_cover"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/collapsing_appbar_height"
                 android:contentDescription="@string/movie_cover"
@@ -45,7 +45,6 @@
         </com.google.android.material.appbar.CollapsingToolbarLayout>
     </com.google.android.material.appbar.AppBarLayout>
 
-
     <!-- Main Content View -->
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
@@ -58,7 +57,7 @@
             android:layout_height="wrap_content">
 
             <!-- Title Card -->
-            <androidx.cardview.widget.CardView
+            <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:cardBackgroundColor="@color/colorDarkGrey"
@@ -73,14 +72,14 @@
                     android:fontFamily="sans-serif"
                     android:padding="@dimen/card_title_padding"
                     android:textAlignment="center"
-                    android:textSize="16sp"
+                    android:textSize="18sp"
                     android:textStyle="bold"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     tools:text="Jurassic World: Fallen Kingdom" />
-            </androidx.cardview.widget.CardView>
+            </com.google.android.material.card.MaterialCardView>
 
-            <androidx.cardview.widget.CardView
+            <com.google.android.material.card.MaterialCardView
                 android:id="@+id/poster_card"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -93,17 +92,17 @@
                 app:layout_constraintTop_toTopOf="parent">
 
                 <ImageView
-                    android:id="@+id/iv_details_poster"
+                    android:id="@+id/iv_movie_poster"
                     android:layout_width="@dimen/poster_width"
                     android:layout_height="@dimen/poster_height"
                     android:contentDescription="@string/movie_poster"
                     android:scaleType="centerCrop"
                     android:transitionName="@string/main_poster_transition_name"
                     tools:src="@drawable/jw_cover" />
-            </androidx.cardview.widget.CardView>
+            </com.google.android.material.card.MaterialCardView>
 
             <TextView
-                android:id="@+id/tv_details_year"
+                android:id="@+id/tv_movie_year"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/year_margin_start"
@@ -116,28 +115,29 @@
                 tools:text="2015" />
 
             <TextView
-                android:id="@+id/tv_details_rating"
+                android:id="@+id/tv_movie_rating"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/small_margin"
-                android:layout_marginTop="@dimen/rating_margin_top"
-                android:layout_marginEnd="@dimen/small_margin"
                 android:fontFamily="sans-serif"
                 android:textSize="16sp"
-                app:layout_constraintEnd_toStartOf="@id/tv_details_year"
-                app:layout_constraintHorizontal_bias="0.495"
-                app:layout_constraintStart_toEndOf="@id/tv_details_year"
-                app:layout_constraintTop_toBottomOf="@id/tv_details_year"
-                tools:text="7.8/10" />
+                android:layout_marginTop="@dimen/default_margin"
+                app:layout_constraintEnd_toEndOf="@id/tv_movie_year"
+                app:layout_constraintStart_toStartOf="@id/tv_movie_year"
+                app:layout_constraintTop_toBottomOf="@id/tv_movie_year"
+                tools:text="7.8" />
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/btn_favourites"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/fab_margin_top"
-                android:src="@drawable/ic_favourite"
-                app:layout_constraintStart_toStartOf="@id/tv_details_rating"
-                app:layout_constraintTop_toBottomOf="@id/tv_details_rating" />
+                android:contentDescription="@string/mark_favourite"
+                android:src="@drawable/ic_favourite_outline"
+                app:backgroundTint="@color/colorDarkGrey"
+                app:layout_constraintEnd_toEndOf="@+id/tv_movie_year"
+                app:layout_constraintStart_toStartOf="@+id/tv_movie_year"
+                app:layout_constraintTop_toBottomOf="@id/tv_movie_rating"
+                app:tint="@color/colorFavIcon" />
 
             <TextView
                 android:id="@+id/textViewS"
@@ -154,7 +154,7 @@
                 app:layout_constraintTop_toBottomOf="@id/poster_card" />
 
             <!-- Description Card -->
-            <androidx.cardview.widget.CardView
+            <com.google.android.material.card.MaterialCardView
                 android:id="@+id/description_card"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -169,7 +169,7 @@
                 app:layout_constraintTop_toBottomOf="@id/textViewS">
 
                 <TextView
-                    android:id="@+id/tv_details_description"
+                    android:id="@+id/tv_movie_description"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="sans-serif"
@@ -178,7 +178,7 @@
                     android:paddingEnd="@dimen/desc_text_padding_end"
                     android:paddingBottom="@dimen/desc_text_padding"
                     tools:text="A volcanic eruption threatens the remaining dinosaurs on the island of Isla Nublar, where the creatures have freely roamed for several years after the demise of an animal theme park known as Jurassic World. Claire Dearing, the former park manager, has now founded the Dinosaur Protection Group, an organization dedicated to protecting the dinosaurs. To help with her cause, Claire has recruited Owen Grady, a former dinosaur trainer who worked at the park, to prevent the extinction of the dinosaurs once again" />
-            </androidx.cardview.widget.CardView>
+            </com.google.android.material.card.MaterialCardView>
 
             <TextView
                 android:id="@+id/textView"
@@ -195,7 +195,7 @@
                 app:layout_constraintTop_toBottomOf="@id/description_card" />
 
             <!-- Trailers Card -->
-            <androidx.cardview.widget.CardView
+            <com.google.android.material.card.MaterialCardView
                 android:id="@+id/video_list_card"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -224,51 +224,39 @@
                     android:textSize="14sp"
                     android:textStyle="italic"
                     android:visibility="gone" />
-            </androidx.cardview.widget.CardView>
-
-            <TextView
-                android:id="@+id/textViewR"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/small_margin"
-                android:layout_marginTop="@dimen/trailer_margin_top"
-                android:fontFamily="sans-serif"
-                android:text="@string/reviews"
-                android:textColor="@android:color/white"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                app:layout_constraintStart_toStartOf="@id/video_list_card"
-                app:layout_constraintTop_toBottomOf="@id/video_list_card" />
+            </com.google.android.material.card.MaterialCardView>
 
             <!-- Review Card -->
-            <LinearLayout
+            Material
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:orientation="vertical"
+                android:layout_marginTop="@dimen/default_margin"
+                android:background="@color/colorDarkerGrey"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="@id/textViewR"
-                app:layout_constraintTop_toBottomOf="@id/textViewR">
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rv_reviews"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:clipToPadding="false" />
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/video_list_card">
 
                 <TextView
-                    android:id="@+id/tv_review_err"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:fontFamily="sans-serif"
-                    android:gravity="center"
-                    android:padding="16dp"
-                    android:text="@string/err_review"
+                    android:padding="22dp"
+                    android:text="@string/reviews"
                     android:textColor="@android:color/white"
-                    android:textSize="14sp"
-                    android:textStyle="italic"
-                    android:visibility="gone" />
-            </LinearLayout>
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:padding="@dimen/default_padding"
+                    android:src="@drawable/ic_forward"
+                    android:contentDescription="@string/read_reviews" />
+            </RelativeLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -1,6 +1,7 @@
 package arunkbabu90.filimibeat.data.repository
 
 import android.util.Log
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.paging.PageKeyedDataSource
 import arunkbabu90.filimibeat.data.database.MoviePopular
@@ -14,6 +15,8 @@ class PopularMovieDataSource(private val apiService: TMDBInterface,
 
     private var page = FIRST_PAGE
     private val _networkState: MutableLiveData<NetworkState> = MutableLiveData()
+    val networkState: LiveData<NetworkState>
+        get() = _networkState
 
     private val TAG = PopularMovieDataSource::class.java.simpleName
 
