@@ -9,12 +9,12 @@ import io.reactivex.disposables.CompositeDisposable
 class PopularMovieDataSourceFactory(private val apiService: TMDBInterface,
                                     private val disposable: CompositeDisposable) : DataSource.Factory<Int, MoviePopular>() {
 
-    val popularMoviesLiveDataSource = MutableLiveData<PopularMovieDataSource>()
+    val popularMoviesList = MutableLiveData<PopularMovieDataSource>()
 
     override fun create(): DataSource<Int, MoviePopular> {
         val pmds = PopularMovieDataSource(apiService, disposable)
 
-        popularMoviesLiveDataSource.postValue(pmds)
+        popularMoviesList.postValue(pmds)
         return pmds
     }
 }

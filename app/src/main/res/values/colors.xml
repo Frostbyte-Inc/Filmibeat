@@ -8,5 +8,13 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
 
+    <color name="colorGrey">#616161</color>
     <color name="colorDarkGrey">#424242</color>
+    <color name="colorDarkerGrey">#212121</color>
+    <color name="colorFavIcon">#FF527C</color>
+    <color name="colorPurple">#8464b7</color>
+    <color name="colorPurpleDark">#553987</color>
+    <color name="colorTextLightGrey">#DEDEDE</color>
+    <color name="colorTextGrey">#B3B3B3</color>
+    <color name="colorTransparentBlack">#90000000</color>
 </resources>
