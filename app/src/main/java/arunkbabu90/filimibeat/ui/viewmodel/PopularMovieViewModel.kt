@@ -11,7 +11,7 @@ import io.reactivex.disposables.CompositeDisposable
 class PopularMovieViewModel(private val repository: MoviePopularRepository) : ViewModel() {
     private val disposable = CompositeDisposable()
 
-    val popularMovieList: LiveData<PagedList<MoviePopular>> by lazy {
+    val popularMovies: LiveData<PagedList<MoviePopular>> by lazy {
         repository.fetchPopularMovies(disposable)
     }
 
@@ -19,7 +19,7 @@ class PopularMovieViewModel(private val repository: MoviePopularRepository) : Vi
         repository.getNetworkState()
     }
 
-    fun isEmpty(): Boolean = popularMovieList.value?.isEmpty() ?: true
+    fun isEmpty(): Boolean = popularMovies.value?.isEmpty() ?: true
 
     override fun onCleared() {
         super.onCleared()

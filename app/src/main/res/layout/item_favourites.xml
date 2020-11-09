@@ -20,7 +20,6 @@
             android:layout_margin="14dp"
             android:scaleType="centerCrop"
             android:src="@drawable/jw_cover"
-            android:transitionName="@string/main_poster_transition_name"
             android:contentDescription="@string/movie_poster"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"

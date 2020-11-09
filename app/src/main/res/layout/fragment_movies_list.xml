@@ -4,8 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorPurple"
-    android:orientation="vertical"
-    tools:context=".ui.fragment.NowPlayingFragment">
+    android:orientation="vertical">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_movie_list"

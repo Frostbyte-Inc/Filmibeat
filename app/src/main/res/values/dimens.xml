@@ -24,7 +24,7 @@
     <dimen name="trailer_margin_top">36dp</dimen>
     <dimen name="trailer_card_margin">20dp</dimen>
     <dimen name="tiny_content_padding">1dp</dimen>
-    <dimen name="smaller_card_radius">5dp</dimen>
+    <dimen name="smaller_card_radius">8dp</dimen>
     <dimen name="smaller_margin">5dp</dimen>
     <dimen name="tiny_margin">2dp</dimen>
     <dimen name="normal_padding">16dp</dimen>

@@ -13,8 +13,8 @@ import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.item_movie.view.*
 import kotlinx.android.synthetic.main.item_network_state.view.*
 
-class PopularMoviePagedListAdapter : PagedListAdapter<MoviePopular, RecyclerView.ViewHolder>(PopularMovieDiffCallback()) {
-
+class PopularMovieAdapter(private val itemClickListener: (MoviePopular?) -> Unit)
+    : PagedListAdapter<MoviePopular, RecyclerView.ViewHolder>(PopularMovieDiffCallback()) {
     val VIEW_TYPE_MOVIE = 1
     val VIEW_TYPE_NETWORK = 2
 
@@ -29,7 +29,8 @@ class PopularMoviePagedListAdapter : PagedListAdapter<MoviePopular, RecyclerView
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         if (getItemViewType(position) == VIEW_TYPE_MOVIE) {
-            (holder as MovieViewHolder).bind(getItem(position))
+            val movie = getItem(position)
+            (holder as MovieViewHolder).bind(movie, itemClickListener)
         } else {
             (holder as NetworkStateViewHolder).bind(networkState)
         }
@@ -62,9 +63,11 @@ class PopularMoviePagedListAdapter : PagedListAdapter<MoviePopular, RecyclerView
      * ViewHolder for the movies
      */
     class MovieViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        fun bind(movie: MoviePopular?) {
+        fun bind(movie: MoviePopular?, itemClickListener: (MoviePopular?) -> Unit) {
             itemView.tv_poster_title.text = movie?.title
             Glide.with(itemView.context).load(movie?.posterUrl).into(itemView.iv_main_poster)
+
+            itemView.setOnClickListener { itemClickListener(movie) }
         }
     }
 

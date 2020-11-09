@@ -97,7 +97,6 @@
                     android:layout_height="@dimen/poster_height"
                     android:contentDescription="@string/movie_poster"
                     android:scaleType="centerCrop"
-                    android:transitionName="@string/main_poster_transition_name"
                     tools:src="@drawable/jw_cover" />
             </com.google.android.material.card.MaterialCardView>
 
