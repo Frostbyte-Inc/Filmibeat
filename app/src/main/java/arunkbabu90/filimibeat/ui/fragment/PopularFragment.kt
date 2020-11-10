@@ -49,16 +49,16 @@ class PopularFragment : Fragment() {
                 return if (viewType == adapter.VIEW_TYPE_MOVIE) 1 else noOfCols
             }
         }
-        rv_movie_list.setHasFixedSize(true)
-        rv_movie_list.layoutManager = lm
-        rv_movie_list.adapter = adapter
+        rv_movie_list?.setHasFixedSize(true)
+        rv_movie_list?.layoutManager = lm
+        rv_movie_list?.adapter = adapter
 
-        tv_err.text = getString(R.string.loading)
-        tv_err.visibility = View.VISIBLE
+        tv_err?.text = getString(R.string.loading)
+        tv_err?.visibility = View.VISIBLE
 
         val viewModel = getViewModel()
         viewModel.popularMovies.observe(this, { moviePagedList ->
-            tv_err.visibility = View.GONE
+            tv_err?.visibility = View.GONE
             adapter.submitList(moviePagedList)
         })
 
@@ -104,7 +104,7 @@ class PopularFragment : Fragment() {
     }
 
 
-    private fun getViewModel() : PopularMovieViewModel {
+    private fun getViewModel(): PopularMovieViewModel {
         return ViewModelProvider(this, object : ViewModelProvider.Factory {
             @Suppress("UNCHECKED_CAST")
             override fun <T : ViewModel?> create(modelClass: Class<T>): T = PopularMovieViewModel(repository) as T

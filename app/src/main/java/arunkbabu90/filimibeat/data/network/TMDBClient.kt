@@ -13,7 +13,9 @@ const val POSTER_BASE_URL = "https://image.tmdb.org/t/p"
 const val IMG_SIZE_MID = "/w342"
 const val IMG_SIZE_LARGE = "/w780"
 const val IMG_SIZE_ORIGINAL = "/original"
+
 const val FIRST_PAGE = 1
+const val PAGE_SIZE = 20
 
 object TMDBClient {
     fun getClient(): TMDBInterface {

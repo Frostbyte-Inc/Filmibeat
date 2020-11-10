@@ -14,7 +14,7 @@ interface TMDBInterface {
     fun getTopRatedMovies(@Query("page") page: Int): Single<RatedMovieResponse>
 
     @GET("movie/now_playing")
-    fun getNowPlayingMovies(@Query("page") page: Int): Single<NowPlayingMovieResponse>
+    fun getNowPlayingMovies(@Query("page") page: Int, @Query("region") regionCode: String): Single<NowPlayingMovieResponse>
 
     @GET("movie/{movie_id}")
     fun getMovieDetails(@Path("movie_id") movieId: Int): Single<MovieDetails>
