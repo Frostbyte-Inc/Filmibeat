@@ -7,9 +7,9 @@ import androidx.core.app.ActivityCompat
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import arunkbabu90.filimibeat.R
+import arunkbabu90.filimibeat.data.api.TMDBClient
+import arunkbabu90.filimibeat.data.api.TMDBInterface
 import arunkbabu90.filimibeat.data.database.MovieDetails
-import arunkbabu90.filimibeat.data.network.TMDBClient
-import arunkbabu90.filimibeat.data.network.TMDBInterface
 import arunkbabu90.filimibeat.data.repository.MovieDetailsRepository
 import arunkbabu90.filimibeat.ui.viewmodel.MovieDetailsViewModel
 import com.bumptech.glide.Glide

@@ -6,15 +6,15 @@ import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import arunkbabu90.filimibeat.R
-import arunkbabu90.filimibeat.data.database.MoviePopular
+import arunkbabu90.filimibeat.data.database.Movie
 import arunkbabu90.filimibeat.data.repository.NetworkState
 import arunkbabu90.filimibeat.inflate
 import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.item_movie.view.*
 import kotlinx.android.synthetic.main.item_network_state.view.*
 
-class PopularMovieAdapter(private val itemClickListener: (MoviePopular?) -> Unit)
-    : PagedListAdapter<MoviePopular, RecyclerView.ViewHolder>(PopularMovieDiffCallback()) {
+class MovieAdapter(private val itemClickListener: (Movie?) -> Unit)
+    : PagedListAdapter<Movie, RecyclerView.ViewHolder>(MovieDiffCallback()) {
         
     val VIEW_TYPE_MOVIE = 1
     val VIEW_TYPE_NETWORK = 2
@@ -64,7 +64,7 @@ class PopularMovieAdapter(private val itemClickListener: (MoviePopular?) -> Unit
      * ViewHolder for the movies
      */
     class MovieViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        fun bind(movie: MoviePopular?, itemClickListener: (MoviePopular?) -> Unit) {
+        fun bind(movie: Movie?, itemClickListener: (Movie?) -> Unit) {
             itemView.tv_poster_title.text = movie?.title
             Glide.with(itemView.context).load(movie?.posterUrl).into(itemView.iv_main_poster)
 
@@ -95,11 +95,11 @@ class PopularMovieAdapter(private val itemClickListener: (MoviePopular?) -> Unit
         }
     }
 
-    class PopularMovieDiffCallback : DiffUtil.ItemCallback<MoviePopular>() {
-        override fun areItemsTheSame(oldItem: MoviePopular, newItem: MoviePopular): Boolean
+    class MovieDiffCallback : DiffUtil.ItemCallback<Movie>() {
+        override fun areItemsTheSame(oldItem: Movie, newItem: Movie): Boolean
                 = oldItem.movieId == newItem.movieId
 
-        override fun areContentsTheSame(oldItem: MoviePopular, newItem: MoviePopular): Boolean
+        override fun areContentsTheSame(oldItem: Movie, newItem: Movie): Boolean
                 = oldItem == newItem
     }
 }

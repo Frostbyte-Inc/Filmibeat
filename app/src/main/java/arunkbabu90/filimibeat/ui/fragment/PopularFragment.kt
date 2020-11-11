@@ -13,13 +13,13 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import arunkbabu90.filimibeat.R
 import arunkbabu90.filimibeat.calculateNoOfColumns
-import arunkbabu90.filimibeat.data.database.MoviePopular
-import arunkbabu90.filimibeat.data.network.TMDBClient
-import arunkbabu90.filimibeat.data.network.TMDBInterface
+import arunkbabu90.filimibeat.data.api.TMDBClient
+import arunkbabu90.filimibeat.data.api.TMDBInterface
+import arunkbabu90.filimibeat.data.database.Movie
 import arunkbabu90.filimibeat.data.repository.MoviePopularRepository
 import arunkbabu90.filimibeat.data.repository.NetworkState
 import arunkbabu90.filimibeat.ui.activity.MovieDetailsActivity
-import arunkbabu90.filimibeat.ui.adapter.PopularMovieAdapter
+import arunkbabu90.filimibeat.ui.adapter.MovieAdapter
 import arunkbabu90.filimibeat.ui.viewmodel.PopularMovieViewModel
 import kotlinx.android.synthetic.main.fragment_movies_list.*
 import kotlinx.android.synthetic.main.item_movie.*
@@ -42,7 +42,7 @@ class PopularFragment : Fragment() {
         val noOfCols: Int = calculateNoOfColumns(context)
 
         val lm = GridLayoutManager(context, noOfCols)
-        val adapter = PopularMovieAdapter { movie -> if (movie != null) onMovieClick(movie) }
+        val adapter = MovieAdapter { movie -> if (movie != null) onMovieClick(movie) }
         lm.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
             override fun getSpanSize(position: Int): Int {
                 val viewType = adapter.getItemViewType(position)
@@ -53,18 +53,20 @@ class PopularFragment : Fragment() {
         rv_movie_list?.layoutManager = lm
         rv_movie_list?.adapter = adapter
 
-        tv_err?.text = getString(R.string.loading)
         tv_err?.visibility = View.VISIBLE
+        tv_err?.text = getString(R.string.loading)
 
         val viewModel = getViewModel()
         viewModel.popularMovies.observe(this, { moviePagedList ->
-            tv_err?.visibility = View.GONE
             adapter.submitList(moviePagedList)
         })
 
         viewModel.networkState.observe(this, { state ->
             item_network_state_progress_bar?.visibility = if (viewModel.isEmpty() && state == NetworkState.LOADING) View.VISIBLE else View.GONE
             item_network_state_err_text_view?.visibility = if (viewModel.isEmpty() && state == NetworkState.ERROR) View.VISIBLE else View.GONE
+
+            if (state == NetworkState.LOADED)
+                tv_err?.visibility = View.GONE
 
             if (!viewModel.isEmpty()) {
                 adapter.setNetworkState(state)
@@ -76,7 +78,7 @@ class PopularFragment : Fragment() {
      * Called when a movie item in the grid is clicked
      * @param movie The popular movie
      */
-    private fun onMovieClick(movie: MoviePopular) {
+    private fun onMovieClick(movie: Movie) {
         val intent = Intent(activity, MovieDetailsActivity::class.java)
         val posterView = iv_main_poster
         val transitionOptions: ActivityOptionsCompat? =

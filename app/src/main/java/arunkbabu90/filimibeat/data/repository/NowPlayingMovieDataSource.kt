@@ -5,15 +5,15 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.paging.PageKeyedDataSource
 import arunkbabu90.filimibeat.UNITED_STATES
-import arunkbabu90.filimibeat.data.database.MovieNowPlaying
-import arunkbabu90.filimibeat.data.network.FIRST_PAGE
-import arunkbabu90.filimibeat.data.network.TMDBInterface
+import arunkbabu90.filimibeat.data.api.FIRST_PAGE
+import arunkbabu90.filimibeat.data.api.TMDBInterface
+import arunkbabu90.filimibeat.data.database.Movie
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 
 class NowPlayingMovieDataSource(private val apiService: TMDBInterface,
                                 private val disposable: CompositeDisposable)
-    : PageKeyedDataSource<Int, MovieNowPlaying>() {
+    : PageKeyedDataSource<Int, Movie>() {
 
     private val region = UNITED_STATES
 
@@ -23,7 +23,7 @@ class NowPlayingMovieDataSource(private val apiService: TMDBInterface,
 
     private val TAG = NowPlayingMovieDataSource::class.java.simpleName
 
-    override fun loadInitial(params: LoadInitialParams<Int>, callback: LoadInitialCallback<Int, MovieNowPlaying>) {
+    override fun loadInitial(params: LoadInitialParams<Int>, callback: LoadInitialCallback<Int, Movie>) {
         _networkState.postValue(NetworkState.LOADING)
 
         disposable.add(
@@ -41,9 +41,9 @@ class NowPlayingMovieDataSource(private val apiService: TMDBInterface,
         )
     }
 
-    override fun loadBefore(params: LoadParams<Int>, callback: LoadCallback<Int, MovieNowPlaying>) { }
+    override fun loadBefore(params: LoadParams<Int>, callback: LoadCallback<Int, Movie>) { }
 
-    override fun loadAfter(params: LoadParams<Int>, callback: LoadCallback<Int, MovieNowPlaying>) {
+    override fun loadAfter(params: LoadParams<Int>, callback: LoadCallback<Int, Movie>) {
         _networkState.postValue(NetworkState.LOADING)
 
         disposable.add(

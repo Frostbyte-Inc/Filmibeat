@@ -3,13 +3,13 @@ package arunkbabu90.filimibeat.data.database
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import arunkbabu90.filimibeat.data.network.IMG_SIZE_LARGE
-import arunkbabu90.filimibeat.data.network.IMG_SIZE_MID
-import arunkbabu90.filimibeat.data.network.POSTER_BASE_URL
+import arunkbabu90.filimibeat.data.api.IMG_SIZE_LARGE
+import arunkbabu90.filimibeat.data.api.IMG_SIZE_MID
+import arunkbabu90.filimibeat.data.api.POSTER_BASE_URL
 import com.google.gson.annotations.SerializedName
 
-@Entity(tableName = "NowPlayingMovies")
-data class MovieNowPlaying(
+@Entity
+data class Movie(
     @PrimaryKey @SerializedName("id") @ColumnInfo(name = "movieId") var movieId: Int,
     @SerializedName("poster_path") @ColumnInfo(name = "posterPath") var posterPath: String,
     @SerializedName("backdrop_path") @ColumnInfo(name = "backdropPath") var backdropPath: String,

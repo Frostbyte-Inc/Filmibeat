@@ -2,9 +2,9 @@ package arunkbabu90.filimibeat.data.repository
 
 import android.content.Context
 import androidx.lifecycle.LiveData
+import arunkbabu90.filimibeat.data.api.TMDBInterface
 import arunkbabu90.filimibeat.data.database.MovieDatabase
 import arunkbabu90.filimibeat.data.database.MovieDetails
-import arunkbabu90.filimibeat.data.network.TMDBInterface
 import io.reactivex.disposables.CompositeDisposable
 
 class MovieDetailsRepository(private val apiService: TMDBInterface, context: Context) {

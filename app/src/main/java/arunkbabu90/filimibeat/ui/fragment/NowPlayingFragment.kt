@@ -13,12 +13,12 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import arunkbabu90.filimibeat.R
 import arunkbabu90.filimibeat.calculateNoOfColumns
-import arunkbabu90.filimibeat.data.database.MovieNowPlaying
-import arunkbabu90.filimibeat.data.network.TMDBClient
+import arunkbabu90.filimibeat.data.api.TMDBClient
+import arunkbabu90.filimibeat.data.database.Movie
 import arunkbabu90.filimibeat.data.repository.MovieNowPlayingRepository
 import arunkbabu90.filimibeat.data.repository.NetworkState
 import arunkbabu90.filimibeat.ui.activity.MovieDetailsActivity
-import arunkbabu90.filimibeat.ui.adapter.NowPlayingMovieAdapter
+import arunkbabu90.filimibeat.ui.adapter.MovieAdapter
 import arunkbabu90.filimibeat.ui.viewmodel.NowPlayingMovieViewModel
 import kotlinx.android.synthetic.main.fragment_movies_list.*
 import kotlinx.android.synthetic.main.item_movie.*
@@ -41,7 +41,7 @@ class NowPlayingFragment : Fragment() {
         val noOfCols: Int = calculateNoOfColumns(context)
 
         val lm = GridLayoutManager(context, noOfCols)
-        val adapter = NowPlayingMovieAdapter { movie -> if (movie != null) onMovieClick(movie) }
+        val adapter = MovieAdapter { movie -> if (movie != null) onMovieClick(movie) }
         lm.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
             override fun getSpanSize(position: Int): Int {
                 val viewType = adapter.getItemViewType(position)
@@ -75,7 +75,7 @@ class NowPlayingFragment : Fragment() {
      * Called when a movie item in the grid is clicked
      * @param movie The popular movie
      */
-    private fun onMovieClick(movie: MovieNowPlaying) {
+    private fun onMovieClick(movie: Movie) {
         val intent = Intent(activity, MovieDetailsActivity::class.java)
         val posterView = iv_main_poster
         val transitionOptions: ActivityOptionsCompat? =
@@ -95,9 +95,8 @@ class NowPlayingFragment : Fragment() {
         intent.putExtra(MovieDetailsActivity.KEY_RELEASE_YEAR_EXTRA, movie.releaseYear)
         intent.putExtra(MovieDetailsActivity.KEY_TITLE_EXTRA, movie.title)
 
-        if (transitionOptions != null) {
+        if (transitionOptions != null)
             startActivity(intent, transitionOptions.toBundle())
-        }
         else
             startActivity(intent)
     }
@@ -108,5 +107,4 @@ class NowPlayingFragment : Fragment() {
             override fun <T : ViewModel?> create(modelClass: Class<T>): T = NowPlayingMovieViewModel(repository) as T
         })[NowPlayingMovieViewModel::class.java]
     }
-
 }

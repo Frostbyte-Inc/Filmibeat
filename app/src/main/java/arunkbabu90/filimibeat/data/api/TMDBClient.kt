@@ -1,4 +1,4 @@
-package arunkbabu90.filimibeat.data.network
+package arunkbabu90.filimibeat.data.api
 
 import arunkbabu90.filimibeat.BuildConfig
 import okhttp3.Interceptor

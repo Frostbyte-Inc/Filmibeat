@@ -4,7 +4,11 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.Ignore
 import androidx.room.PrimaryKey
-import arunkbabu90.filimibeat.data.network.*
+import arunkbabu90.filimibeat.data.api.IMG_SIZE_LARGE
+import arunkbabu90.filimibeat.data.api.IMG_SIZE_MID
+import arunkbabu90.filimibeat.data.api.POSTER_BASE_URL
+import arunkbabu90.filimibeat.data.network.Company
+import arunkbabu90.filimibeat.data.network.Genre
 import com.google.gson.annotations.SerializedName
 
 @Entity
