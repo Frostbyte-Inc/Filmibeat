@@ -24,6 +24,7 @@ import arunkbabu90.filimibeat.ui.viewmodel.PopularMovieViewModel
 import kotlinx.android.synthetic.main.fragment_movies_list.*
 import kotlinx.android.synthetic.main.item_movie.*
 import kotlinx.android.synthetic.main.item_network_state.*
+import kotlin.concurrent.thread
 
 class PopularFragment : Fragment() {
     private lateinit var repository: MoviePopularRepository
@@ -58,7 +59,9 @@ class PopularFragment : Fragment() {
 
         val viewModel = getViewModel()
         viewModel.popularMovies.observe(this, { moviePagedList ->
-            adapter.submitList(moviePagedList)
+            thread {
+                adapter.submitList(moviePagedList)
+            }
         })
 
         viewModel.networkState.observe(this, { state ->

@@ -23,6 +23,7 @@ import arunkbabu90.filimibeat.ui.viewmodel.NowPlayingMovieViewModel
 import kotlinx.android.synthetic.main.fragment_movies_list.*
 import kotlinx.android.synthetic.main.item_movie.*
 import kotlinx.android.synthetic.main.item_network_state.*
+import kotlin.concurrent.thread
 
 class NowPlayingFragment : Fragment() {
     private lateinit var repository: MovieNowPlayingRepository
@@ -57,13 +58,17 @@ class NowPlayingFragment : Fragment() {
 
         val viewModel = getViewModel()
         viewModel.nowPlayingMovies.observe(this, { moviePagedList ->
-            tv_err?.visibility = View.GONE
-            adapter.submitList(moviePagedList)
+            thread {
+                adapter.submitList(moviePagedList)
+            }
         })
 
         viewModel.networkState.observe(this, { state ->
             item_network_state_progress_bar?.visibility = if (viewModel.isEmpty() && state == NetworkState.LOADING) View.VISIBLE else View.GONE
             item_network_state_err_text_view?.visibility = if (viewModel.isEmpty() && state == NetworkState.ERROR) View.VISIBLE else View.GONE
+
+            if (state == NetworkState.LOADED)
+                tv_err?.visibility = View.GONE
 
             if (!viewModel.isEmpty()) {
                 adapter.setNetworkState(state)
