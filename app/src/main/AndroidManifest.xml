@@ -13,8 +13,9 @@
         android:theme="@style/Theme.Filmibeat">
 
         <activity android:name=".ui.activity.ProfileActivity"/>
-        <activity android:name=".ui.activity.MovieDetailsActivity"/>
         <activity android:name=".ui.activity.LoginActivity"/>
+        <activity android:name=".ui.activity.MovieDetailsActivity"
+            android:theme="@style/Theme.Filmibeat.Details"/>
 
         <activity android:name=".ui.activity.MovieActivity">
             <intent-filter>

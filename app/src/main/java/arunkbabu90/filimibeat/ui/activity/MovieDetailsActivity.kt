@@ -3,7 +3,6 @@ package arunkbabu90.filimibeat.ui.activity
 import android.graphics.drawable.Drawable
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.ActivityCompat
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import arunkbabu90.filimibeat.R
@@ -36,8 +35,6 @@ class MovieDetailsActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_movie_details)
-
-        window.statusBarColor = ActivityCompat.getColor(this, android.R.color.transparent)
 
         val movieId: Int = intent.getIntExtra(KEY_MOVIE_ID_EXTRA, -1)
         val posterUrl: String = intent.getStringExtra(KEY_POSTER_PATH_EXTRA) ?: ""
