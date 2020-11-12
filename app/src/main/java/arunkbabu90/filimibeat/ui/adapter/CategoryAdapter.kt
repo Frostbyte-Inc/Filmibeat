@@ -17,8 +17,8 @@ class CategoryAdapter(@NotNull fm: FragmentManager, @NotNull lifecycle: Lifecycl
     override fun createFragment(position: Int): Fragment {
         return when (position) {
             0 -> NowPlayingFragment()
-            1 -> TopRatedFragment()
-            2 -> PopularFragment()
+            1 -> PopularFragment()
+            2 -> TopRatedFragment()
             3 -> SearchFragment()
             4 -> FavouritesFragment()
             else -> NowPlayingFragment()

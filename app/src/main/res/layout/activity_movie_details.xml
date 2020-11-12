@@ -22,6 +22,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:fitsSystemWindows="true"
+            app:statusBarScrim="@color/colorDarkerGrey"
             app:contentScrim="@color/colorDarkerGrey"
             app:layout_scrollFlags="scroll|exitUntilCollapsed">
 

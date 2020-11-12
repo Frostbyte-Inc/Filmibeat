@@ -17,12 +17,12 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:text="@string/err_no_internet"
+        android:text="@string/coming_soon"
         android:layout_gravity="center"
         android:gravity="center"
         android:textStyle="bold"
         android:textSize="16sp"
         android:fontFamily="sans-serif"
-        android:textColor="@android:color/white"
-        android:visibility="gone"/>
+        android:textColor="@android:color/white"/>
 
 </FrameLayout>

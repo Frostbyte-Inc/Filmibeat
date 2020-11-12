@@ -2,16 +2,20 @@
     <!-- Base application theme. -->
     <style name="Theme.Filmibeat" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/purple_200</item>
-        <item name="colorPrimaryVariant">@color/purple_700</item>
+        <item name="colorPrimary">@color/colorDarkGrey</item>
+        <item name="colorPrimaryVariant">@color/colorDarkerGrey</item>
         <item name="colorOnPrimary">@color/black</item>
         <!-- Secondary brand color. -->
         <item name="colorSecondary">@color/teal_200</item>
         <item name="colorSecondaryVariant">@color/teal_200</item>
         <item name="colorOnSecondary">@color/black</item>
-        <!-- Status bar color. -->
-        <item name="android:statusBarColor" tools:targetApi="l">@color/colorPurpleDark</item>
 
         <!-- Customize your theme here. -->
+        <item name="android:textColor">@android:color/white</item>
+    </style>
+
+    <style name="Theme.Filmibeat.Details" parent="Theme.Filmibeat">
+        <item name="android:statusBarColor" tools:targetApi="l">@android:color/transparent</item>
+        <item name="android:navigationBarColor" tools:targetApi="l">@color/colorDarkGrey</item>
     </style>
 </resources>

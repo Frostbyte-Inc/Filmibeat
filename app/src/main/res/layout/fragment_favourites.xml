@@ -10,6 +10,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:text="@string/tab_title_favourites" />
+        android:textStyle="bold"
+        android:textColor="@android:color/white"
+        android:text="@string/coming_soon" />
 
 </FrameLayout>
