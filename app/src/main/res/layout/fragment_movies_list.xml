@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorPurple"
-    android:orientation="vertical"
-    tools:context=".ui.fragment.NowPlayingFragment">
+    android:orientation="vertical">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_movie_list"
@@ -24,6 +23,6 @@
         android:textSize="16sp"
         android:fontFamily="sans-serif"
         android:textColor="@android:color/white"
-        android:visibility="gone" />
+        android:visibility="gone"/>
 
-</LinearLayout>
+</FrameLayout>

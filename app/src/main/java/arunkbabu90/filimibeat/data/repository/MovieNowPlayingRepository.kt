@@ -9,20 +9,21 @@ import arunkbabu90.filimibeat.data.api.TMDBInterface
 import arunkbabu90.filimibeat.data.database.Movie
 import io.reactivex.disposables.CompositeDisposable
 
-class MoviePopularRepository(private val apiService: TMDBInterface) {
-    private lateinit var movieDataSourceFactory: PopularMovieDataSourceFactory
+class MovieNowPlayingRepository(private val apiService: TMDBInterface) {
+    private lateinit var movieDataSourceFactory: NowPlayingMovieDataSourceFactory
 
-    fun fetchPopularMovies(disposable: CompositeDisposable): LiveData<PagedList<Movie>> {
-        movieDataSourceFactory = PopularMovieDataSourceFactory(apiService, disposable)
+    fun fetchNowPlayingMovies(disposable: CompositeDisposable): LiveData<PagedList<Movie>> {
+        movieDataSourceFactory = NowPlayingMovieDataSourceFactory(apiService, disposable)
 
         val config = PagedList.Config.Builder()
-            .setEnablePlaceholders(false)
             .setPageSize(PAGE_SIZE)
+            .setEnablePlaceholders(false)
             .build()
 
         return LivePagedListBuilder(movieDataSourceFactory, config).build()
     }
 
-    fun getPopularMovieNetworkState(): LiveData<NetworkState>
-            = Transformations.switchMap(movieDataSourceFactory.popularMoviesList, PopularMovieDataSource::networkState)
+    fun getNowPlayingMovieNetworkState(): LiveData<NetworkState> {
+        return Transformations.switchMap(movieDataSourceFactory.nowPlayingMoviesList, NowPlayingMovieDataSource::networkState)
+    }
 }

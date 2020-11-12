@@ -6,15 +6,16 @@ import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import arunkbabu90.filimibeat.R
-import arunkbabu90.filimibeat.data.database.MoviePopular
+import arunkbabu90.filimibeat.data.database.Movie
 import arunkbabu90.filimibeat.data.repository.NetworkState
 import arunkbabu90.filimibeat.inflate
 import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.item_movie.view.*
 import kotlinx.android.synthetic.main.item_network_state.view.*
 
-class PopularMoviePagedListAdapter : PagedListAdapter<MoviePopular, RecyclerView.ViewHolder>(PopularMovieDiffCallback()) {
-
+class MovieAdapter(private val itemClickListener: (Movie?) -> Unit)
+    : PagedListAdapter<Movie, RecyclerView.ViewHolder>(MovieDiffCallback()) {
+        
     val VIEW_TYPE_MOVIE = 1
     val VIEW_TYPE_NETWORK = 2
 
@@ -29,7 +30,8 @@ class PopularMoviePagedListAdapter : PagedListAdapter<MoviePopular, RecyclerView
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         if (getItemViewType(position) == VIEW_TYPE_MOVIE) {
-            (holder as MovieViewHolder).bind(getItem(position))
+            val movie = getItem(position)
+            (holder as MovieViewHolder).bind(movie, itemClickListener)
         } else {
             (holder as NetworkStateViewHolder).bind(networkState)
         }
@@ -62,9 +64,11 @@ class PopularMoviePagedListAdapter : PagedListAdapter<MoviePopular, RecyclerView
      * ViewHolder for the movies
      */
     class MovieViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        fun bind(movie: MoviePopular?) {
+        fun bind(movie: Movie?, itemClickListener: (Movie?) -> Unit) {
             itemView.tv_poster_title.text = movie?.title
             Glide.with(itemView.context).load(movie?.posterUrl).into(itemView.iv_main_poster)
+
+            itemView.setOnClickListener { itemClickListener(movie) }
         }
     }
 
@@ -83,7 +87,7 @@ class PopularMoviePagedListAdapter : PagedListAdapter<MoviePopular, RecyclerView
                 itemView.item_network_state_err_text_view.visibility = View.VISIBLE
                 itemView.item_network_state_err_text_view.text = networkState.msg
             } else if (networkState != null && networkState == NetworkState.EOL) {
-                itemView.item_network_state_progress_bar.visibility = View.VISIBLE
+                itemView.item_network_state_err_text_view.visibility = View.VISIBLE
                 itemView.item_network_state_err_text_view.text = networkState.msg
             } else {
                 itemView.item_network_state_err_text_view.visibility = View.GONE
@@ -91,11 +95,11 @@ class PopularMoviePagedListAdapter : PagedListAdapter<MoviePopular, RecyclerView
         }
     }
 
-    class PopularMovieDiffCallback: DiffUtil.ItemCallback<MoviePopular>() {
-        override fun areItemsTheSame(oldItem: MoviePopular, newItem: MoviePopular): Boolean
+    class MovieDiffCallback : DiffUtil.ItemCallback<Movie>() {
+        override fun areItemsTheSame(oldItem: Movie, newItem: Movie): Boolean
                 = oldItem.movieId == newItem.movieId
 
-        override fun areContentsTheSame(oldItem: MoviePopular, newItem: MoviePopular): Boolean
+        override fun areContentsTheSame(oldItem: Movie, newItem: Movie): Boolean
                 = oldItem == newItem
     }
 }

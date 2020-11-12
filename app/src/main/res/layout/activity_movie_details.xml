@@ -97,7 +97,6 @@
                     android:layout_height="@dimen/poster_height"
                     android:contentDescription="@string/movie_poster"
                     android:scaleType="centerCrop"
-                    android:transitionName="@string/main_poster_transition_name"
                     tools:src="@drawable/jw_cover" />
             </com.google.android.material.card.MaterialCardView>
 
@@ -161,6 +160,7 @@
                 android:layout_marginStart="@dimen/normal_margin"
                 android:layout_marginTop="@dimen/desc_card_top_margin"
                 android:layout_marginEnd="@dimen/normal_margin"
+                android:layout_marginBottom="@dimen/small_margin"
                 app:cardBackgroundColor="@color/colorDarkGrey"
                 app:cardCornerRadius="@dimen/small_card_radius"
                 app:cardElevation="@dimen/small_card_elevation"
@@ -188,6 +188,7 @@
                 android:layout_marginTop="@dimen/trailer_margin_top"
                 android:fontFamily="sans-serif"
                 android:text="@string/videos"
+                android:visibility="invisible"
                 android:textColor="@android:color/white"
                 android:textSize="18sp"
                 android:textStyle="bold"
@@ -200,6 +201,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/trailer_card_margin"
+                android:visibility="gone"
                 app:cardBackgroundColor="@color/colorDarkGrey"
                 app:cardCornerRadius="@dimen/small_card_radius"
                 app:cardElevation="@dimen/small_card_elevation"
@@ -227,11 +229,11 @@
             </com.google.android.material.card.MaterialCardView>
 
             <!-- Review Card -->
-            Material
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/default_margin"
+                android:visibility="gone"
                 android:background="@color/colorDarkerGrey"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

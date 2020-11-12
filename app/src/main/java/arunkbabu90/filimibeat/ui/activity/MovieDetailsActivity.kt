@@ -1,27 +1,36 @@
 package arunkbabu90.filimibeat.ui.activity
 
+import android.graphics.drawable.Drawable
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import arunkbabu90.filimibeat.R
+import arunkbabu90.filimibeat.data.api.TMDBClient
+import arunkbabu90.filimibeat.data.api.TMDBInterface
 import arunkbabu90.filimibeat.data.database.MovieDetails
-import arunkbabu90.filimibeat.data.network.TMDBClient
-import arunkbabu90.filimibeat.data.network.TMDBInterface
 import arunkbabu90.filimibeat.data.repository.MovieDetailsRepository
 import arunkbabu90.filimibeat.ui.viewmodel.MovieDetailsViewModel
 import com.bumptech.glide.Glide
+import com.bumptech.glide.request.target.CustomTarget
+import com.bumptech.glide.request.transition.Transition
 import com.google.android.material.appbar.AppBarLayout
 import kotlinx.android.synthetic.main.activity_movie_details.*
 
 class MovieDetailsActivity : AppCompatActivity() {
     private lateinit var repository: MovieDetailsRepository
-    private lateinit var viewModel: MovieDetailsViewModel
+    private lateinit var mPosterTarget: CustomTarget<Drawable>
+    private lateinit var mCoverTarget: CustomTarget<Drawable>
 
     companion object {
         const val KEY_MOVIE_ID_EXTRA = "movieIdExtraKey"
+        const val KEY_POSTER_PATH_EXTRA = "posterPathExtraKey"
+        const val KEY_BACKDROP_PATH_EXTRA = "backdropPathExtraKey"
+        const val KEY_RELEASE_YEAR_EXTRA = "releaseYearExtraKey"
+        const val KEY_RATING_EXTRA = "ratingExtraKey"
+        const val KEY_OVERVIEW_EXTRA = "overviewExtraKey"
+        const val KEY_TITLE_EXTRA = "titleExtraKey"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -30,14 +39,29 @@ class MovieDetailsActivity : AppCompatActivity() {
 
         window.statusBarColor = ActivityCompat.getColor(this, android.R.color.transparent)
 
-//        val movieId: Int = intent.getIntExtra(KEY_MOVIE_ID_EXTRA, -1)
-        val movieId: Int = 297761
+        val movieId: Int = intent.getIntExtra(KEY_MOVIE_ID_EXTRA, -1)
+        val posterUrl: String = intent.getStringExtra(KEY_POSTER_PATH_EXTRA) ?: ""
+        val coverUrl: String = intent.getStringExtra(KEY_BACKDROP_PATH_EXTRA) ?: ""
+        val rating: String = intent.getStringExtra(KEY_RATING_EXTRA) ?: ""
+        val overview: String = intent.getStringExtra(KEY_OVERVIEW_EXTRA) ?: ""
+        val year: String = intent.getStringExtra(KEY_RELEASE_YEAR_EXTRA) ?: ""
+        val title: String = intent.getStringExtra(KEY_TITLE_EXTRA) ?: ""
+
+        // Set enter transition name
+        iv_movie_poster.transitionName = movieId.toString()
+
+        // Load available data here for faster loading
+        loadPosterAndCover(posterUrl, coverUrl)
+        tv_movie_title.text = title
+        tv_movie_description.text = overview
+        tv_movie_rating.text = rating
+        tv_movie_year.text = year
 
         val apiService: TMDBInterface = TMDBClient.getClient()
         repository = MovieDetailsRepository(apiService, this)
 
-        viewModel = getViewModel(movieId)
-        viewModel.movieDetails.observe(this, Observer { movieDetails ->
+        val viewModel: MovieDetailsViewModel = getViewModel(movieId)
+        viewModel.movieDetails.observe(this, { movieDetails ->
             populateToUI(movieDetails)
         })
     }
@@ -47,20 +71,38 @@ class MovieDetailsActivity : AppCompatActivity() {
      * @param movieDetails The data object that contains the Movies Details
      */
     private fun populateToUI(movieDetails: MovieDetails) {
-        Glide.with(this).load(movieDetails.posterUrl).error(R.drawable.ic_img_err).into(iv_movie_poster)
-        Glide.with(this).load(movieDetails.backDropUrl).error(R.drawable.ic_img_err).into(iv_movie_cover)
-
-        tv_movie_title.text = movieDetails.title
-        tv_movie_description.text = movieDetails.overview
-        tv_movie_rating.text = movieDetails.rating
-        tv_movie_year.text = movieDetails.releaseYear
-
         appBar_details.addOnOffsetChangedListener(AppBarLayout.OnOffsetChangedListener { _, verticalOffset ->
             val scrollPos = appBar_details.totalScrollRange
             val isCollapsed: Boolean = verticalOffset + scrollPos == 0
             movie_detail_collapsing_toolbar.title = if (isCollapsed) movieDetails.title else ""
         })
+    }
 
+    private fun loadPosterAndCover(posterUrl: String, coverUrl: String) {
+        mPosterTarget = object : CustomTarget<Drawable>() {
+            override fun onResourceReady(resource: Drawable, transition: Transition<in Drawable>?) {
+                iv_movie_poster.setImageDrawable(resource)
+            }
+
+            override fun onLoadCleared(placeholder: Drawable?) {
+                iv_movie_poster.setImageDrawable(null)
+            }
+
+        }
+
+        mCoverTarget = object : CustomTarget<Drawable>() {
+            override fun onResourceReady(resource: Drawable, transition: Transition<in Drawable>?) {
+                iv_movie_cover.setImageDrawable(resource)
+            }
+
+            override fun onLoadCleared(placeholder: Drawable?) {
+                iv_movie_cover.setImageDrawable(null)
+            }
+
+        }
+
+        Glide.with(this).load(posterUrl).error(R.drawable.ic_img_err).into(mPosterTarget)
+        Glide.with(this).load(coverUrl).error(R.drawable.ic_img_err).into(mCoverTarget)
     }
 
     private fun getViewModel(movieId: Int): MovieDetailsViewModel {

@@ -15,10 +15,9 @@
     <string name="tab_title_top_rated">Top Rated</string>
     <string name="tab_title_search">Search</string>
     <string name="tab_title_favourites">Favourites</string>
-    <string name="main_poster_transition_name">main_poster_shared_transition</string>
+    <!--string name="main_poster_transition_name">main_poster_shared_transition</string-->
     <string name="synopsis">Plot</string>
     <string name="err_no_internet">No Internet Connection</string>
-    <string name="loading_movies">Loading Movies....</string>
     <string name="no_favourites">No Movie Marked as Favourite Yet!</string>
     <string name="undo">UNDO</string>
     <string name="movie_poster">Movie Poster</string>
@@ -29,4 +28,5 @@
     <string name="swipe_to_delete">Swipe to delete</string>
     <string name="mark_favourite">Mark Favourite</string>
     <string name="read_reviews">Read Reviews</string>
+    <string name="loading">Loading Movies…</string>
 </resources>

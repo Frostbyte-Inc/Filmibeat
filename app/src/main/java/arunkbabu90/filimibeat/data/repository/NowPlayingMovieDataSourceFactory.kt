@@ -6,16 +6,16 @@ import arunkbabu90.filimibeat.data.api.TMDBInterface
 import arunkbabu90.filimibeat.data.database.Movie
 import io.reactivex.disposables.CompositeDisposable
 
-class PopularMovieDataSourceFactory(private val apiService: TMDBInterface,
-                                    private val disposable: CompositeDisposable)
+class NowPlayingMovieDataSourceFactory(private val apiService: TMDBInterface,
+                                       private val disposable: CompositeDisposable)
     : DataSource.Factory<Int, Movie>() {
 
-    val popularMoviesList = MutableLiveData<PopularMovieDataSource>()
+    val nowPlayingMoviesList = MutableLiveData<NowPlayingMovieDataSource>()
 
     override fun create(): DataSource<Int, Movie> {
-        val dataSource = PopularMovieDataSource(apiService, disposable)
+        val dataSource = NowPlayingMovieDataSource(apiService, disposable)
 
-        popularMoviesList.postValue(dataSource)
+        nowPlayingMoviesList.postValue(dataSource)
         return dataSource
     }
 }

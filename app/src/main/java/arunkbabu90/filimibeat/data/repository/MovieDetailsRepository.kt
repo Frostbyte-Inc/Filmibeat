@@ -2,13 +2,12 @@ package arunkbabu90.filimibeat.data.repository
 
 import android.content.Context
 import androidx.lifecycle.LiveData
+import arunkbabu90.filimibeat.data.api.TMDBInterface
 import arunkbabu90.filimibeat.data.database.MovieDatabase
 import arunkbabu90.filimibeat.data.database.MovieDetails
-import arunkbabu90.filimibeat.data.network.TMDBInterface
 import io.reactivex.disposables.CompositeDisposable
 
-class MovieDetailsRepository(private val apiService: TMDBInterface, private val context: Context) {
-
+class MovieDetailsRepository(private val apiService: TMDBInterface, context: Context) {
     private lateinit var movieDetailsDataSource: MovieDetailsDataSource
     private var db: MovieDatabase = MovieDatabase.getInstance(context)
 
@@ -19,7 +18,5 @@ class MovieDetailsRepository(private val apiService: TMDBInterface, private val 
         return movieDetailsDataSource.fetchedMovieDetails
     }
 
-    fun getNetworkState(): LiveData<NetworkState> {
-        return movieDetailsDataSource.networkState
-    }
+    fun getNetworkState(): LiveData<NetworkState> = movieDetailsDataSource.networkState
 }
