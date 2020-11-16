@@ -12,7 +12,7 @@ import arunkbabu90.filimibeat.data.network.Genre
 import com.google.gson.annotations.SerializedName
 
 @Entity
-data class MovieDetails(@PrimaryKey @ColumnInfo(name = "movieId") var id: Int?,
+data class MovieDetails(@PrimaryKey @ColumnInfo(name = "movieId") var movieId: Long?,
                         @ColumnInfo(name = "title") var title: String?,
                         @ColumnInfo(name = "overview") var overview: String?,
                         @ColumnInfo(name = "popularity") var popularity: Double?,

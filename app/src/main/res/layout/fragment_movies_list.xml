@@ -17,7 +17,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:text="@string/err_no_internet"
-        android:text="@string/coming_soon"
         android:layout_gravity="center"
         android:gravity="center"
         android:textStyle="bold"

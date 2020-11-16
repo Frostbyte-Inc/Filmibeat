@@ -19,4 +19,7 @@ interface TMDBInterface {
 
     @GET("movie/{movie_id}")
     fun getMovieDetails(@Path("movie_id") movieId: Int): Single<MovieDetails>
+
+    @GET("search/movie")
+    fun searchMovie(@Query("query") searchTerm: String, @Query("page") page: Int) : Single<MovieResponse>
 }

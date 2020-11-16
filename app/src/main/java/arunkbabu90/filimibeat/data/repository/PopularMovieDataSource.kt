@@ -57,7 +57,7 @@ class PopularMovieDataSource(private val apiService: TMDBInterface,
                     },
                     { e ->
                         _networkState.postValue(NetworkState.ERROR)
-                        Log.e(TAG, e.message ?: "")
+                        Log.e(TAG, e.message ?: "Message = null")
                     }
                 )
         )

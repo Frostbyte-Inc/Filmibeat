@@ -14,8 +14,8 @@ class PopularMovieDataSourceFactory(private val apiService: TMDBInterface,
 
     override fun create(): DataSource<Int, Movie> {
         val dataSource = PopularMovieDataSource(apiService, disposable)
-
         popularMoviesList.postValue(dataSource)
+        
         return dataSource
     }
 }
