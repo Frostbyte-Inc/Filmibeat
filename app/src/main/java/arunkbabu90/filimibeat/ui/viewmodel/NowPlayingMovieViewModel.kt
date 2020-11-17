@@ -16,7 +16,7 @@ class NowPlayingMovieViewModel(private val repository: MovieNowPlayingRepository
     }
 
     val networkState: LiveData<NetworkState> by lazy {
-        repository.getNowPlayingMovieNetworkState()
+        repository.getNetworkState()
     }
 
     fun isEmpty() = nowPlayingMovies.value?.isEmpty() ?: true

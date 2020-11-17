@@ -14,8 +14,8 @@ class NowPlayingMovieDataSourceFactory(private val apiService: TMDBInterface,
 
     override fun create(): DataSource<Int, Movie> {
         val dataSource = NowPlayingMovieDataSource(apiService, disposable)
-
         nowPlayingMoviesList.postValue(dataSource)
+
         return dataSource
     }
 }

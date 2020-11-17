@@ -23,7 +23,7 @@ class MovieNowPlayingRepository(private val apiService: TMDBInterface) {
         return LivePagedListBuilder(movieDataSourceFactory, config).build()
     }
 
-    fun getNowPlayingMovieNetworkState(): LiveData<NetworkState> {
+    fun getNetworkState(): LiveData<NetworkState> {
         return Transformations.switchMap(movieDataSourceFactory.nowPlayingMoviesList, NowPlayingMovieDataSource::networkState)
     }
 }
