@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.widget.SearchView
 import androidx.core.app.ActivityOptionsCompat
 import androidx.core.view.ViewCompat
 import androidx.fragment.app.Fragment
@@ -21,17 +22,19 @@ import arunkbabu90.filimibeat.data.repository.NetworkState
 import arunkbabu90.filimibeat.ui.activity.MovieDetailsActivity
 import arunkbabu90.filimibeat.ui.adapter.MovieAdapter
 import arunkbabu90.filimibeat.ui.viewmodel.SearchMovieViewModel
-import kotlinx.android.synthetic.main.fragment_movies_list.*
+import kotlinx.android.synthetic.main.fragment_search.*
 import kotlinx.android.synthetic.main.item_movie.*
 import kotlinx.android.synthetic.main.item_network_state.*
 import kotlin.concurrent.thread
 
 class SearchFragment : Fragment() {
     private lateinit var repository: MovieSearchRepository
+    private lateinit var viewModel: SearchMovieViewModel
+    private lateinit var adapter: MovieAdapter
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_movies_list, container, false)
+        return inflater.inflate(R.layout.fragment_search, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -43,22 +46,19 @@ class SearchFragment : Fragment() {
         val noOfCols = calculateNoOfColumns(context)
 
         val lm = GridLayoutManager(context, noOfCols)
-        val adapter = MovieAdapter { movie -> if (movie != null) onMovieClick(movie) }
+        adapter = MovieAdapter { movie -> if (movie != null) onMovieClick(movie) }
         lm.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
             override fun getSpanSize(position: Int): Int {
                 val viewType = adapter.getItemViewType(position)
                 return if (viewType == adapter.VIEW_TYPE_MOVIE) 1 else noOfCols
             }
         }
-        rv_movie_list?.setHasFixedSize(true)
-        rv_movie_list?.layoutManager = lm
-        rv_movie_list?.adapter = adapter
+        rv_search_movie_list?.setHasFixedSize(true)
+        rv_search_movie_list?.layoutManager = lm
+        rv_search_movie_list?.adapter = adapter
 
-        tv_err?.visibility = View.VISIBLE
-        tv_err?.text = getString(R.string.loading)
-
-        val viewModel = getViewModel()
-        viewModel.searchMovie("Android Kunjappan").observe(this, { moviePagedList ->
+        viewModel = getViewModel()
+        viewModel.searchMovie("").observe(this, { moviePagedList ->
             thread {
                 adapter.submitList(moviePagedList)
             }
@@ -68,12 +68,23 @@ class SearchFragment : Fragment() {
             item_network_state_progress_bar?.visibility = if (viewModel.isEmpty() && state == NetworkState.LOADING) View.VISIBLE else View.GONE
             item_network_state_err_text_view?.visibility = if (viewModel.isEmpty() && state == NetworkState.ERROR) View.VISIBLE else View.GONE
 
-            if (state == NetworkState.LOADED)
-                tv_err?.visibility = View.GONE
+            if (state == NetworkState.LOADED || state == NetworkState.ERROR)
+                tv_search_err?.visibility = View.GONE
 
             if (!viewModel.isEmpty()) {
                 adapter.setNetworkState(state)
             }
+        })
+
+        search_view.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                // Perform search
+                if (!query.isNullOrBlank())
+                    searchForMovies(query)
+                return true
+            }
+
+            override fun onQueryTextChange(newText: String?) = false
         })
     }
 
@@ -106,6 +117,19 @@ class SearchFragment : Fragment() {
         }
         else
             startActivity(intent)
+    }
+
+    /**
+     * Initiate movie search
+     * @param searchTerm The term or movie name to search
+     */
+    private fun searchForMovies(searchTerm: String) {
+        viewModel.searchMovie(searchTerm).observe(this, { moviePagedList ->
+            thread {
+                adapter.submitList(moviePagedList)
+            }
+            tv_search?.visibility = View.GONE
+        })
     }
 
     private fun getViewModel(): SearchMovieViewModel {

@@ -22,10 +22,15 @@ class SearchDataSource(private val apiService: TMDBInterface,
     private val TAG = SearchDataSource::class.java.simpleName
 
     override fun loadInitial(params: LoadInitialParams<Int>, callback: LoadInitialCallback<Int, Movie>) {
+        if (searchTerm.isBlank()) {
+            _networkState.postValue(NetworkState.LOADED)
+            return
+        }
+
         _networkState.postValue(NetworkState.LOADING)
 
         disposable.add(
-            apiService.searchMovie(searchTerm, FIRST_PAGE)
+            apiService.searchForMovie(searchTerm, FIRST_PAGE)
                 .subscribeOn(Schedulers.io())
                 .subscribe(
                     { movieResponse ->
@@ -43,10 +48,15 @@ class SearchDataSource(private val apiService: TMDBInterface,
     override fun loadBefore(params: LoadParams<Int>, callback: LoadCallback<Int, Movie>) { }
 
     override fun loadAfter(params: LoadParams<Int>, callback: LoadCallback<Int, Movie>) {
+        if (searchTerm.isBlank()) {
+            _networkState.postValue(NetworkState.LOADED)
+            return
+        }
+
         _networkState.postValue(NetworkState.LOADING)
 
         disposable.add(
-            apiService.searchMovie(searchTerm, params.key)
+            apiService.searchForMovie(searchTerm, params.key)
                 .subscribeOn(Schedulers.io())
                 .subscribe(
                     { movieResponse ->
