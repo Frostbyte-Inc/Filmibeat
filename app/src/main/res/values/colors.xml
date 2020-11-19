@@ -18,4 +18,5 @@
     <color name="colorTextLightGrey">#DEDEDE</color>
     <color name="colorTextGrey">#B3B3B3</color>
     <color name="colorTransparentBlack">#90000000</color>
+    <color name="colorTransparentWhite">#90ffffff</color>
 </resources>

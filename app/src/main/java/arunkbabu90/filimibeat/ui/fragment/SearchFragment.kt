@@ -14,6 +14,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import arunkbabu90.filimibeat.R
 import arunkbabu90.filimibeat.calculateNoOfColumns
+import arunkbabu90.filimibeat.closeSoftInput
 import arunkbabu90.filimibeat.data.api.TMDBClient
 import arunkbabu90.filimibeat.data.api.TMDBInterface
 import arunkbabu90.filimibeat.data.database.Movie
@@ -58,33 +59,27 @@ class SearchFragment : Fragment() {
         rv_search_movie_list?.adapter = adapter
 
         viewModel = getViewModel()
-        viewModel.searchMovie("").observe(this, { moviePagedList ->
-            thread {
-                adapter.submitList(moviePagedList)
-            }
-        })
-
-        viewModel.networkState.observe(this, { state ->
-            item_network_state_progress_bar?.visibility = if (viewModel.isEmpty() && state == NetworkState.LOADING) View.VISIBLE else View.GONE
-            item_network_state_err_text_view?.visibility = if (viewModel.isEmpty() && state == NetworkState.ERROR) View.VISIBLE else View.GONE
-
-            if (state == NetworkState.LOADED || state == NetworkState.ERROR)
-                tv_search_err?.visibility = View.GONE
-
-            if (!viewModel.isEmpty()) {
-                adapter.setNetworkState(state)
-            }
-        })
 
         search_view.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 // Perform search
-                if (!query.isNullOrBlank())
+                if (!query.isNullOrBlank()) {
                     searchForMovies(query)
+                    closeSoftInput(activity)
+                }
+
                 return true
             }
 
-            override fun onQueryTextChange(newText: String?) = false
+            override fun onQueryTextChange(newText: String?): Boolean {
+                if (newText.isNullOrBlank()) {
+                    adapter.setNetworkState(NetworkState.CLEAR)
+                    adapter.submitList(null)
+                    iv_search?.visibility = View.VISIBLE
+                }
+
+                return true
+            }
         })
     }
 
@@ -128,7 +123,19 @@ class SearchFragment : Fragment() {
             thread {
                 adapter.submitList(moviePagedList)
             }
-            tv_search?.visibility = View.GONE
+            iv_search?.visibility = View.GONE
+        })
+
+        viewModel.networkState.observe(this, { state ->
+            item_network_state_progress_bar?.visibility = if (viewModel.isEmpty() && state == NetworkState.LOADING) View.VISIBLE else View.GONE
+            item_network_state_err_text_view?.visibility = if (viewModel.isEmpty() && state == NetworkState.ERROR) View.VISIBLE else View.GONE
+
+            if (state == NetworkState.LOADED || state == NetworkState.ERROR)
+                tv_search_err?.visibility = View.GONE
+
+            if (!viewModel.isEmpty()) {
+                adapter.setNetworkState(state)
+            }
         })
     }
 
