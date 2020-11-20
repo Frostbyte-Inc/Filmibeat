@@ -8,7 +8,6 @@ import arunkbabu90.filimibeat.data.api.FIRST_PAGE
 import arunkbabu90.filimibeat.data.api.TMDBInterface
 import arunkbabu90.filimibeat.data.database.Movie
 import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.schedulers.Schedulers
 
 class SearchDataSource(private val apiService: TMDBInterface,
                        private val disposable: CompositeDisposable,
@@ -31,7 +30,6 @@ class SearchDataSource(private val apiService: TMDBInterface,
 
         disposable.add(
             apiService.searchForMovie(searchTerm, FIRST_PAGE)
-                .subscribeOn(Schedulers.io())
                 .subscribe(
                     { movieResponse ->
                         callback.onResult(movieResponse.movies, null, FIRST_PAGE + 1)
@@ -57,7 +55,6 @@ class SearchDataSource(private val apiService: TMDBInterface,
 
         disposable.add(
             apiService.searchForMovie(searchTerm, params.key)
-                .subscribeOn(Schedulers.io())
                 .subscribe(
                     { movieResponse ->
                         if (movieResponse.totalPages >= params.key + 1) {

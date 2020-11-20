@@ -129,7 +129,7 @@ class SearchFragment : Fragment() {
         viewModel.searchMovie(searchTerm).observe(this, { moviePagedList ->
             adapter.submitList(moviePagedList)
 
-            if (adapter.itemCount <= 0) {
+            if (moviePagedList.size <= 0) {
                 // Movies List Empty; No Movies Found
                 tv_search_err?.visibility = View.VISIBLE
                 tv_search_err?.text = getString(R.string.no_movies_found)
