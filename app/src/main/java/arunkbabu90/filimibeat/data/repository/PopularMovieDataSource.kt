@@ -22,6 +22,7 @@ class PopularMovieDataSource(private val apiService: TMDBInterface,
 
     override fun loadInitial(params: LoadInitialParams<Int>, callback: LoadInitialCallback<Int, Movie>) {
         _networkState.postValue(NetworkState.LOADING)
+
         disposable.add(
             apiService.getPopularMovies(FIRST_PAGE)
                 .subscribeOn(Schedulers.io())
@@ -41,12 +42,13 @@ class PopularMovieDataSource(private val apiService: TMDBInterface,
 
     override fun loadAfter(params: LoadParams<Int>, callback: LoadCallback<Int, Movie>) {
         _networkState.postValue(NetworkState.LOADING)
+
         disposable.add(
             apiService.getPopularMovies(params.key)
                 .subscribeOn(Schedulers.io())
                 .subscribe(
                     { movieResponse ->
-                        if (movieResponse.totalPages >= params.key) {
+                        if (movieResponse.totalPages >= params.key + 1) {
                             // Not in last page
                             callback.onResult(movieResponse.movies, params.key + 1)
                             _networkState.postValue(NetworkState.LOADED)

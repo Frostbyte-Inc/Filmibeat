@@ -26,7 +26,6 @@ import arunkbabu90.filimibeat.ui.viewmodel.SearchMovieViewModel
 import kotlinx.android.synthetic.main.fragment_search.*
 import kotlinx.android.synthetic.main.item_movie.*
 import kotlinx.android.synthetic.main.item_network_state.*
-import kotlin.concurrent.thread
 
 class SearchFragment : Fragment() {
     private lateinit var repository: MovieSearchRepository
@@ -58,12 +57,16 @@ class SearchFragment : Fragment() {
         rv_search_movie_list?.layoutManager = lm
         rv_search_movie_list?.adapter = adapter
 
+        tv_search_err?.visibility = View.VISIBLE
+        tv_search_err?.text = getString(R.string.search_for_movie)
+
         viewModel = getViewModel()
 
         search_view.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 // Perform search
                 if (!query.isNullOrBlank()) {
+                    // If there is text in the search field then preform search
                     searchForMovies(query)
                     closeSoftInput(activity)
                 }
@@ -73,9 +76,13 @@ class SearchFragment : Fragment() {
 
             override fun onQueryTextChange(newText: String?): Boolean {
                 if (newText.isNullOrBlank()) {
+                    // Search Field is Empty or contains solely of Spaces
                     adapter.setNetworkState(NetworkState.CLEAR)
                     adapter.submitList(null)
-                    iv_search?.visibility = View.VISIBLE
+                    iv_search_err?.visibility = View.VISIBLE
+                    tv_search_err?.visibility = View.VISIBLE
+                    iv_search_err?.setImageResource(R.drawable.ic_search)
+                    tv_search_err?.text = getString(R.string.search_for_movie)
                 }
 
                 return true
@@ -120,17 +127,26 @@ class SearchFragment : Fragment() {
      */
     private fun searchForMovies(searchTerm: String) {
         viewModel.searchMovie(searchTerm).observe(this, { moviePagedList ->
-            thread {
-                adapter.submitList(moviePagedList)
+            adapter.submitList(moviePagedList)
+
+            if (adapter.itemCount <= 0) {
+                // Movies List Empty; No Movies Found
+                tv_search_err?.visibility = View.VISIBLE
+                tv_search_err?.text = getString(R.string.no_movies_found)
+                iv_search_err?.visibility = View.VISIBLE
+                iv_search_err?.setImageResource(R.drawable.ic_frown)
+            } else {
+                // Movies List NOT Empty; Movies Found
+                tv_search_err?.visibility = View.GONE
+                iv_search_err?.visibility = View.GONE
             }
-            iv_search?.visibility = View.GONE
         })
 
         viewModel.networkState.observe(this, { state ->
             item_network_state_progress_bar?.visibility = if (viewModel.isEmpty() && state == NetworkState.LOADING) View.VISIBLE else View.GONE
             item_network_state_err_text_view?.visibility = if (viewModel.isEmpty() && state == NetworkState.ERROR) View.VISIBLE else View.GONE
 
-            if (state == NetworkState.LOADED || state == NetworkState.ERROR)
+            if (state == NetworkState.LOADED && !viewModel.isEmpty())
                 tv_search_err?.visibility = View.GONE
 
             if (!viewModel.isEmpty()) {

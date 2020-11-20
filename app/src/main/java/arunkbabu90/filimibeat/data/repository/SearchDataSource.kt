@@ -60,7 +60,7 @@ class SearchDataSource(private val apiService: TMDBInterface,
                 .subscribeOn(Schedulers.io())
                 .subscribe(
                     { movieResponse ->
-                        if (movieResponse.totalPages >= params.key) {
+                        if (movieResponse.totalPages >= params.key + 1) {
                             // Not in last page
                             callback.onResult(movieResponse.movies, params.key + 1)
                             _networkState.postValue(NetworkState.LOADED)
