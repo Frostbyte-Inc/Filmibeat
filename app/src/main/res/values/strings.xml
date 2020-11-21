@@ -30,4 +30,7 @@
     <string name="read_reviews">Read Reviews</string>
     <string name="loading">Loading Movies…</string>
     <string name="coming_soon">Coming Soon…</string>
+    <string name="search_for_movie">Search for Movies</string>
+    <string name="no_movies_found">No Movies Found</string>
+    <string name="search_movie">Search Movie</string>
 </resources>

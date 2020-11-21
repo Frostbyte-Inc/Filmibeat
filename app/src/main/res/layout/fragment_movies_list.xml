@@ -22,6 +22,6 @@
         android:textStyle="bold"
         android:textSize="16sp"
         android:fontFamily="sans-serif"
-        android:textColor="@android:color/white"/>
+        android:textColor="#90ffffff"/>
 
 </FrameLayout>

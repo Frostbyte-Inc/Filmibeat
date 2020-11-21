@@ -81,21 +81,26 @@ class MovieDetailsActivity : AppCompatActivity() {
                 iv_movie_poster.setImageDrawable(resource)
             }
 
+            override fun onLoadFailed(errorDrawable: Drawable?) {
+                iv_movie_poster.setImageDrawable(errorDrawable)
+            }
+
             override fun onLoadCleared(placeholder: Drawable?) {
                 iv_movie_poster.setImageDrawable(null)
             }
-
         }
 
         mCoverTarget = object : CustomTarget<Drawable>() {
             override fun onResourceReady(resource: Drawable, transition: Transition<in Drawable>?) {
                 iv_movie_cover.setImageDrawable(resource)
             }
+            override fun onLoadFailed(errorDrawable: Drawable?) {
+                iv_movie_cover.setImageDrawable(errorDrawable)
+            }
 
             override fun onLoadCleared(placeholder: Drawable?) {
                 iv_movie_cover.setImageDrawable(null)
             }
-
         }
 
         Glide.with(this).load(posterUrl).error(R.drawable.ic_img_err).into(mPosterTarget)

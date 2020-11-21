@@ -8,7 +8,6 @@ import arunkbabu90.filimibeat.data.api.FIRST_PAGE
 import arunkbabu90.filimibeat.data.api.TMDBInterface
 import arunkbabu90.filimibeat.data.database.Movie
 import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.schedulers.Schedulers
 
 class SearchDataSource(private val apiService: TMDBInterface,
                        private val disposable: CompositeDisposable,
@@ -22,11 +21,15 @@ class SearchDataSource(private val apiService: TMDBInterface,
     private val TAG = SearchDataSource::class.java.simpleName
 
     override fun loadInitial(params: LoadInitialParams<Int>, callback: LoadInitialCallback<Int, Movie>) {
+        if (searchTerm.isBlank()) {
+            _networkState.postValue(NetworkState.LOADED)
+            return
+        }
+
         _networkState.postValue(NetworkState.LOADING)
 
         disposable.add(
-            apiService.searchMovie(searchTerm, FIRST_PAGE)
-                .subscribeOn(Schedulers.io())
+            apiService.searchForMovie(searchTerm, FIRST_PAGE)
                 .subscribe(
                     { movieResponse ->
                         callback.onResult(movieResponse.movies, null, FIRST_PAGE + 1)
@@ -43,14 +46,18 @@ class SearchDataSource(private val apiService: TMDBInterface,
     override fun loadBefore(params: LoadParams<Int>, callback: LoadCallback<Int, Movie>) { }
 
     override fun loadAfter(params: LoadParams<Int>, callback: LoadCallback<Int, Movie>) {
+        if (searchTerm.isBlank()) {
+            _networkState.postValue(NetworkState.LOADED)
+            return
+        }
+
         _networkState.postValue(NetworkState.LOADING)
 
         disposable.add(
-            apiService.searchMovie(searchTerm, params.key)
-                .subscribeOn(Schedulers.io())
+            apiService.searchForMovie(searchTerm, params.key)
                 .subscribe(
                     { movieResponse ->
-                        if (movieResponse.totalPages >= params.key) {
+                        if (movieResponse.totalPages >= params.key + 1) {
                             // Not in last page
                             callback.onResult(movieResponse.movies, params.key + 1)
                             _networkState.postValue(NetworkState.LOADED)

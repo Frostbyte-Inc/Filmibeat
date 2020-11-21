@@ -66,7 +66,7 @@ class MovieAdapter(private val itemClickListener: (Movie?) -> Unit)
     class MovieViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         fun bind(movie: Movie?, itemClickListener: (Movie?) -> Unit) {
             itemView.tv_poster_title.text = movie?.title
-            Glide.with(itemView.context).load(movie?.posterUrl).into(itemView.iv_main_poster)
+            Glide.with(itemView.context).load(movie?.posterUrl).error(R.drawable.ic_img_err).into(itemView.iv_main_poster)
 
             itemView.setOnClickListener { itemClickListener(movie) }
         }
@@ -91,6 +91,11 @@ class MovieAdapter(private val itemClickListener: (Movie?) -> Unit)
                 itemView.item_network_state_err_text_view.text = networkState.msg
             } else {
                 itemView.item_network_state_err_text_view.visibility = View.GONE
+            }
+
+            if (networkState != null && networkState == NetworkState.CLEAR) {
+                itemView.item_network_state_err_text_view.visibility = View.VISIBLE
+                itemView.item_network_state_err_text_view.text = networkState.msg
             }
         }
     }
