@@ -33,4 +33,65 @@
     <string name="search_for_movie">Search for Movies</string>
     <string name="no_movies_found">No Movies Found</string>
     <string name="search_movie">Search Movie</string>
+
+    <!-- Login Activity -->
+    <string name="email">Email</string>
+    <string name="prompt_password">Password</string>
+    <string name="login">Login</string>
+    <string name="sign_in">Sign in</string>
+    <string name="forgot_password">Forgot Password?</string>
+    <string name="err_login">Email or Password doesn\'t match</string>
+    <string name="err_blank_email">Email must not be left blank</string>
+    <string name="err_invalid_email">Please enter a valid email</string>
+    <string name="err_password">Please enter your password</string>
+    <string name="err_offline">You are offline!</string>
+
+    <!-- Sign Up Activity -->
+    <string name="sign_up_message">Don\'t have an account? Sign up</string>
+    <string name="full_name">Full Name</string>
+    <string name="height_desc">Height in centimeters</string>
+    <string name="weight_desc">Weight in kilograms</string>
+    <string name="mobile_number">Mobile Number</string>
+    <string name="sign_up_information">Sign Up</string>
+    <string name="sign_up_desc">Create your Care account. It\'s free</string>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="create">Create</string>
+    <string name="date_of_birth">Date of Birth</string>
+    <string name="age">Age</string>
+    <string name="err_password_no_match">Passwords doesn\'t match</string>
+    <string name="err_sign_up_password">Password should not be blank</string>
+    <string name="sex">Sex</string>
+    <string name="male">Male</string>
+    <string name="female">Female</string>
+    <string name="disorder_desc">Can you please tell us your disease/ disorder that you are currently under treatment</string>
+    <string name="cancel">Cancel</string>
+    <string name="commit">Commit</string>
+    <string name="edit">Edit</string>
+    <string name="err_profile_add_details_failed">Adding details to profile failed. Please try again!</string>
+    <string name="retry">Retry</string>
+    <string name="content_desc_error_icon">Error Icon</string>
+    <string name="close">Close</string>
+    <string name="retrying_profile_update">Retrying Profile Update</string>
+    <string name="creating_profile">Setting up your profile. Please be patient…</string>
+    <string name="err_password_length">Password should be at-least 8 characters long</string>
+    <string name="err_empty_field">This field can\'t be empty</string>
+    <string name="err_some_field_empty">Error! Some of the fields are empty</string>
+    <string name="err_pls_fix_all_errors">Please fix all the errors before proceeding</string>
+    <string name="verify_account_heading">Verify Account</string>
+    <string name="unverified">Unverified</string>
+    <string name="verified">Verified</string>
+    <string name="sending_verification">Sending Verification email to %1$s. Please wait…</string>
+    <string name="wait_n_seconds_to_retry">Wait for %1$s seconds before retrying</string>
+    <string name="verification_success_desc">Your account has been successfully verified. Press Continue to login</string>
+    <string name="err_email_exists">Email Already exists</string>
+    <string name="_continue">Continue</string>
+    <string name="err_verification_email_already_sent">Error! Most probably the verification email is already sent. Please check your email</string>
+    <string name="err_account_not_verified">Account Not Verified! Click here to verify</string>
+    <string name="err_account_not_verified_desc">Account Not Verified!\nYou can\'t send reports to a doctor unless you verify your account</string>
+    <string name="err_account_not_verified_desc_doc">Account Not Verified!\nPatients can\'t send reports to you and you won\'t appear in searches unless you verify</string>
+    <string name="err_account_not_verified_desc2">Account Not Verified!\nYou can\'t send reports to a doctor unless you verify</string>
+    <string name="account_verified">Account Verified</string>
+    <string name="verification_email_sent">A verification email has been sent to %1$s</string>
+    <string name="patient">Patient</string>
+    <string name="doctor">Doctor</string>
 </resources>
