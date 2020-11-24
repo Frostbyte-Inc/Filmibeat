@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="arunkbabu90.filimibeat">
 
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"
@@ -11,15 +11,15 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Filmibeat">
-
-        <activity android:name=".ui.activity.ProfileActivity"/>
-        <activity android:name=".ui.activity.LoginActivity"/>
-        <activity android:name=".ui.activity.MovieDetailsActivity"
-            android:theme="@style/Theme.Filmibeat.Details"/>
-
+        <activity android:name=".ui.activity.LoginActivity"></activity>
+        <activity android:name=".ui.activity.ProfileActivity" />
+        <activity
+            android:name=".ui.activity.MovieDetailsActivity"
+            android:theme="@style/Theme.Filmibeat.Details" />
         <activity android:name=".ui.activity.MovieActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
