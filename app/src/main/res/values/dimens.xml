@@ -69,4 +69,5 @@
     <dimen name="medium_corner_radius">20dp</dimen>
     <dimen name="category_card_radius">30dp</dimen>
     <dimen name="about_icon_size">90dp</dimen>
+    <dimen name="tmdb_logo_size">40dp</dimen>
 </resources>
