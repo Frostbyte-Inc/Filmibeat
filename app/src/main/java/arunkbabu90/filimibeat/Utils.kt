@@ -10,6 +10,11 @@ import android.view.View
 import android.view.inputmethod.InputMethodManager
 import androidx.fragment.app.FragmentActivity
 
+/**
+ * App lvl variable used to indicate that the User is currently in VerificationEmailFragment
+ */
+@JvmField
+var inVerificationEmailFragment: Boolean = false
 
 /**
  * Intelligently calculates the number of grid columns to be displayed on screen with respect to

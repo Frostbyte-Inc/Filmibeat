@@ -7,6 +7,7 @@
     <string name="err_review">Failed to load reviews. You need internet connection to load reviews</string>
     <string name="err_no_reviews">No Reviews Found for this Movie</string>
     <string name="err_no_videos">No Videos Found for this Movie</string>
+    <string name="err_default">Error! Something went wrong</string>
     <string name="videos">Related Videos</string>
     <string name="reviews">Reviews</string>
 
@@ -45,6 +46,14 @@
     <string name="err_invalid_email">Please enter a valid email</string>
     <string name="err_password">Please enter your password</string>
     <string name="err_offline">You are offline!</string>
+
+    <!-- ForgotPassword Activity -->
+    <string name="password_reset_info">Enter your email so that we can send a link to reset your password</string>
+    <string name="send_verification">Send Verification</string>
+    <string name="reset_password">Reset Password</string>
+    <string name="err_send_verification_failed">Failed to send verification Email! Please make sure that you have entered the correct email of associated with your account and try again</string>
+    <string name="err_email_send">Failed to send verification Email! Please try again</string>
+    <string name="err_indexing_failed">Error! Indexing search profile failed. Please try again</string>
 
     <!-- Sign Up Activity -->
     <string name="sign_up_message">Sign Up</string>

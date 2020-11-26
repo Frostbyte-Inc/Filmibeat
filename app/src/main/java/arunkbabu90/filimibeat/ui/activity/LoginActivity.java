@@ -67,7 +67,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnFocusChan
             // Login the user, if already logged in
             mUser.reload()
                     .addOnSuccessListener(aVoid -> {
-                        // User logged in so fetch user data from database to check whether its a doctor
                         // The result will be available in onComplete() callback
                         // REFRESH the User
                         mUser = mAuth.getCurrentUser();
@@ -82,7 +81,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnFocusChan
             // from cache
             mDb.collection(Constants.COLLECTION_USERS).document(mUser.getUid()).get()
                     .addOnSuccessListener(documentSnapshot -> {
-                        Long userType = documentSnapshot.getLong(Constants.FIELD_USER_TYPE);
                         startMovieActivity(Constants.USER_TYPE_PERSON);
                     });
         } else {
@@ -122,15 +120,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnFocusChan
             mPasswordField.setOnFocusChangeListener(this);
         }
     }
+
     @Override
     public void onFocusChange(View v, boolean hasFocus) {
-        switch (v.getId()) {
-            case R.id.et_password: {
-                if (hasFocus) {
-                    // Check whether the email isn't blank or is valid
-                    checkEmail();
-                }
-            }
+        if (hasFocus && v.getId() == mPasswordField.getId()) {
+            // Check whether the email isn't blank or is valid
+            checkEmail();
         }
     }
 
@@ -189,7 +184,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnFocusChan
      */
     public void onSignUpTextViewClick(View view) {
         // Launch SignUp Activity
-//        startActivity(new Intent(this, SignUpActivity.class));
+        startActivity(new Intent(this, SignUpActivity.class));
     }
 
     /**
