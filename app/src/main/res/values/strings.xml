@@ -47,7 +47,8 @@
     <string name="err_offline">You are offline!</string>
 
     <!-- Sign Up Activity -->
-    <string name="sign_up_message">Don\'t have an account? Sign up</string>
+    <string name="sign_up_message">Sign Up</string>
+    <string name="login_as_guest">Login as Guest</string>
     <string name="full_name">Full Name</string>
     <string name="height_desc">Height in centimeters</string>
     <string name="weight_desc">Weight in kilograms</string>
