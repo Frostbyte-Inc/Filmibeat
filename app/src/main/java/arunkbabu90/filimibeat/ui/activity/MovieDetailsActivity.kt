@@ -221,6 +221,7 @@ class MovieDetailsActivity : AppCompatActivity(), View.OnClickListener {
                 Constants.FIELD_BACKDROP_PATH to coverPath,
                 Constants.FIELD_RELEASE_YEAR to year,
                 Constants.FIELD_RATING to rating,
+                Constants.FIELD_OVERVIEW to overview,
                 Constants.FIELD_TIMESTAMP to Timestamp.now())
 
             db.collection(path).document(movieId.toString())

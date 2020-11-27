@@ -31,7 +31,7 @@ import com.google.firebase.firestore.SetOptions
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.fragment_favourites.*
-import kotlinx.android.synthetic.main.item_movie.*
+import kotlinx.android.synthetic.main.item_favourites.*
 
 class FavouritesFragment : Fragment() {
     private lateinit var db: FirebaseFirestore
@@ -96,7 +96,7 @@ class FavouritesFragment : Fragment() {
                                     Constants.FIELD_TITLE to movie.title,
                                     Constants.FIELD_POSTER_PATH to movie.posterPath,
                                     Constants.FIELD_BACKDROP_PATH to movie.backdropPath,
-                                    Constants.FIELD_RELEASE_YEAR to movie.year,
+                                    Constants.FIELD_RELEASE_YEAR to movie.releaseYear,
                                     Constants.FIELD_RATING to movie.rating,
                                     Constants.FIELD_TIMESTAMP to Timestamp.now())
 
@@ -115,7 +115,7 @@ class FavouritesFragment : Fragment() {
      */
     private fun onFavouriteClick(favMovie: Favourite) {
         val intent = Intent(activity, MovieDetailsActivity::class.java)
-        val posterView = iv_main_poster
+        val posterView = iv_fav_poster
         val transitionOptions: ActivityOptionsCompat? =
             activity?.let { activity ->
                 ActivityOptionsCompat.makeSceneTransitionAnimation(
@@ -130,7 +130,7 @@ class FavouritesFragment : Fragment() {
         intent.putExtra(MovieDetailsActivity.KEY_BACKDROP_PATH_EXTRA, favMovie.backdropPath)
         intent.putExtra(MovieDetailsActivity.KEY_RATING_EXTRA, favMovie.rating)
         intent.putExtra(MovieDetailsActivity.KEY_OVERVIEW_EXTRA, favMovie.overview)
-        intent.putExtra(MovieDetailsActivity.KEY_RELEASE_YEAR_EXTRA, favMovie.year)
+        intent.putExtra(MovieDetailsActivity.KEY_RELEASE_YEAR_EXTRA, favMovie.releaseYear)
         intent.putExtra(MovieDetailsActivity.KEY_TITLE_EXTRA, favMovie.title)
 
         if (transitionOptions != null)
