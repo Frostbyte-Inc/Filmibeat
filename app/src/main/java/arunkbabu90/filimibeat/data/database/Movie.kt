@@ -10,7 +10,7 @@ import com.google.gson.annotations.SerializedName
 
 @Entity
 data class Movie(@PrimaryKey(autoGenerate = true) @ColumnInfo(name = "id") var Id: Int,
-                 @SerializedName("id") @ColumnInfo(name = "movieId") var movieId: Long,
+                 @SerializedName("id") @ColumnInfo(name = "movieId") var movieId: Int,
                  @SerializedName("poster_path") @ColumnInfo(name = "posterPath") var posterPath: String,
                  @SerializedName("backdrop_path") @ColumnInfo(name = "backdropPath") var backdropPath: String,
                  @SerializedName("title") @ColumnInfo(name = "title") var title: String,

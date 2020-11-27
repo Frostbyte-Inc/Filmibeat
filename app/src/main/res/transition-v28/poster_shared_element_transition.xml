@@ -9,7 +9,7 @@
     <fade>
         <targets>
             <target android:targetId="@id/tv_poster_title"/>
-            <target android:targetId="@id/btn_favourites"/>
+            <target android:targetId="@id/fab_favourites"/>
             <target android:targetId="@id/tv_movie_description"/>
             <target android:targetId="@id/tv_movie_year"/>
             <target android:targetId="@id/tv_movie_rating"/>
