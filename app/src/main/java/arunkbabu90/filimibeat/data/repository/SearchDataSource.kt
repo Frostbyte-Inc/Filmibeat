@@ -6,7 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.paging.PageKeyedDataSource
 import arunkbabu90.filimibeat.data.api.FIRST_PAGE
 import arunkbabu90.filimibeat.data.api.TMDBInterface
-import arunkbabu90.filimibeat.data.database.Movie
+import arunkbabu90.filimibeat.data.model.Movie
 import io.reactivex.disposables.CompositeDisposable
 
 class SearchDataSource(private val apiService: TMDBInterface,

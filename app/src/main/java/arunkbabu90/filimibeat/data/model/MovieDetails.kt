@@ -1,12 +1,9 @@
-package arunkbabu90.filimibeat.data.database
+package arunkbabu90.filimibeat.data.model
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.Ignore
 import androidx.room.PrimaryKey
-import arunkbabu90.filimibeat.data.api.IMG_SIZE_LARGE
-import arunkbabu90.filimibeat.data.api.IMG_SIZE_MID
-import arunkbabu90.filimibeat.data.api.POSTER_BASE_URL
 import arunkbabu90.filimibeat.data.network.Company
 import arunkbabu90.filimibeat.data.network.Genre
 import com.google.gson.annotations.SerializedName
@@ -33,12 +30,6 @@ data class MovieDetails(@PrimaryKey @ColumnInfo(name = "movieId") var movieId: L
     @SerializedName("production_companies")
     @Ignore
     var productionCompanies: List<Company> = listOf()
-
-    val posterUrl: String
-        get() = POSTER_BASE_URL + IMG_SIZE_MID + posterPath
-
-    val backDropUrl: String
-        get() = POSTER_BASE_URL + IMG_SIZE_LARGE + backdropPath
 
     val releaseYear: String
         get() {

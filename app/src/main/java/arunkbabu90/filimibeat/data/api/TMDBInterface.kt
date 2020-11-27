@@ -1,6 +1,6 @@
 package arunkbabu90.filimibeat.data.api
 
-import arunkbabu90.filimibeat.data.database.MovieDetails
+import arunkbabu90.filimibeat.data.model.MovieDetails
 import arunkbabu90.filimibeat.data.network.MovieResponse
 import io.reactivex.Single
 import retrofit2.http.GET

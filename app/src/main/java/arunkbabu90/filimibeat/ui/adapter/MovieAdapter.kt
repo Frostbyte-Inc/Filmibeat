@@ -6,7 +6,7 @@ import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import arunkbabu90.filimibeat.R
-import arunkbabu90.filimibeat.data.database.Movie
+import arunkbabu90.filimibeat.data.model.Movie
 import arunkbabu90.filimibeat.data.repository.NetworkState
 import arunkbabu90.filimibeat.inflate
 import com.bumptech.glide.Glide

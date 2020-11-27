@@ -15,7 +15,7 @@ import arunkbabu90.filimibeat.R
 import arunkbabu90.filimibeat.calculateNoOfColumns
 import arunkbabu90.filimibeat.data.api.TMDBClient
 import arunkbabu90.filimibeat.data.api.TMDBInterface
-import arunkbabu90.filimibeat.data.database.Movie
+import arunkbabu90.filimibeat.data.model.Movie
 import arunkbabu90.filimibeat.data.repository.MoviePopularRepository
 import arunkbabu90.filimibeat.data.repository.NetworkState
 import arunkbabu90.filimibeat.ui.activity.MovieDetailsActivity
@@ -94,8 +94,8 @@ class PopularFragment : Fragment() {
             }
 
         intent.putExtra(MovieDetailsActivity.KEY_MOVIE_ID_EXTRA, movie.movieId)
-        intent.putExtra(MovieDetailsActivity.KEY_POSTER_PATH_EXTRA, movie.posterUrl)
-        intent.putExtra(MovieDetailsActivity.KEY_BACKDROP_PATH_EXTRA, movie.backDropUrl)
+        intent.putExtra(MovieDetailsActivity.KEY_POSTER_PATH_EXTRA, movie.posterPath)
+        intent.putExtra(MovieDetailsActivity.KEY_BACKDROP_PATH_EXTRA, movie.backdropPath)
         intent.putExtra(MovieDetailsActivity.KEY_RATING_EXTRA, movie.rating)
         intent.putExtra(MovieDetailsActivity.KEY_OVERVIEW_EXTRA, movie.overview)
         intent.putExtra(MovieDetailsActivity.KEY_RELEASE_YEAR_EXTRA, movie.releaseYear)
