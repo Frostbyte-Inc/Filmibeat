@@ -2,6 +2,7 @@ package arunkbabu90.filimibeat.ui.activity
 
 import android.graphics.drawable.Drawable
 import android.os.Bundle
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -10,6 +11,7 @@ import arunkbabu90.filimibeat.data.api.TMDBClient
 import arunkbabu90.filimibeat.data.api.TMDBInterface
 import arunkbabu90.filimibeat.data.database.MovieDetails
 import arunkbabu90.filimibeat.data.repository.MovieDetailsRepository
+import arunkbabu90.filimibeat.ui.Constants
 import arunkbabu90.filimibeat.ui.viewmodel.MovieDetailsViewModel
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.CustomTarget
@@ -17,7 +19,7 @@ import com.bumptech.glide.request.transition.Transition
 import com.google.android.material.appbar.AppBarLayout
 import kotlinx.android.synthetic.main.activity_movie_details.*
 
-class MovieDetailsActivity : AppCompatActivity() {
+class MovieDetailsActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var repository: MovieDetailsRepository
     private lateinit var mPosterTarget: CustomTarget<Drawable>
     private lateinit var mCoverTarget: CustomTarget<Drawable>
@@ -32,11 +34,13 @@ class MovieDetailsActivity : AppCompatActivity() {
         const val KEY_TITLE_EXTRA = "titleExtraKey"
     }
 
+    private var movieId = -1
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_movie_details)
 
-        val movieId: Int = intent.getIntExtra(KEY_MOVIE_ID_EXTRA, -1)
+        movieId = intent.getIntExtra(KEY_MOVIE_ID_EXTRA, -1)
         val posterUrl: String = intent.getStringExtra(KEY_POSTER_PATH_EXTRA) ?: ""
         val coverUrl: String = intent.getStringExtra(KEY_BACKDROP_PATH_EXTRA) ?: ""
         val rating: String = intent.getStringExtra(KEY_RATING_EXTRA) ?: ""
@@ -61,6 +65,16 @@ class MovieDetailsActivity : AppCompatActivity() {
         viewModel.movieDetails.observe(this, { movieDetails ->
             populateToUI(movieDetails)
         })
+
+        setFeaturesBasedOnUser()
+
+        fab_favourites.setOnClickListener(this)
+    }
+
+    override fun onClick(p0: View?) {
+        when (p0?.id) {
+            R.id.fab_favourites -> addFavMovie()
+        }
     }
 
     /**
@@ -114,5 +128,25 @@ class MovieDetailsActivity : AppCompatActivity() {
                 return MovieDetailsViewModel(repository, movieId) as T
             }
         })[MovieDetailsViewModel::class.java]
+    }
+
+    /**
+     * Helper method to enable or disable movie details features based on the userType
+     */
+    private fun setFeaturesBasedOnUser() {
+        if (Constants.userType == Constants.USER_TYPE_PERSON) {
+            // Normal User
+            fab_favourites.show()
+        } else {
+            // Other user; Guest
+            fab_favourites.hide()
+        }
+    }
+
+    /**
+     * Adds the movie as Favourite in Firestore database
+     */
+    private fun addFavMovie() {
+
     }
 }
