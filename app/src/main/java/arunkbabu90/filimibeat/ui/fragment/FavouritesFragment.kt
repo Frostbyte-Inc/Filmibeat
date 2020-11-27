@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.app.ActivityOptionsCompat
+import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.fragment.app.Fragment
 import androidx.paging.PagedList
@@ -19,11 +20,14 @@ import arunkbabu90.filimibeat.ui.Constants
 import arunkbabu90.filimibeat.ui.activity.MovieDetailsActivity
 import arunkbabu90.filimibeat.ui.adapter.FavouritesAdapter
 import com.firebase.ui.firestore.paging.FirestorePagingOptions
+import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
+import com.google.firebase.firestore.SetOptions
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.fragment_favourites.*
@@ -78,9 +82,32 @@ class FavouritesFragment : Fragment() {
 
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                 // Delete the Favourite Movie from the list (database)
-            }
+                val holder = viewHolder as FavouritesAdapter.FavouritesViewHolder
+                val movie = holder.movie ?: return
 
-        })
+                db.collection(path)
+                    .document(movie.movieId)
+                    .delete()
+                    .addOnSuccessListener {
+                        // Undo Action
+                        val snackbar = Snackbar.make(favourites_fragment_layout, "${movie.title} Deleted", Snackbar.LENGTH_LONG)
+                            .setAction(getString(R.string.undo)) {
+                                val favMovie = hashMapOf(
+                                    Constants.FIELD_TITLE to movie.title,
+                                    Constants.FIELD_POSTER_PATH to movie.posterPath,
+                                    Constants.FIELD_BACKDROP_PATH to movie.backdropPath,
+                                    Constants.FIELD_RELEASE_YEAR to movie.year,
+                                    Constants.FIELD_RATING to movie.rating,
+                                    Constants.FIELD_TIMESTAMP to Timestamp.now())
+
+                                db.collection(path).document(movie.movieId)
+                                    .set(favMovie, SetOptions.merge())
+                            }
+                        snackbar.setActionTextColor(ContextCompat.getColor(requireContext(), R.color.colorGreen))
+                        snackbar.show()
+                    }
+            }
+        }).attachToRecyclerView(rv_favourites)
     }
 
     /**

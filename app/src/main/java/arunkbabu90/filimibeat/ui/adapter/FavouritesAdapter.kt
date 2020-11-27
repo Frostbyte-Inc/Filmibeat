@@ -7,7 +7,9 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import arunkbabu90.filimibeat.R
+import arunkbabu90.filimibeat.data.api.IMG_SIZE_MID
 import arunkbabu90.filimibeat.data.model.Favourite
+import arunkbabu90.filimibeat.getImageUrl
 import arunkbabu90.filimibeat.inflate
 import com.bumptech.glide.Glide
 import com.firebase.ui.firestore.paging.FirestorePagingAdapter
@@ -36,7 +38,7 @@ class FavouritesAdapter(options: FirestorePagingOptions<Favourite>,
     override fun onError(e: Exception) {
         super.onError(e)
         errView.visibility = View.VISIBLE
-        errView.text = context.getString(R.string.err_fav_movie)
+        errView.text = context?.getString(R.string.err_fav_movie)
     }
 
     override fun onLoadingStateChanged(state: LoadingState) {
@@ -71,8 +73,14 @@ class FavouritesAdapter(options: FirestorePagingOptions<Favourite>,
     }
 
     class FavouritesViewHolder(itemView: View, private val context: Context) : RecyclerView.ViewHolder(itemView) {
+        var movie: Favourite? = null
+
         fun bind(favourite: Favourite, itemClickListener: (Favourite) -> Unit) {
-            Glide.with(context).load(favourite.posterUrl).into(itemView.iv_fav_poster)
+            movie = favourite
+
+            val posterUrl = getImageUrl(favourite.posterPath, IMG_SIZE_MID)
+            Glide.with(context).load(posterUrl).into(itemView.iv_fav_poster)
+
             itemView.tv_fav_title.text = favourite.title
             itemView.tv_fav_year.text = favourite.year
             itemView.tv_fav_rating.text = favourite.rating

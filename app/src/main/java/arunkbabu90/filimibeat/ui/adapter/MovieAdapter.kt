@@ -6,8 +6,10 @@ import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import arunkbabu90.filimibeat.R
+import arunkbabu90.filimibeat.data.api.IMG_SIZE_MID
 import arunkbabu90.filimibeat.data.model.Movie
 import arunkbabu90.filimibeat.data.repository.NetworkState
+import arunkbabu90.filimibeat.getImageUrl
 import arunkbabu90.filimibeat.inflate
 import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.item_movie.view.*
@@ -29,8 +31,9 @@ class MovieAdapter(private val itemClickListener: (Movie?) -> Unit)
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+        val movie = getItem(position) ?: return
+
         if (getItemViewType(position) == VIEW_TYPE_MOVIE) {
-            val movie = getItem(position)
             (holder as MovieViewHolder).bind(movie, itemClickListener)
         } else {
             (holder as NetworkStateViewHolder).bind(networkState)
@@ -64,9 +67,11 @@ class MovieAdapter(private val itemClickListener: (Movie?) -> Unit)
      * ViewHolder for the movies
      */
     class MovieViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        fun bind(movie: Movie?, itemClickListener: (Movie?) -> Unit) {
-            itemView.tv_poster_title.text = movie?.title
-            Glide.with(itemView.context).load(movie?.posterUrl).error(R.drawable.ic_img_err).into(itemView.iv_main_poster)
+        fun bind(movie: Movie, itemClickListener: (Movie?) -> Unit) {
+            val posterUrl = getImageUrl(movie.posterPath, IMG_SIZE_MID)
+            Glide.with(itemView.context).load(posterUrl).error(R.drawable.ic_img_err).into(itemView.iv_main_poster)
+
+            itemView.tv_poster_title.text = movie.title
 
             itemView.setOnClickListener { itemClickListener(movie) }
         }
