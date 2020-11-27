@@ -79,6 +79,27 @@ class MovieDetailsActivity : AppCompatActivity(), View.OnClickListener {
         tv_movie_rating.text = rating
         tv_movie_year.text = year
 
+        // Load Favourite Movie Information
+        val user = auth.currentUser
+        if (user != null) {
+            val path = "${Constants.COLLECTION_USERS}/${user.uid}/${Constants.COLLECTION_FAVOURITES}"
+            db.collection(path).document(movieId.toString())
+                .get()
+                .addOnSuccessListener { snapshot ->
+                    // Success
+                    isFavourite = if (snapshot.exists()) {
+                        // Favourite Movie
+                        fab_favourites.setImageResource(R.drawable.ic_favourite)
+                        true
+                    } else {
+                        // Not added as favourite movie
+                        fab_favourites.setImageResource(R.drawable.ic_favourite_outline)
+                        false
+                    }
+                    isFavLoaded = true
+                }
+        }
+
         val apiService: TMDBInterface = TMDBClient.getClient()
         repository = MovieDetailsRepository(apiService, this)
 
@@ -108,28 +129,6 @@ class MovieDetailsActivity : AppCompatActivity(), View.OnClickListener {
             val isCollapsed: Boolean = verticalOffset + scrollPos == 0
             movie_detail_collapsing_toolbar.title = if (isCollapsed) movieDetails.title else ""
         })
-
-        // Load Favourite Movie Information
-        val user = auth.currentUser
-        if (user != null) {
-            val path = "${Constants.COLLECTION_USERS}/${user.uid}/${Constants.COLLECTION_FAVOURITES}"
-            db.collection(path).document(movieId.toString())
-                .get()
-                .addOnSuccessListener { snapshot ->
-                    // Success
-                    isFavourite = if (snapshot.exists()) {
-                        // Favourite Movie
-                        fab_favourites.setImageResource(R.drawable.ic_favourite)
-                        true
-                    } else {
-                        // Not added as favourite movie
-                        fab_favourites.setImageResource(R.drawable.ic_favourite_outline)
-                        false
-                    }
-                    isFavLoaded = true
-                }
-        }
-
     }
 
     private fun loadPosterAndCover(posterUrl: String, coverUrl: String) {
