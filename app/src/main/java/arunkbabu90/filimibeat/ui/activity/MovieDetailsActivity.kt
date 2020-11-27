@@ -3,6 +3,7 @@ package arunkbabu90.filimibeat.ui.activity
 import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -17,12 +18,20 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
 import com.google.android.material.appbar.AppBarLayout
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.SetOptions
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.activity_movie_details.*
 
 class MovieDetailsActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var repository: MovieDetailsRepository
-    private lateinit var mPosterTarget: CustomTarget<Drawable>
-    private lateinit var mCoverTarget: CustomTarget<Drawable>
+    private lateinit var posterTarget: CustomTarget<Drawable>
+    private lateinit var coverTarget: CustomTarget<Drawable>
+    private lateinit var db: FirebaseFirestore
+    private lateinit var auth: FirebaseAuth
 
     companion object {
         const val KEY_MOVIE_ID_EXTRA = "movieIdExtraKey"
@@ -35,18 +44,30 @@ class MovieDetailsActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private var movieId = -1
+    private var posterUrl = ""
+    private var coverUrl = ""
+    private var rating = ""
+    private var overview = ""
+    private var year = ""
+    private var title = ""
+
+    private var isFavourite = false
+    private var isFavLoaded = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_movie_details)
 
+        auth = Firebase.auth
+        db = Firebase.firestore
+
         movieId = intent.getIntExtra(KEY_MOVIE_ID_EXTRA, -1)
-        val posterUrl: String = intent.getStringExtra(KEY_POSTER_PATH_EXTRA) ?: ""
-        val coverUrl: String = intent.getStringExtra(KEY_BACKDROP_PATH_EXTRA) ?: ""
-        val rating: String = intent.getStringExtra(KEY_RATING_EXTRA) ?: ""
-        val overview: String = intent.getStringExtra(KEY_OVERVIEW_EXTRA) ?: ""
-        val year: String = intent.getStringExtra(KEY_RELEASE_YEAR_EXTRA) ?: ""
-        val title: String = intent.getStringExtra(KEY_TITLE_EXTRA) ?: ""
+        posterUrl = intent.getStringExtra(KEY_POSTER_PATH_EXTRA) ?: ""
+        coverUrl = intent.getStringExtra(KEY_BACKDROP_PATH_EXTRA) ?: ""
+        rating = intent.getStringExtra(KEY_RATING_EXTRA) ?: ""
+        overview = intent.getStringExtra(KEY_OVERVIEW_EXTRA) ?: ""
+        year = intent.getStringExtra(KEY_RELEASE_YEAR_EXTRA) ?: ""
+        title = intent.getStringExtra(KEY_TITLE_EXTRA) ?: ""
 
         // Set enter transition name
         iv_movie_poster.transitionName = movieId.toString()
@@ -87,10 +108,32 @@ class MovieDetailsActivity : AppCompatActivity(), View.OnClickListener {
             val isCollapsed: Boolean = verticalOffset + scrollPos == 0
             movie_detail_collapsing_toolbar.title = if (isCollapsed) movieDetails.title else ""
         })
+
+        // Load Favourite Movie Information
+        val user = auth.currentUser
+        if (user != null) {
+            val path = "${Constants.COLLECTION_USERS}/${user.uid}/${Constants.COLLECTION_FAVOURITES}"
+            db.collection(path).document(movieId.toString())
+                .get()
+                .addOnSuccessListener { snapshot ->
+                    // Success
+                    isFavourite = if (snapshot.exists()) {
+                        // Favourite Movie
+                        fab_favourites.setImageResource(R.drawable.ic_favourite)
+                        true
+                    } else {
+                        // Not added as favourite movie
+                        fab_favourites.setImageResource(R.drawable.ic_favourite_outline)
+                        false
+                    }
+                    isFavLoaded = true
+                }
+        }
+
     }
 
     private fun loadPosterAndCover(posterUrl: String, coverUrl: String) {
-        mPosterTarget = object : CustomTarget<Drawable>() {
+        posterTarget = object : CustomTarget<Drawable>() {
             override fun onResourceReady(resource: Drawable, transition: Transition<in Drawable>?) {
                 iv_movie_poster.setImageDrawable(resource)
             }
@@ -104,7 +147,7 @@ class MovieDetailsActivity : AppCompatActivity(), View.OnClickListener {
             }
         }
 
-        mCoverTarget = object : CustomTarget<Drawable>() {
+        coverTarget = object : CustomTarget<Drawable>() {
             override fun onResourceReady(resource: Drawable, transition: Transition<in Drawable>?) {
                 iv_movie_cover.setImageDrawable(resource)
             }
@@ -117,8 +160,8 @@ class MovieDetailsActivity : AppCompatActivity(), View.OnClickListener {
             }
         }
 
-        Glide.with(this).load(posterUrl).error(R.drawable.ic_img_err).into(mPosterTarget)
-        Glide.with(this).load(coverUrl).error(R.drawable.ic_img_err).into(mCoverTarget)
+        Glide.with(this).load(posterUrl).error(R.drawable.ic_img_err).into(posterTarget)
+        Glide.with(this).load(coverUrl).error(R.drawable.ic_img_err).into(coverTarget)
     }
 
     private fun getViewModel(movieId: Int): MovieDetailsViewModel {
@@ -145,8 +188,40 @@ class MovieDetailsActivity : AppCompatActivity(), View.OnClickListener {
 
     /**
      * Adds the movie as Favourite in Firestore database
+     * @return True if operation succeeds, False otherwise
      */
     private fun addFavMovie() {
+        val user = auth.currentUser
+        if (movieId == -1 || user == null || !isFavLoaded) return
 
+        val path = "${Constants.COLLECTION_USERS}/${user.uid}/${Constants.COLLECTION_FAVOURITES}"
+
+        if (isFavourite) {
+            // Remove from Favourites
+            fab_favourites.setImageResource(R.drawable.ic_favourite_outline)
+            db.collection(path)
+                .document(movieId.toString())
+                .delete()
+                .addOnFailureListener { e ->
+                    Toast.makeText(applicationContext, getString(R.string.err_remove_fav), Toast.LENGTH_LONG).show()
+                    fab_favourites.setImageResource(R.drawable.ic_favourite)
+                }
+        } else {
+            // Add Movie As Favourite
+            fab_favourites.setImageResource(R.drawable.ic_favourite)
+            val movie = hashMapOf(
+                Constants.FIELD_TITLE to title,
+                Constants.FIELD_POSTER_PATH to posterUrl,
+                Constants.FIELD_RELEASE_YEAR to year,
+                Constants.FIELD_RATING to rating)
+
+            db.collection(path).document(movieId.toString())
+                .set(movie, SetOptions.merge())
+                .addOnFailureListener { e ->
+                    // Failed to add
+                    Toast.makeText(applicationContext, getString(R.string.err_add_fav, e), Toast.LENGTH_LONG).show()
+                    fab_favourites.setImageResource(R.drawable.ic_favourite_outline)
+                }
+        }
     }
 }

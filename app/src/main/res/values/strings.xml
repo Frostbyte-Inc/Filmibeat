@@ -105,4 +105,6 @@
     <string name="patient">Patient</string>
     <string name="doctor">Doctor</string>
     <string name="powered_by">Powered by</string>
+    <string name="err_remove_fav"><![CDATA[Failed remove from Favourites! Please check your internet connection & try again]]></string>
+    <string name="err_add_fav">Failed to add as Favourite! Please check your internet connection and try again\n%1$s</string>
 </resources>
