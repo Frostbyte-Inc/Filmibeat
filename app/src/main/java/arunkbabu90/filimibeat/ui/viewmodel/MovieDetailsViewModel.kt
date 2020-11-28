@@ -2,7 +2,7 @@ package arunkbabu90.filimibeat.ui.viewmodel
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
-import arunkbabu90.filimibeat.data.database.MovieDetails
+import arunkbabu90.filimibeat.data.model.MovieDetails
 import arunkbabu90.filimibeat.data.repository.MovieDetailsRepository
 import arunkbabu90.filimibeat.data.repository.NetworkState
 import io.reactivex.disposables.CompositeDisposable

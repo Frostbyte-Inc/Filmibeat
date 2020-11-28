@@ -8,16 +8,20 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import arunkbabu90.filimibeat.R
+import arunkbabu90.filimibeat.data.api.IMG_SIZE_LARGE
+import arunkbabu90.filimibeat.data.api.IMG_SIZE_MID
 import arunkbabu90.filimibeat.data.api.TMDBClient
 import arunkbabu90.filimibeat.data.api.TMDBInterface
-import arunkbabu90.filimibeat.data.database.MovieDetails
+import arunkbabu90.filimibeat.data.model.MovieDetails
 import arunkbabu90.filimibeat.data.repository.MovieDetailsRepository
+import arunkbabu90.filimibeat.getImageUrl
 import arunkbabu90.filimibeat.ui.Constants
 import arunkbabu90.filimibeat.ui.viewmodel.MovieDetailsViewModel
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
 import com.google.android.material.appbar.AppBarLayout
+import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -44,8 +48,8 @@ class MovieDetailsActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private var movieId = -1
-    private var posterUrl = ""
-    private var coverUrl = ""
+    private var posterPath = ""
+    private var coverPath = ""
     private var rating = ""
     private var overview = ""
     private var year = ""
@@ -62,12 +66,15 @@ class MovieDetailsActivity : AppCompatActivity(), View.OnClickListener {
         db = Firebase.firestore
 
         movieId = intent.getIntExtra(KEY_MOVIE_ID_EXTRA, -1)
-        posterUrl = intent.getStringExtra(KEY_POSTER_PATH_EXTRA) ?: ""
-        coverUrl = intent.getStringExtra(KEY_BACKDROP_PATH_EXTRA) ?: ""
+        posterPath = intent.getStringExtra(KEY_POSTER_PATH_EXTRA) ?: ""
+        coverPath = intent.getStringExtra(KEY_BACKDROP_PATH_EXTRA) ?: ""
         rating = intent.getStringExtra(KEY_RATING_EXTRA) ?: ""
         overview = intent.getStringExtra(KEY_OVERVIEW_EXTRA) ?: ""
         year = intent.getStringExtra(KEY_RELEASE_YEAR_EXTRA) ?: ""
         title = intent.getStringExtra(KEY_TITLE_EXTRA) ?: ""
+
+        val posterUrl = getImageUrl(posterPath, IMG_SIZE_MID)
+        val coverUrl = getImageUrl(coverPath, IMG_SIZE_LARGE)
 
         // Set enter transition name
         iv_movie_poster.transitionName = movieId.toString()
@@ -210,9 +217,12 @@ class MovieDetailsActivity : AppCompatActivity(), View.OnClickListener {
             fab_favourites.setImageResource(R.drawable.ic_favourite)
             val movie = hashMapOf(
                 Constants.FIELD_TITLE to title,
-                Constants.FIELD_POSTER_PATH to posterUrl,
+                Constants.FIELD_POSTER_PATH to posterPath,
+                Constants.FIELD_BACKDROP_PATH to coverPath,
                 Constants.FIELD_RELEASE_YEAR to year,
-                Constants.FIELD_RATING to rating)
+                Constants.FIELD_RATING to rating,
+                Constants.FIELD_OVERVIEW to overview,
+                Constants.FIELD_TIMESTAMP to Timestamp.now())
 
             db.collection(path).document(movieId.toString())
                 .set(movie, SetOptions.merge())

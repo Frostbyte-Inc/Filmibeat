@@ -9,6 +9,7 @@ import android.net.NetworkCapabilities
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import androidx.fragment.app.FragmentActivity
+import arunkbabu90.filimibeat.data.api.POSTER_BASE_URL
 
 /**
  * App lvl variable used to indicate that the User is currently in VerificationEmailFragment
@@ -76,6 +77,13 @@ fun verifyEmail(email: String): Boolean {
     val mailFormat = Regex ("^([a-zA-B 0-9.-]+)@([a-zA-B 0-9]+)\\.([a-zA-Z]{2,8})(\\.[a-zA-Z]{2,8})?$")
     return !email.matches(mailFormat)
 }
+
+/**
+ * Returns the full image URL from the image path endpoint
+ * @param path The image path endpoint
+ * @param size The size of the image to be loaded
+ */
+fun getImageUrl(path: String, size: String): String = POSTER_BASE_URL + size + path
 
 
 

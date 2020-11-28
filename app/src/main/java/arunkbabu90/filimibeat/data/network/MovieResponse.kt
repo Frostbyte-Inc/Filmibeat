@@ -1,6 +1,6 @@
 package arunkbabu90.filimibeat.data.network
 
-import arunkbabu90.filimibeat.data.database.Movie
+import arunkbabu90.filimibeat.data.model.Movie
 import com.google.gson.annotations.SerializedName
 
 data class MovieResponse(val page: Int,

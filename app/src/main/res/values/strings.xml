@@ -107,4 +107,7 @@
     <string name="powered_by">Powered by</string>
     <string name="err_remove_fav"><![CDATA[Failed remove from Favourites! Please check your internet connection & try again]]></string>
     <string name="err_add_fav">Failed to add as Favourite! Please check your internet connection and try again\n%1$s</string>
+    <string name="err_fav_movie">Failed to Load Favourite Movies</string>
+    <string name="released">Released: %1$s</string>
+    <string name="rating">Rating: %1$s</string>
 </resources>

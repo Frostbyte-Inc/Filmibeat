@@ -19,6 +19,10 @@ class Constants {
         const val FIELD_POSTER_PATH = "posterPath"
         const val FIELD_RELEASE_YEAR = "releaseYear"
         const val FIELD_RATING = "rating"
+        const val FIELD_OVERVIEW = "overview"
+        const val FIELD_BACKDROP_PATH = "backdropPath"
+
+        const val FIELD_TIMESTAMP = "timestamp"
 
         const val USER_TYPE_GUEST = 0
         const val USER_TYPE_PERSON = 1

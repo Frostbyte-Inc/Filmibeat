@@ -6,7 +6,7 @@ import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
 import arunkbabu90.filimibeat.data.api.PAGE_SIZE
 import arunkbabu90.filimibeat.data.api.TMDBInterface
-import arunkbabu90.filimibeat.data.database.Movie
+import arunkbabu90.filimibeat.data.model.Movie
 import io.reactivex.disposables.CompositeDisposable
 
 class MovieSearchRepository(private val apiService: TMDBInterface) {
