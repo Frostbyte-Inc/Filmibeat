@@ -179,7 +179,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnFocusChan
      */
     public void onForgotPasswordClick(View view) {
         // Launch Forgot Password Activity
-//        startActivity(new Intent(this, ForgotPasswordActivity.class));
+        startActivity(new Intent(this, ForgotPasswordActivity.class));
     }
 
     /**
