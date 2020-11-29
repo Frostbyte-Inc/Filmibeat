@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -88,6 +89,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnFocusChan
             setTheme(R.style.Theme_Filmibeat);
             ActivityLoginBinding binding = ActivityLoginBinding.inflate(getLayoutInflater());
             setContentView(binding.getRoot());
+
+            getWindow().setStatusBarColor(ContextCompat.getColor(this, R.color.colorBlackBackground));
 
             mErrorTextView = binding.tvLoginError;
             mEmailField = binding.etEmail;

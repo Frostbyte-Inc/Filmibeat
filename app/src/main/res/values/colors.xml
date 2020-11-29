@@ -26,7 +26,7 @@
     <color name="colorAcceptButton">#00b363</color>
     <color name="colorAcceptButtonTransparent">#2000b363</color>
     <color name="colorBackgroundGrey">#EDEDED</color>
-    <color name="colorDarkBackgroundGrey">#000000</color>
+    <color name="colorBlackBackground">#000000</color>
     <color name="colorDarkBackgroundGrey1">#212121</color>
     <color name="colorDarkBackgroundGrey2">#616161</color>
     <color name="colorDarkGreyTransparent">#80000000</color>

@@ -7,6 +7,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
@@ -57,6 +58,8 @@ public class SignUpActivity extends AppCompatActivity  implements ErrorDialog.Bu
         super.onCreate(savedInstanceState);
         ActivitySignUpBinding binding = ActivitySignUpBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+        getWindow().setStatusBarColor(ContextCompat.getColor(this, R.color.colorBlackBackground));
 
         mAuth = FirebaseAuth.getInstance();
         mDb = FirebaseFirestore.getInstance();
