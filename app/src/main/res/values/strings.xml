@@ -110,4 +110,8 @@
     <string name="err_fav_movie">Failed to Load Favourite Movies</string>
     <string name="released">Released: %1$s</string>
     <string name="rating">Rating: %1$s</string>
+
+    <string name="add_operation">added</string>
+    <string name="modify_operation">modified</string>
+    <string name="remove_operation">removed</string>
 </resources>
