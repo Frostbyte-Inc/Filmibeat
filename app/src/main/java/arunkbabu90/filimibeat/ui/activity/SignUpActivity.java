@@ -19,10 +19,10 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.HashMap;
 import java.util.Map;
 
+import arunkbabu90.filimibeat.Constants;
 import arunkbabu90.filimibeat.R;
 import arunkbabu90.filimibeat.Utils;
 import arunkbabu90.filimibeat.databinding.ActivitySignUpBinding;
-import arunkbabu90.filimibeat.ui.Constants;
 import arunkbabu90.filimibeat.ui.dialogs.ErrorDialog;
 import arunkbabu90.filimibeat.ui.dialogs.ProcessingDialog;
 import arunkbabu90.filimibeat.ui.fragment.SignUpFragment;

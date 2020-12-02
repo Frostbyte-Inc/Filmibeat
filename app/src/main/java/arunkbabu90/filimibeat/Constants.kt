@@ -1,4 +1,4 @@
-package arunkbabu90.filimibeat.ui
+package arunkbabu90.filimibeat
 
 class Constants {
     companion object {
