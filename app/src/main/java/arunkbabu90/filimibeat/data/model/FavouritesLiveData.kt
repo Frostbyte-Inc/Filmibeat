@@ -1,6 +1,7 @@
 package arunkbabu90.filimibeat.data.model
 
 import androidx.lifecycle.LiveData
+import arunkbabu90.filimibeat.R
 import arunkbabu90.filimibeat.data.api.PAGE_SIZE
 import com.google.firebase.firestore.*
 
@@ -21,6 +22,29 @@ class FavouritesLiveData(private var query: Query,
 
     override fun onEvent(value: QuerySnapshot?, error: FirebaseFirestoreException?) {
         if (error != null || value == null) return
+
+        for (dc in value.documentChanges) {
+            when(dc.type) {
+                DocumentChange.Type.ADDED -> {
+                    val movie: Favourite = dc.document.toObject(Favourite::class.java)
+                    movie.movieId = dc.document.id
+                    val addOperation = Operation(movie, R.string.add_operation)
+                    setValue(addOperation)
+                }
+                DocumentChange.Type.MODIFIED -> {
+                    val movie: Favourite = dc.document.toObject(Favourite::class.java)
+                    movie.movieId = dc.document.id
+                    val modifyOperation = Operation(movie, R.string.modify_operation)
+                    setValue(modifyOperation)
+                }
+                DocumentChange.Type.REMOVED -> {
+                    val movie: Favourite = dc.document.toObject(Favourite::class.java)
+                    movie.movieId = dc.document.id
+                    val removeOperation = Operation(movie, R.string.remove_operation)
+                    setValue(removeOperation)
+                }
+            }
+        }
 
         val querySnapshotSize = value.size()
         if (querySnapshotSize < PAGE_SIZE) {
