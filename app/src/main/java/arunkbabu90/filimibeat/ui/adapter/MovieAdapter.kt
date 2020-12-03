@@ -31,7 +31,6 @@ class MovieAdapter(private val itemClickListener: (Movie?) -> Unit)
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-
         if (getItemViewType(position) == VIEW_TYPE_MOVIE) {
             val movie = getItem(position)
             (holder as MovieViewHolder).bind(movie, itemClickListener)
