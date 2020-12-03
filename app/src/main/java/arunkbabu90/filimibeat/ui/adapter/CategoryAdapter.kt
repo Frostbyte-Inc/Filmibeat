@@ -4,7 +4,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Lifecycle
 import androidx.viewpager2.adapter.FragmentStateAdapter
-import arunkbabu90.filimibeat.ui.Constants
+import arunkbabu90.filimibeat.Constants
 import arunkbabu90.filimibeat.ui.fragment.*
 import org.jetbrains.annotations.NotNull
 

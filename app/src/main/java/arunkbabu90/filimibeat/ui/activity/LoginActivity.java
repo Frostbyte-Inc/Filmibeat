@@ -30,10 +30,10 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.Objects;
 
+import arunkbabu90.filimibeat.Constants;
 import arunkbabu90.filimibeat.R;
 import arunkbabu90.filimibeat.Utils;
 import arunkbabu90.filimibeat.databinding.ActivityLoginBinding;
-import arunkbabu90.filimibeat.ui.Constants;
 import arunkbabu90.filimibeat.ui.view.CustomInputTextField;
 
 public class LoginActivity extends AppCompatActivity implements View.OnFocusChangeListener, OnCompleteListener<DocumentSnapshot> {
