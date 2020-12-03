@@ -1,34 +1,25 @@
 package arunkbabu90.filimibeat.data.model
 
-import androidx.room.ColumnInfo
-import androidx.room.Entity
-import androidx.room.Ignore
-import androidx.room.PrimaryKey
-import arunkbabu90.filimibeat.data.network.Company
-import arunkbabu90.filimibeat.data.network.Genre
 import com.google.gson.annotations.SerializedName
 
-@Entity
-data class MovieDetails(@PrimaryKey @ColumnInfo(name = "movieId") var movieId: Long?,
-                        @ColumnInfo(name = "title") var title: String?,
-                        @ColumnInfo(name = "overview") var overview: String?,
-                        @ColumnInfo(name = "popularity") var popularity: Double?,
-                        @ColumnInfo(name = "budget") var budget: Long?,
-                        @ColumnInfo(name = "revenue") var revenue: Long?,
-                        @ColumnInfo(name = "runtime") var runtime: Int?,
-                        @ColumnInfo(name = "status") var status: String?,
-                        @ColumnInfo(name = "video") var video: Boolean?,
-                        @SerializedName("poster_path") @ColumnInfo(name = "posterPath") var posterPath: String?,
-                        @SerializedName("backdrop_path") @ColumnInfo(name = "backdropPath") var backdropPath: String?,
-                        @SerializedName("release_date") @ColumnInfo(name = "releaseDate") var releaseDate: String?,
-                        @SerializedName("vote_average") @ColumnInfo(name = "rating") var rating: String?,
-                        @SerializedName("original_language") @ColumnInfo(name = "language") var language: String?,
+data class MovieDetails(var movieId: Long?,
+                        var title: String?,
+                        var overview: String?,
+                        var popularity: Double?,
+                        var budget: Long?,
+                        var revenue: Long?,
+                        var runtime: Int?,
+                        var status: String?,
+                        var video: Boolean?,
+                        @SerializedName("poster_path") var posterPath: String?,
+                        @SerializedName("backdrop_path") var backdropPath: String?,
+                        @SerializedName("release_date") var releaseDate: String?,
+                        @SerializedName("vote_average") var rating: String?,
+                        @SerializedName("original_language")var language: String?,
 ) {
-    @Ignore
     var genres: List<Genre> = listOf()
 
     @SerializedName("production_companies")
-    @Ignore
     var productionCompanies: List<Company> = listOf()
 
     val releaseYear: String

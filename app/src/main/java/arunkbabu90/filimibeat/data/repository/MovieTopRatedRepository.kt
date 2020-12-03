@@ -5,11 +5,11 @@ import androidx.lifecycle.Transformations
 import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
 import arunkbabu90.filimibeat.data.api.PAGE_SIZE
-import arunkbabu90.filimibeat.data.api.TMDBEndpoints
+import arunkbabu90.filimibeat.data.api.TMDBEndPoint
 import arunkbabu90.filimibeat.data.model.Movie
 import io.reactivex.disposables.CompositeDisposable
 
-class MovieTopRatedRepository(private val apiService: TMDBEndpoints) {
+class MovieTopRatedRepository(private val apiService: TMDBEndPoint) {
     private lateinit var movieDataSourceFactory: TopRatedMovieDataSourceFactory
 
     fun fetchTopRatedMovies(disposable: CompositeDisposable): LiveData<PagedList<Movie>> {

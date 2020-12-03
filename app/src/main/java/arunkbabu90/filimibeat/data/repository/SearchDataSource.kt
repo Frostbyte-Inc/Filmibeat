@@ -5,11 +5,11 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.paging.PageKeyedDataSource
 import arunkbabu90.filimibeat.data.api.FIRST_PAGE
-import arunkbabu90.filimibeat.data.api.TMDBEndpoints
+import arunkbabu90.filimibeat.data.api.TMDBEndPoint
 import arunkbabu90.filimibeat.data.model.Movie
 import io.reactivex.disposables.CompositeDisposable
 
-class SearchDataSource(private val apiService: TMDBEndpoints,
+class SearchDataSource(private val apiService: TMDBEndPoint,
                        private val disposable: CompositeDisposable,
                        private val searchTerm: String)
     : PageKeyedDataSource<Int, Movie>() {

@@ -7,15 +7,20 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
 import arunkbabu90.filimibeat.Constants
 import arunkbabu90.filimibeat.R
 import arunkbabu90.filimibeat.data.api.IMG_SIZE_LARGE
 import arunkbabu90.filimibeat.data.api.IMG_SIZE_MID
 import arunkbabu90.filimibeat.data.api.TMDBClient
-import arunkbabu90.filimibeat.data.api.TMDBEndpoints
+import arunkbabu90.filimibeat.data.api.TMDBEndPoint
 import arunkbabu90.filimibeat.data.model.MovieDetails
+import arunkbabu90.filimibeat.data.model.Person
+import arunkbabu90.filimibeat.data.repository.CastCrewRepository
 import arunkbabu90.filimibeat.data.repository.MovieDetailsRepository
 import arunkbabu90.filimibeat.getImageUrl
+import arunkbabu90.filimibeat.ui.adapter.CastCrewAdapter
+import arunkbabu90.filimibeat.ui.viewmodel.CastCrewViewModel
 import arunkbabu90.filimibeat.ui.viewmodel.MovieDetailsViewModel
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.CustomTarget
@@ -29,13 +34,18 @@ import com.google.firebase.firestore.SetOptions
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.activity_movie_details.*
+import kotlinx.android.synthetic.main.layout_cast_crew.*
 
 class MovieDetailsActivity : AppCompatActivity(), View.OnClickListener {
-    private lateinit var repository: MovieDetailsRepository
+    private lateinit var movieDetailsRepository: MovieDetailsRepository
+    private lateinit var castCrewRepository: CastCrewRepository
     private lateinit var posterTarget: CustomTarget<Drawable>
     private lateinit var coverTarget: CustomTarget<Drawable>
     private lateinit var db: FirebaseFirestore
     private lateinit var auth: FirebaseAuth
+
+    private var castList = arrayListOf<Person>()
+    private var crewList = arrayListOf<Person>()
 
     companion object {
         const val KEY_MOVIE_ID_EXTRA = "movieIdExtraKey"
@@ -107,10 +117,11 @@ class MovieDetailsActivity : AppCompatActivity(), View.OnClickListener {
                 }
         }
 
-        val apiService: TMDBEndpoints = TMDBClient.getClient()
-        repository = MovieDetailsRepository(apiService, this)
+        val apiService: TMDBEndPoint = TMDBClient.getClient()
+        movieDetailsRepository = MovieDetailsRepository(apiService, this)
+        castCrewRepository = CastCrewRepository(apiService)
 
-        val viewModel: MovieDetailsViewModel = getViewModel(movieId)
+        val viewModel: MovieDetailsViewModel = getMovieDetailsViewModel(movieId)
         viewModel.movieDetails.observe(this, { movieDetails ->
             populateToUI(movieDetails)
         })
@@ -135,6 +146,27 @@ class MovieDetailsActivity : AppCompatActivity(), View.OnClickListener {
             val scrollPos = appBar_details.totalScrollRange
             val isCollapsed: Boolean = verticalOffset + scrollPos == 0
             movie_detail_collapsing_toolbar.title = if (isCollapsed) movieDetails.title else ""
+        })
+
+        // Populate Cast and Crew
+        val castAdapter = CastCrewAdapter(true, castList)
+        val crewAdapter = CastCrewAdapter(false, crewList)
+
+        rv_crew?.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+        rv_crew?.setHasFixedSize(true)
+        rv_crew?.adapter = crewAdapter
+
+        rv_cast?.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+        rv_cast?.setHasFixedSize(true)
+        rv_cast?.adapter = castAdapter
+
+        val viewModel: CastCrewViewModel = getCastCrewViewModel(movieId)
+        viewModel.castCrewList.observe(this, { castCrewResponse ->
+            castList.addAll(castCrewResponse.castList)
+            crewList.addAll(castCrewResponse.crewList)
+
+            castAdapter.notifyDataSetChanged()
+            crewAdapter.notifyDataSetChanged()
         })
     }
 
@@ -170,13 +202,28 @@ class MovieDetailsActivity : AppCompatActivity(), View.OnClickListener {
         Glide.with(this).load(coverUrl).error(R.drawable.ic_img_err).into(coverTarget)
     }
 
-    private fun getViewModel(movieId: Int): MovieDetailsViewModel {
+    /**
+     * Returns the MovieDetailsViewModel
+     */
+    private fun getMovieDetailsViewModel(movieId: Int): MovieDetailsViewModel {
         return ViewModelProvider(this, object : ViewModelProvider.Factory {
             @Suppress("UNCHECKED_CAST")
             override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-                return MovieDetailsViewModel(repository, movieId) as T
+                return MovieDetailsViewModel(movieDetailsRepository, movieId) as T
             }
         })[MovieDetailsViewModel::class.java]
+    }
+
+    /**
+     * Returns the MovieDetailsViewModel
+     */
+    private fun getCastCrewViewModel(movieId: Int): CastCrewViewModel {
+        return ViewModelProvider(this, object: ViewModelProvider.Factory {
+            @Suppress("UNCHECKED_CAST")
+            override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+                return CastCrewViewModel(castCrewRepository, movieId) as T
+            }
+        })[CastCrewViewModel::class.java]
     }
 
     /**

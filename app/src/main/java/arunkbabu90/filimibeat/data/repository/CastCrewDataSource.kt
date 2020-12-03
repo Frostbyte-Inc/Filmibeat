@@ -4,33 +4,33 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import arunkbabu90.filimibeat.data.api.TMDBEndPoint
-import arunkbabu90.filimibeat.data.model.MovieDetails
+import arunkbabu90.filimibeat.data.model.CastCrewResponse
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 
-class MovieDetailsDataSource(private val apiService: TMDBEndPoint,
-                             private val disposable: CompositeDisposable) {
+class CastCrewDataSource(private val apiService: TMDBEndPoint,
+                         private val disposable: CompositeDisposable) {
 
-    private val TAG = MovieDetailsDataSource::class.java.simpleName
+    private val TAG = CastCrewDataSource::class.java.simpleName
 
     private val _networkState = MutableLiveData<NetworkState>()
     val networkState: LiveData<NetworkState>
         get() = _networkState
 
-    private val _fetchedMovieDetails = MutableLiveData<MovieDetails>()
-    val fetchedMovieDetails: LiveData<MovieDetails>
-        get() = _fetchedMovieDetails
+    private val _fetchedCastAndCrew = MutableLiveData<CastCrewResponse>()
+    val fetchedCastAndCrew: LiveData<CastCrewResponse>
+        get() = _fetchedCastAndCrew
 
-    fun fetchMovieDetails(movieId: Int) {
+    fun fetchCastAndCrew(movieId: Int) {
         _networkState.postValue(NetworkState.LOADING)
 
         disposable.add(
-            apiService.getMovieDetails(movieId)
+            apiService.getCastCrew(movieId)
                 .subscribeOn(Schedulers.io())
                 .subscribe(
-                    { movieDetails ->
-                        _fetchedMovieDetails.postValue(movieDetails)
+                    { crewCastResponse ->
                         _networkState.postValue(NetworkState.LOADED)
+                        _fetchedCastAndCrew.postValue(crewCastResponse)
                     },
                     { e ->
                         _networkState.postValue(NetworkState.ERROR)

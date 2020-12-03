@@ -5,9 +5,8 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import arunkbabu90.filimibeat.data.model.Movie
-import arunkbabu90.filimibeat.data.model.MovieDetails
 
-@Database(entities = [Movie::class, MovieDetails::class], version = 1, exportSchema = false)
+@Database(entities = [Movie::class], version = 1, exportSchema = false)
 abstract class MovieDatabase : RoomDatabase() {
     abstract fun movieDao(): MovieDao
 

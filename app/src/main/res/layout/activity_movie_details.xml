@@ -147,7 +147,7 @@
                 android:layout_marginTop="@dimen/synopsis_margin_top"
                 android:fontFamily="sans-serif"
                 android:text="@string/synopsis"
-                android:textColor="@android:color/white"
+                android:textColor="@color/colorTextLightGrey"
                 android:textSize="18sp"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="@id/description_card"
@@ -181,6 +181,14 @@
                     tools:text="A volcanic eruption threatens the remaining dinosaurs on the island of Isla Nublar, where the creatures have freely roamed for several years after the demise of an animal theme park known as Jurassic World. Claire Dearing, the former park manager, has now founded the Dinosaur Protection Group, an organization dedicated to protecting the dinosaurs. To help with her cause, Claire has recruited Owen Grady, a former dinosaur trainer who worked at the park, to prevent the extinction of the dinosaurs once again" />
             </com.google.android.material.card.MaterialCardView>
 
+            <include android:id="@+id/layout_cast"
+                layout="@layout/layout_cast_crew"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_marginTop="@dimen/default_margin"
+                app:layout_constraintStart_toStartOf="@id/description_card"
+                app:layout_constraintTop_toBottomOf="@id/description_card"/>
+
             <TextView
                 android:id="@+id/textView"
                 android:layout_width="wrap_content"
@@ -193,8 +201,8 @@
                 android:textColor="@android:color/white"
                 android:textSize="18sp"
                 android:textStyle="bold"
-                app:layout_constraintStart_toStartOf="@id/description_card"
-                app:layout_constraintTop_toBottomOf="@id/description_card" />
+                app:layout_constraintStart_toStartOf="@id/layout_cast"
+                app:layout_constraintTop_toBottomOf="@id/layout_cast" />
 
             <!-- Trailers Card -->
             <com.google.android.material.card.MaterialCardView

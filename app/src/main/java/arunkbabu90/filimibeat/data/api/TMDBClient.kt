@@ -18,7 +18,7 @@ const val FIRST_PAGE = 1
 const val PAGE_SIZE = 20
 
 object TMDBClient {
-    fun getClient(): TMDBEndpoints {
+    fun getClient(): TMDBEndPoint {
         val interceptor = Interceptor { chain ->
             val url = chain.request()
                 .url()
@@ -45,6 +45,6 @@ object TMDBClient {
             .addConverterFactory(GsonConverterFactory.create())
             .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
             .build()
-            .create(TMDBEndpoints::class.java)
+            .create(TMDBEndPoint::class.java)
     }
 }
