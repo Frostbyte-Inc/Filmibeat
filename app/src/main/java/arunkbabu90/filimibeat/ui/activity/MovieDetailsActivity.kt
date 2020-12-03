@@ -7,6 +7,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import arunkbabu90.filimibeat.Constants
 import arunkbabu90.filimibeat.R
 import arunkbabu90.filimibeat.data.api.IMG_SIZE_LARGE
 import arunkbabu90.filimibeat.data.api.IMG_SIZE_MID
@@ -15,7 +16,6 @@ import arunkbabu90.filimibeat.data.api.TMDBInterface
 import arunkbabu90.filimibeat.data.model.MovieDetails
 import arunkbabu90.filimibeat.data.repository.MovieDetailsRepository
 import arunkbabu90.filimibeat.getImageUrl
-import arunkbabu90.filimibeat.ui.Constants
 import arunkbabu90.filimibeat.ui.viewmodel.MovieDetailsViewModel
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.CustomTarget
@@ -212,6 +212,7 @@ class MovieDetailsActivity : AppCompatActivity(), View.OnClickListener {
                     Toast.makeText(applicationContext, getString(R.string.err_remove_fav), Toast.LENGTH_LONG).show()
                     fab_favourites.setImageResource(R.drawable.ic_favourite)
                 }
+                .addOnSuccessListener { isFavourite = false }
         } else {
             // Add Movie As Favourite
             fab_favourites.setImageResource(R.drawable.ic_favourite)
@@ -231,6 +232,7 @@ class MovieDetailsActivity : AppCompatActivity(), View.OnClickListener {
                     Toast.makeText(applicationContext, getString(R.string.err_add_fav, e), Toast.LENGTH_LONG).show()
                     fab_favourites.setImageResource(R.drawable.ic_favourite_outline)
                 }
+                .addOnSuccessListener { isFavourite = true }
         }
     }
 }

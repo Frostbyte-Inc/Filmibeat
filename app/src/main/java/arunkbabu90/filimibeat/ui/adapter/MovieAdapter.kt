@@ -17,7 +17,7 @@ import kotlinx.android.synthetic.main.item_network_state.view.*
 
 class MovieAdapter(private val itemClickListener: (Movie?) -> Unit)
     : PagedListAdapter<Movie, RecyclerView.ViewHolder>(MovieDiffCallback()) {
-        
+
     val VIEW_TYPE_MOVIE = 1
     val VIEW_TYPE_NETWORK = 2
 
@@ -31,9 +31,9 @@ class MovieAdapter(private val itemClickListener: (Movie?) -> Unit)
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        val movie = getItem(position) ?: return
 
         if (getItemViewType(position) == VIEW_TYPE_MOVIE) {
+            val movie = getItem(position)
             (holder as MovieViewHolder).bind(movie, itemClickListener)
         } else {
             (holder as NetworkStateViewHolder).bind(networkState)
@@ -67,11 +67,12 @@ class MovieAdapter(private val itemClickListener: (Movie?) -> Unit)
      * ViewHolder for the movies
      */
     class MovieViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        fun bind(movie: Movie, itemClickListener: (Movie?) -> Unit) {
-            val posterUrl = getImageUrl(movie.posterPath, IMG_SIZE_MID)
+        fun bind(movie: Movie?, itemClickListener: (Movie?) -> Unit) {
+
+            val posterUrl = getImageUrl(movie?.posterPath ?: "", IMG_SIZE_MID)
             Glide.with(itemView.context).load(posterUrl).error(R.drawable.ic_img_err).into(itemView.iv_main_poster)
 
-            itemView.tv_poster_title.text = movie.title
+            itemView.tv_poster_title.text = movie?.title
 
             itemView.setOnClickListener { itemClickListener(movie) }
         }

@@ -12,16 +12,13 @@ import arunkbabu90.filimibeat.data.model.Favourite
 import arunkbabu90.filimibeat.getImageUrl
 import arunkbabu90.filimibeat.inflate
 import com.bumptech.glide.Glide
-import com.firebase.ui.firestore.paging.FirestorePagingAdapter
-import com.firebase.ui.firestore.paging.FirestorePagingOptions
-import com.firebase.ui.firestore.paging.LoadingState
 import kotlinx.android.synthetic.main.item_favourites.view.*
 
-class FavouritesAdapter(options: FirestorePagingOptions<Favourite>,
+class FavouritesAdapter(private val favouriteMovies: List<Favourite>,
                         private val refreshLayout: SwipeRefreshLayout,
                         private val errView: TextView,
-                        private val itemClickListener: (Favourite) -> Unit)
-    : FirestorePagingAdapter<Favourite, FavouritesAdapter.FavouritesViewHolder>(options) {
+                        private val itemClickListener: (Favourite) -> Unit) :
+    RecyclerView.Adapter<FavouritesAdapter.FavouritesViewHolder>() {
 
     private var context: Context? = null
 
@@ -31,46 +28,12 @@ class FavouritesAdapter(options: FirestorePagingOptions<Favourite>,
         return FavouritesViewHolder(v, parent.context)
     }
 
-    override fun onBindViewHolder(holder: FavouritesViewHolder, position: Int, model: Favourite) {
-        holder.bind(model, itemClickListener)
+    override fun onBindViewHolder(holder: FavouritesViewHolder, position: Int) {
+        val movie = favouriteMovies[position]
+        holder.bind(movie, itemClickListener)
     }
 
-    override fun onError(e: Exception) {
-        super.onError(e)
-        errView.visibility = View.VISIBLE
-        errView.text = context?.getString(R.string.err_fav_movie)
-    }
-
-    override fun onLoadingStateChanged(state: LoadingState) {
-        when (state) {
-            LoadingState.LOADING_INITIAL -> {
-                errView.visibility = View.GONE
-                refreshLayout.isRefreshing = true
-            }
-
-            LoadingState.LOADING_MORE -> {
-                refreshLayout.isRefreshing = true
-            }
-
-            LoadingState.ERROR -> {
-                errView.visibility = View.VISIBLE
-                errView.text = context?.getString(R.string.err_fav_movie)
-                refreshLayout.isRefreshing = false
-            }
-
-            LoadingState.FINISHED -> {
-                refreshLayout.isRefreshing = false
-                if (itemCount <= 0) {
-                    errView.visibility = View.VISIBLE
-                    errView.text = context?.getString(R.string.no_favourites)
-                } else {
-                    errView.visibility = View.GONE
-                }
-            }
-
-            else -> super.onLoadingStateChanged(state)
-        }
-    }
+    override fun getItemCount(): Int = favouriteMovies.size
 
     class FavouritesViewHolder(itemView: View, private val context: Context) : RecyclerView.ViewHolder(itemView) {
         var movie: Favourite? = null

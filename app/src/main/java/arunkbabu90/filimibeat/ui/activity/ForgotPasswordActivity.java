@@ -13,8 +13,6 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.button.MaterialButton;
 import com.google.firebase.auth.FirebaseAuth;
 
@@ -24,7 +22,6 @@ import arunkbabu90.filimibeat.databinding.ActivityForgotPasswordBinding;
 import arunkbabu90.filimibeat.ui.view.CustomInputTextField;
 
 public class ForgotPasswordActivity extends AppCompatActivity {
-    private ActivityForgotPasswordBinding binding;
 
     private CustomInputTextField mEmailField;
     private TextView mErrorTextView;
@@ -36,12 +33,12 @@ public class ForgotPasswordActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding=ActivityForgotPasswordBinding.inflate(getLayoutInflater());
+        ActivityForgotPasswordBinding binding = ActivityForgotPasswordBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        mEmailField=binding.etForgotPasswordEmail;
-        mErrorTextView=binding.tvForgotPasswordErr;
-        mSentButton=binding.btnForgotPasswordSent;
+        mEmailField= binding.etForgotPasswordEmail;
+        mErrorTextView= binding.tvForgotPasswordErr;
+        mSentButton= binding.btnForgotPasswordSent;
 
         checkNetwork();
 
@@ -91,15 +88,12 @@ public class ForgotPasswordActivity extends AppCompatActivity {
                 public void onAvailable(@NonNull Network network) {
                     super.onAvailable(network);
                     // Internet is Available
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            // Update views on success
-                            mSentButton.setClickable(true);
-                            mErrorTextView.setVisibility(View.INVISIBLE);
-                            mErrorTextView.setText("");
+                    runOnUiThread(() -> {
+                        // Update views on success
+                        mSentButton.setClickable(true);
+                        mErrorTextView.setVisibility(View.INVISIBLE);
+                        mErrorTextView.setText("");
 
-                        }
                     });
                     isAvailable[0] = true;
                 }
@@ -110,14 +104,11 @@ public class ForgotPasswordActivity extends AppCompatActivity {
                     // Internet is Unavailable
                     isAvailable[0] = false;
 
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            // Update views on failure
-                            mSentButton.setClickable(false);
-                            mErrorTextView.setVisibility(View.VISIBLE);
-                            mErrorTextView.setText(R.string.err_no_internet);
-                        }
+                    runOnUiThread(() -> {
+                        // Update views on failure
+                        mSentButton.setClickable(false);
+                        mErrorTextView.setVisibility(View.VISIBLE);
+                        mErrorTextView.setText(R.string.err_no_internet);
                     });
                 }
             });
@@ -131,21 +122,18 @@ public class ForgotPasswordActivity extends AppCompatActivity {
 
         // If the user's email is valid try to send verification email
         if (checkEmail()) {
-            mAuth.sendPasswordResetEmail(mEmail).addOnCompleteListener(new OnCompleteListener<Void>() {
-                @Override
-                public void onComplete(@NonNull Task<Void> task) {
-                    if (task.isSuccessful()) {
-                        // Verification Email Sent
-                        Toast.makeText(ForgotPasswordActivity.this,
-                                getString(R.string.verification_email_sent, mEmail), Toast.LENGTH_LONG).show();
-                        mErrorTextView.setVisibility(View.INVISIBLE);
-                        mErrorTextView.setText("");
-                        finish();
-                    } else {
-                        // Failed to send Verification Email
-                        mErrorTextView.setVisibility(View.VISIBLE);
-                        mErrorTextView.setText(R.string.err_send_verification_failed);
-                    }
+            mAuth.sendPasswordResetEmail(mEmail).addOnCompleteListener(task -> {
+                if (task.isSuccessful()) {
+                    // Verification Email Sent
+                    Toast.makeText(ForgotPasswordActivity.this,
+                            getString(R.string.verification_email_sent, mEmail), Toast.LENGTH_LONG).show();
+                    mErrorTextView.setVisibility(View.INVISIBLE);
+                    mErrorTextView.setText("");
+                    finish();
+                } else {
+                    // Failed to send Verification Email
+                    mErrorTextView.setVisibility(View.VISIBLE);
+                    mErrorTextView.setText(R.string.err_send_verification_failed);
                 }
             });
         }

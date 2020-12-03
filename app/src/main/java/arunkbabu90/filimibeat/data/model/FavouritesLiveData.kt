@@ -23,20 +23,23 @@ class FavouritesLiveData(private var query: Query,
     override fun onEvent(value: QuerySnapshot?, error: FirebaseFirestoreException?) {
         if (error != null || value == null) return
 
-        for (docChange: DocumentChange in value.documentChanges) {
-            when(docChange.type) {
+        for (dc in value.documentChanges) {
+            when(dc.type) {
                 DocumentChange.Type.ADDED -> {
-                    val movie: Favourite = docChange.document.toObject(Favourite::class.java)
+                    val movie: Favourite = dc.document.toObject(Favourite::class.java)
+                    movie.movieId = dc.document.id
                     val addOperation = Operation(movie, R.string.add_operation)
                     setValue(addOperation)
                 }
                 DocumentChange.Type.MODIFIED -> {
-                    val movie: Favourite = docChange.document.toObject(Favourite::class.java)
+                    val movie: Favourite = dc.document.toObject(Favourite::class.java)
+                    movie.movieId = dc.document.id
                     val modifyOperation = Operation(movie, R.string.modify_operation)
                     setValue(modifyOperation)
                 }
                 DocumentChange.Type.REMOVED -> {
-                    val movie: Favourite = docChange.document.toObject(Favourite::class.java)
+                    val movie: Favourite = dc.document.toObject(Favourite::class.java)
+                    movie.movieId = dc.document.id
                     val removeOperation = Operation(movie, R.string.remove_operation)
                     setValue(removeOperation)
                 }

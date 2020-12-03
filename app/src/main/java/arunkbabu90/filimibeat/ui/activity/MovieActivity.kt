@@ -3,8 +3,8 @@ package arunkbabu90.filimibeat.ui.activity
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
+import arunkbabu90.filimibeat.Constants
 import arunkbabu90.filimibeat.R
-import arunkbabu90.filimibeat.ui.Constants
 import arunkbabu90.filimibeat.ui.adapter.CategoryAdapter
 import com.google.android.material.tabs.TabLayoutMediator
 import kotlinx.android.synthetic.main.activity_movie.*

@@ -8,9 +8,9 @@ import android.view.ViewGroup
 import androidx.core.app.ActivityOptionsCompat
 import androidx.core.view.ViewCompat
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.observe
 import androidx.recyclerview.widget.GridLayoutManager
 import arunkbabu90.filimibeat.R
 import arunkbabu90.filimibeat.calculateNoOfColumns
@@ -59,13 +59,13 @@ class NowPlayingFragment : Fragment() {
         tv_err?.visibility = View.VISIBLE
 
         val viewModel = getViewModel()
-        viewModel.nowPlayingMovies.observe(this) { moviePagedList ->
+        viewModel.nowPlayingMovies.observe(this, Observer { moviePagedList ->
             thread {
                 adapter.submitList(moviePagedList)
             }
-        }
+        })
 
-        viewModel.networkState.observe(this) { state ->
+        viewModel.networkState.observe(this, Observer { state ->
             item_network_state_progress_bar?.visibility = if (viewModel.isEmpty() && state == NetworkState.LOADING) View.VISIBLE else View.GONE
             item_network_state_err_text_view?.visibility = if (viewModel.isEmpty() && state == NetworkState.ERROR) View.VISIBLE else View.GONE
 
@@ -75,7 +75,7 @@ class NowPlayingFragment : Fragment() {
             if (!viewModel.isEmpty()) {
                 adapter.setNetworkState(state)
             }
-        }
+        })
     }
 
     /**

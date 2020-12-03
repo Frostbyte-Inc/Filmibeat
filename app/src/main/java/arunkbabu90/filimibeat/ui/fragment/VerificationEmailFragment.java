@@ -20,10 +20,10 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import org.jetbrains.annotations.NotNull;
 
+import arunkbabu90.filimibeat.Constants;
 import arunkbabu90.filimibeat.R;
 import arunkbabu90.filimibeat.Utils;
 import arunkbabu90.filimibeat.databinding.FragmentVerificationEmailBinding;
-import arunkbabu90.filimibeat.ui.Constants;
 import arunkbabu90.filimibeat.ui.activity.AccountVerificationActivity;
 
 public class VerificationEmailFragment extends Fragment {
