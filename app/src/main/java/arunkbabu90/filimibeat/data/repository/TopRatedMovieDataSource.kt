@@ -5,12 +5,12 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.paging.PageKeyedDataSource
 import arunkbabu90.filimibeat.data.api.FIRST_PAGE
-import arunkbabu90.filimibeat.data.api.TMDBInterface
+import arunkbabu90.filimibeat.data.api.TMDBEndpoints
 import arunkbabu90.filimibeat.data.model.Movie
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 
-class TopRatedMovieDataSource(private val apiService: TMDBInterface,
+class TopRatedMovieDataSource(private val apiService: TMDBEndpoints,
                               private val disposable: CompositeDisposable)
     : PageKeyedDataSource<Int, Movie>() {
 

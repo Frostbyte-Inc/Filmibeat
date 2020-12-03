@@ -7,7 +7,7 @@ import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
 
-interface TMDBInterface {
+interface TMDBEndpoints {
     @GET("movie/popular")
     fun getPopularMovies(@Query("page") page: Int): Single<MovieResponse>
 
@@ -21,5 +21,7 @@ interface TMDBInterface {
     fun getMovieDetails(@Path("movie_id") movieId: Int): Single<MovieDetails>
 
     @GET("search/movie")
-    fun searchForMovie(@Query("query") searchTerm: String, @Query("page") page: Int) : Single<MovieResponse>
+    fun searchForMovie(@Query("query") searchTerm: String,
+                       @Query("page") page: Int,
+                       @Query("include_adult") adult: Boolean) : Single<MovieResponse>
 }

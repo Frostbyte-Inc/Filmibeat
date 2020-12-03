@@ -12,7 +12,7 @@ import arunkbabu90.filimibeat.R
 import arunkbabu90.filimibeat.data.api.IMG_SIZE_LARGE
 import arunkbabu90.filimibeat.data.api.IMG_SIZE_MID
 import arunkbabu90.filimibeat.data.api.TMDBClient
-import arunkbabu90.filimibeat.data.api.TMDBInterface
+import arunkbabu90.filimibeat.data.api.TMDBEndpoints
 import arunkbabu90.filimibeat.data.model.MovieDetails
 import arunkbabu90.filimibeat.data.repository.MovieDetailsRepository
 import arunkbabu90.filimibeat.getImageUrl
@@ -107,7 +107,7 @@ class MovieDetailsActivity : AppCompatActivity(), View.OnClickListener {
                 }
         }
 
-        val apiService: TMDBInterface = TMDBClient.getClient()
+        val apiService: TMDBEndpoints = TMDBClient.getClient()
         repository = MovieDetailsRepository(apiService, this)
 
         val viewModel: MovieDetailsViewModel = getViewModel(movieId)

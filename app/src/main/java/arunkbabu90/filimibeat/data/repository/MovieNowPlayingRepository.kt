@@ -5,11 +5,11 @@ import androidx.lifecycle.Transformations
 import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
 import arunkbabu90.filimibeat.data.api.PAGE_SIZE
-import arunkbabu90.filimibeat.data.api.TMDBInterface
+import arunkbabu90.filimibeat.data.api.TMDBEndpoints
 import arunkbabu90.filimibeat.data.model.Movie
 import io.reactivex.disposables.CompositeDisposable
 
-class MovieNowPlayingRepository(private val apiService: TMDBInterface) {
+class MovieNowPlayingRepository(private val apiService: TMDBEndpoints) {
     private lateinit var movieDataSourceFactory: NowPlayingMovieDataSourceFactory
 
     fun fetchNowPlayingMovies(disposable: CompositeDisposable): LiveData<PagedList<Movie>> {

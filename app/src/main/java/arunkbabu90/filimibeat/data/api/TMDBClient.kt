@@ -18,33 +18,33 @@ const val FIRST_PAGE = 1
 const val PAGE_SIZE = 20
 
 object TMDBClient {
-    fun getClient(): TMDBInterface {
+    fun getClient(): TMDBEndpoints {
         val interceptor = Interceptor { chain ->
             val url = chain.request()
-                    .url()
-                    .newBuilder()
-                    .addQueryParameter("api_key", BuildConfig.API_KEY)
-                    .build()
+                .url()
+                .newBuilder()
+                .addQueryParameter("api_key", BuildConfig.API_KEY)
+                .build()
 
             val request = chain.request()
-                    .newBuilder()
-                    .url(url)
-                    .build()
+                .newBuilder()
+                .url(url)
+                .build()
 
             return@Interceptor chain.proceed(request)
         }
 
         val okHttpClient = OkHttpClient.Builder()
-                .addInterceptor(interceptor)
-                .connectTimeout(60, TimeUnit.SECONDS)
-                .build()
+            .addInterceptor(interceptor)
+            .connectTimeout(60, TimeUnit.SECONDS)
+            .build()
 
         return Retrofit.Builder()
-                .client(okHttpClient)
-                .baseUrl(BASE_URL)
-                .addConverterFactory(GsonConverterFactory.create())
-                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                .build()
-                .create(TMDBInterface::class.java)
+            .client(okHttpClient)
+            .baseUrl(BASE_URL)
+            .addConverterFactory(GsonConverterFactory.create())
+            .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+            .build()
+            .create(TMDBEndpoints::class.java)
     }
 }
