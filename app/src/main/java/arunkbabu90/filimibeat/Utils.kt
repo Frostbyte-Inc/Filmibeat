@@ -11,6 +11,7 @@ import android.view.inputmethod.InputMethodManager
 import androidx.fragment.app.FragmentActivity
 import arunkbabu90.filimibeat.data.api.POSTER_BASE_URL
 import arunkbabu90.filimibeat.data.api.YOUTUBE_THUMB_BASE_URL
+import arunkbabu90.filimibeat.data.api.YOUTUBE_VIDEO_BASE_URL
 
 /**
  * App lvl variable used to indicate that the User is currently in VerificationEmailFragment
@@ -99,7 +100,7 @@ fun getYouTubeThumbUrl(videoId: String, size: String): String = YOUTUBE_THUMB_BA
  * Returns the full YouTube Video URL from the video id
  * @param videoId The video's Id
  */
-fun getYouTubeVideoUrl(videoId: String): String = YOUTUBE_THUMB_BASE_URL + videoId
+fun getYouTubeVideoUrl(videoId: String): String = YOUTUBE_VIDEO_BASE_URL + videoId
 
 
 
