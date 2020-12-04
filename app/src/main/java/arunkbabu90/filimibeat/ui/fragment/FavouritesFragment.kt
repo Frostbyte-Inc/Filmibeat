@@ -48,35 +48,12 @@ class FavouritesFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-//        auth = Firebase.auth
-//        db = Firebase.firestore
-//
         val user: FirebaseUser = auth.currentUser ?: return
-//
-//        val config = PagedList.Config.Builder()
-//            .setEnablePlaceholders(false)
-//            .setPrefetchDistance(10)
-//            .setPageSize(PAGE_SIZE)
-//            .build()
-//
-//        val path = "${Constants.COLLECTION_USERS}/${user.uid}/${Constants.COLLECTION_FAVOURITES}"
-//        val query = db.collection(path).orderBy(Constants.FIELD_TIMESTAMP, Query.Direction.ASCENDING)
-//
-//        val options = FirestorePagingOptions.Builder<Favourite>()
-//            .setLifecycleOwner(this)
-//            .setQuery(query, config) { snapshot ->
-//                val fav: Favourite = snapshot.toObject(Favourite::class.java) ?: Favourite()
-//                fav.movieId = snapshot.id
-//                fav
-//            }
-//            .build()
-
-
         val path = "${Constants.COLLECTION_USERS}/${user.uid}/${Constants.COLLECTION_FAVOURITES}"
 
-        adapter = FavouritesAdapter(favouriteMovies,
-            swipeRefreshLayout_favourites,
-            tv_fav_err) { favouriteMovie -> onFavouriteClick(favouriteMovie) }
+        adapter = FavouritesAdapter(favouriteMovies) { favouriteMovie ->
+            if (favouriteMovie != null) onFavouriteClick(favouriteMovie)
+        }
 
         val lm = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         rv_favourites.setHasFixedSize(true)

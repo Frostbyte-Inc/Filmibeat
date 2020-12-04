@@ -9,6 +9,7 @@ import arunkbabu90.filimibeat.data.model.Person
 import arunkbabu90.filimibeat.getImageUrl
 import arunkbabu90.filimibeat.inflate
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import kotlinx.android.synthetic.main.item_person.view.*
 
 class CastCrewAdapter(private val isCast: Boolean = false,
@@ -30,7 +31,11 @@ class CastCrewAdapter(private val isCast: Boolean = false,
     inner class CastCrewViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         fun bind(person: Person?) {
             val dpUrl = getImageUrl(person?.dpPath ?: "", IMG_SIZE_MID)
-            Glide.with(itemView.context).load(dpUrl).error(R.drawable.default_dp).into(itemView.itemPerson_displayPicture)
+            Glide.with(itemView.context)
+                .load(dpUrl)
+                .transition(DrawableTransitionOptions.withCrossFade())
+                .placeholder(R.drawable.default_dp)
+                .into(itemView.itemPerson_displayPicture)
 
             if (isCast) {
                 // Cast

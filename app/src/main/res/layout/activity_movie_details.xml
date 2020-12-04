@@ -186,8 +186,16 @@
                 android:layout_height="wrap_content"
                 android:layout_width="match_parent"
                 android:layout_marginTop="@dimen/default_margin"
-                app:layout_constraintStart_toStartOf="@id/description_card"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/description_card"/>
+
+            <include android:id="@+id/layout_company"
+                layout="@layout/layout_production_companies"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_marginTop="@dimen/default_margin"
+                app:layout_constraintTop_toBottomOf="@id/layout_cast"
+                app:layout_constraintStart_toStartOf="parent"/>
 
             <TextView
                 android:id="@+id/textView"
@@ -201,8 +209,8 @@
                 android:textColor="@android:color/white"
                 android:textSize="18sp"
                 android:textStyle="bold"
-                app:layout_constraintStart_toStartOf="@id/layout_cast"
-                app:layout_constraintTop_toBottomOf="@id/layout_cast" />
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/layout_company" />
 
             <!-- Trailers Card -->
             <com.google.android.material.card.MaterialCardView

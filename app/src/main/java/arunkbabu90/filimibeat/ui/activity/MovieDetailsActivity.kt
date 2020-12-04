@@ -14,15 +14,17 @@ import arunkbabu90.filimibeat.data.api.IMG_SIZE_LARGE
 import arunkbabu90.filimibeat.data.api.IMG_SIZE_MID
 import arunkbabu90.filimibeat.data.api.TMDBClient
 import arunkbabu90.filimibeat.data.api.TMDBEndPoint
-import arunkbabu90.filimibeat.data.model.MovieDetails
+import arunkbabu90.filimibeat.data.model.Company
 import arunkbabu90.filimibeat.data.model.Person
 import arunkbabu90.filimibeat.data.repository.CastCrewRepository
 import arunkbabu90.filimibeat.data.repository.MovieDetailsRepository
 import arunkbabu90.filimibeat.getImageUrl
 import arunkbabu90.filimibeat.ui.adapter.CastCrewAdapter
+import arunkbabu90.filimibeat.ui.adapter.CompaniesAdapter
 import arunkbabu90.filimibeat.ui.viewmodel.CastCrewViewModel
 import arunkbabu90.filimibeat.ui.viewmodel.MovieDetailsViewModel
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
 import com.google.android.material.appbar.AppBarLayout
@@ -35,6 +37,7 @@ import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.activity_movie_details.*
 import kotlinx.android.synthetic.main.layout_cast_crew.*
+import kotlinx.android.synthetic.main.layout_production_companies.*
 
 class MovieDetailsActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var movieDetailsRepository: MovieDetailsRepository
@@ -124,9 +127,13 @@ class MovieDetailsActivity : AppCompatActivity(), View.OnClickListener {
         movieDetailsRepository = MovieDetailsRepository(apiService, this)
         castCrewRepository = CastCrewRepository(apiService)
 
+        // Movie Details
         val viewModel: MovieDetailsViewModel = getMovieDetailsViewModel(movieId)
         viewModel.movieDetails.observe(this, { movieDetails ->
-            populateToUI(movieDetails)
+            // Populate the UI
+            setCollapsingToolbarBehaviour(movieDetails.title)
+            populateCastAndCrew()
+            populateProductionCompanies(movieDetails.companies)
         })
 
         setFeaturesBasedOnUser()
@@ -141,49 +148,14 @@ class MovieDetailsActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     /**
-     * Populates the Movie Details to the User Interface
-     * @param movieDetails The data object that contains the Movies Details
+     * Sets the collapsing Toolbar behaviour to show movie title when collapsed and hide title when expanded
+     * @param title String The title to show
      */
-    private fun populateToUI(movieDetails: MovieDetails) {
+    private fun setCollapsingToolbarBehaviour(title: String) {
         appBar_details.addOnOffsetChangedListener(AppBarLayout.OnOffsetChangedListener { _, verticalOffset ->
             val scrollPos = appBar_details.totalScrollRange
             val isCollapsed: Boolean = verticalOffset + scrollPos == 0
-            movie_detail_collapsing_toolbar.title = if (isCollapsed) movieDetails.title else ""
-        })
-
-        // Populate Cast and Crew
-        val castAdapter = CastCrewAdapter(true, castList)
-        val crewAdapter = CastCrewAdapter(false, crewList)
-
-        rv_crew?.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
-        rv_crew?.setHasFixedSize(true)
-        rv_crew?.adapter = crewAdapter
-
-        rv_cast?.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
-        rv_cast?.setHasFixedSize(true)
-        rv_cast?.adapter = castAdapter
-
-        // Cast & Crew Details
-        val viewModel: CastCrewViewModel = getCastCrewViewModel(movieId)
-        viewModel.castCrewList.observe(this, { castCrewResponse ->
-            val filteredCast = castCrewResponse.castList.filter { cast ->
-                val predicate = (cast.name != prevCast.name) && (cast.characterName != prevCast.characterName)
-                prevCast = cast
-                return@filter predicate
-            }
-
-            val filteredCrew = castCrewResponse.crewList.filter { crew ->
-                val predicate = (crew.name != prevCrew.name) && (crew.department != prevCrew.department)
-                prevCrew = crew
-                return@filter predicate
-            }
-
-
-            castList.addAll(filteredCast)
-            crewList.addAll(filteredCrew)
-
-            castAdapter.notifyDataSetChanged()
-            crewAdapter.notifyDataSetChanged()
+            movie_detail_collapsing_toolbar.title = if (isCollapsed) title else ""
         })
     }
 
@@ -215,8 +187,75 @@ class MovieDetailsActivity : AppCompatActivity(), View.OnClickListener {
             }
         }
 
-        Glide.with(this).load(posterUrl).error(R.drawable.ic_img_err).into(posterTarget)
-        Glide.with(this).load(coverUrl).error(R.drawable.ic_img_err).into(coverTarget)
+        Glide.with(this)
+            .load(posterUrl)
+            .transition(DrawableTransitionOptions.withCrossFade())
+            .error(R.drawable.ic_img_err)
+            .into(posterTarget)
+
+        Glide.with(this)
+            .load(coverUrl)
+            .transition(DrawableTransitionOptions.withCrossFade())
+            .error(R.drawable.ic_img_err)
+            .into(coverTarget)
+    }
+
+    private fun populateCastAndCrew() {
+        // Populate Cast and Crew
+        val castAdapter = CastCrewAdapter(true, castList)
+        val crewAdapter = CastCrewAdapter(false, crewList)
+
+        rv_crew?.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+        rv_crew?.setHasFixedSize(true)
+        rv_crew?.adapter = crewAdapter
+
+        rv_cast?.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+        rv_cast?.setHasFixedSize(true)
+        rv_cast?.adapter = castAdapter
+
+        // Cast & Crew Details
+        val viewModel: CastCrewViewModel = getCastCrewViewModel(movieId)
+        viewModel.castCrewList.observe(this, { castCrewResponse ->
+
+            val casts = castCrewResponse.castList
+
+            // Filter crew to avoid redundant persons
+            val filteredCrew = castCrewResponse.crewList.filter { crew ->
+                val predicate = (crew.name != prevCrew.name) && (crew.department != prevCrew.department)
+                prevCrew = crew
+                return@filter predicate
+            }
+
+            // Cast
+            if (casts.isNullOrEmpty()) {
+                // Cast list empty so hide the related layout elements
+                rv_cast.visibility = View.GONE
+                cast_title.visibility = View.GONE
+            } else {
+                castList.addAll(casts)
+                castAdapter.notifyDataSetChanged()
+            }
+
+            // Crew
+            if (filteredCrew.isNullOrEmpty()) {
+                rv_crew.visibility = View.GONE
+                crew_title.visibility = View.GONE
+            } else {
+                crewList.addAll(filteredCrew)
+                crewAdapter.notifyDataSetChanged()
+            }
+        })
+    }
+
+    private fun populateProductionCompanies(companyList: List<Company>) {
+        // Populate Production Companies
+        if (companyList.isNullOrEmpty()) {
+            // No companies to show so hide the layout
+            layout_company.visibility = View.GONE
+        }
+        rv_production_company?.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+        rv_production_company?.adapter = CompaniesAdapter(companyList)
+        rv_production_company?.setHasFixedSize(true)
     }
 
     /**

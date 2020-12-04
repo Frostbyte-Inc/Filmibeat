@@ -116,4 +116,6 @@
     <string name="remove_operation">removed</string>
     <string name="cast">Cast</string>
     <string name="crew">Crew</string>
+    <string name="company_logo">Company Logo</string>
+    <string name="companies">Production Companies</string>
 </resources>
