@@ -308,7 +308,11 @@ class MovieDetailsActivity : AppCompatActivity(), View.OnClickListener {
         val viewModel = getVideoViewModel(movieId)
         viewModel.videoList.observe(this, { videoResponse ->
             // Populate the videos to the adapter
-            videoList.addAll(videoResponse.videos)
+            val videos = videoResponse.videos
+            if (videos.isNullOrEmpty())
+                layout_videos.visibility = View.GONE
+
+            videoList.addAll(videos)
             videoAdapter.notifyDataSetChanged()
         })
 
