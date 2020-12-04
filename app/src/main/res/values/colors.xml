@@ -19,6 +19,7 @@
     <color name="colorTextGrey">#B3B3B3</color>
     <color name="semiTransparentTextColor">#60ffffff</color>
     <color name="colorTransparentBlack">#90000000</color>
+    <color name="colorTransparentBlack70">#70000000</color>
     <color name="colorTransparentWhite">#90ffffff</color>
 
     <color name="colorViolet">#8151A4</color>

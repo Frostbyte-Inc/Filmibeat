@@ -22,8 +22,7 @@ class CastCrewAdapter(private val isCast: Boolean = false,
     }
 
     override fun onBindViewHolder(holder: CastCrewViewHolder, position: Int) {
-        val person = personList[position]
-        holder.bind(person)
+        holder.bind(personList[position])
     }
 
     override fun getItemCount() = personList.size

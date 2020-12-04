@@ -3,6 +3,7 @@ package arunkbabu90.filimibeat.data.api
 import arunkbabu90.filimibeat.data.model.CastCrewResponse
 import arunkbabu90.filimibeat.data.model.MovieDetails
 import arunkbabu90.filimibeat.data.model.MovieResponse
+import arunkbabu90.filimibeat.data.model.VideoResponse
 import io.reactivex.Single
 import retrofit2.http.GET
 import retrofit2.http.Path
@@ -28,4 +29,7 @@ interface TMDBEndPoint {
 
     @GET("movie/{movie_id}/credits")
     fun getCastCrew(@Path("movie_id") movieId: Int): Single<CastCrewResponse>
+
+    @GET("movie/{movie_id}/videos")
+    fun getVideos(@Path("movie_id") movieId: Int): Single<VideoResponse>
 }

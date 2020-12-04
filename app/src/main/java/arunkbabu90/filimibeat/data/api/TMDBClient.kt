@@ -10,9 +10,15 @@ import java.util.concurrent.TimeUnit
 
 const val BASE_URL = "https://api.themoviedb.org/3/"
 const val POSTER_BASE_URL = "https://image.tmdb.org/t/p"
+const val YOUTUBE_THUMB_BASE_URL = "https://img.youtube.com/vi/"
+const val YOUTUBE_VIDEO_BASE_URL = "https://www.youtube.com/watch?v="
 const val IMG_SIZE_MID = "/w342"
 const val IMG_SIZE_LARGE = "/w780"
 const val IMG_SIZE_ORIGINAL = "/original"
+const val YT_IMG_SIZE_SMALL = "/3.jpg"
+const val YT_IMG_SIZE_MID = "/2.jpg"
+const val YT_IMG_SIZE_LARGE = "/1.jpg"
+const val YT_IMG_SIZE_ORIGINAL = "/0.jpg"
 
 const val FIRST_PAGE = 1
 const val PAGE_SIZE = 20
