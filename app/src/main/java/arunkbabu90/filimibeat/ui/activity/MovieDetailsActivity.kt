@@ -47,6 +47,9 @@ class MovieDetailsActivity : AppCompatActivity(), View.OnClickListener {
     private var castList = arrayListOf<Person>()
     private var crewList = arrayListOf<Person>()
 
+    private var prevCast: Person = Person("", "", "", "")
+    private var prevCrew: Person = Person("", "", "", "")
+
     companion object {
         const val KEY_MOVIE_ID_EXTRA = "movieIdExtraKey"
         const val KEY_POSTER_PATH_EXTRA = "posterPathExtraKey"
@@ -160,10 +163,24 @@ class MovieDetailsActivity : AppCompatActivity(), View.OnClickListener {
         rv_cast?.setHasFixedSize(true)
         rv_cast?.adapter = castAdapter
 
+        // Cast & Crew Details
         val viewModel: CastCrewViewModel = getCastCrewViewModel(movieId)
         viewModel.castCrewList.observe(this, { castCrewResponse ->
-            castList.addAll(castCrewResponse.castList)
-            crewList.addAll(castCrewResponse.crewList)
+            val filteredCast = castCrewResponse.castList.filter { cast ->
+                val predicate = (cast.name != prevCast.name) && (cast.characterName != prevCast.characterName)
+                prevCast = cast
+                return@filter predicate
+            }
+
+            val filteredCrew = castCrewResponse.crewList.filter { crew ->
+                val predicate = (crew.name != prevCrew.name) && (crew.department != prevCrew.department)
+                prevCrew = crew
+                return@filter predicate
+            }
+
+
+            castList.addAll(filteredCast)
+            crewList.addAll(filteredCrew)
 
             castAdapter.notifyDataSetChanged()
             crewAdapter.notifyDataSetChanged()
