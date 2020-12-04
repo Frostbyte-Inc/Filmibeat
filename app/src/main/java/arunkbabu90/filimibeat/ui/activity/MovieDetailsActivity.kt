@@ -270,11 +270,11 @@ class MovieDetailsActivity : AppCompatActivity(), View.OnClickListener {
         // TODO: Implement Error Checking
         // Network State
         viewModel.networkState.observe(this, { state ->
-            if (state == NetworkState.ERROR) {}
+            if (state == NetworkState.ERROR) { }
 
-            if (state == NetworkState.LOADED) {}
+            if (state == NetworkState.LOADED) { }
 
-            if (state == NetworkState.LOADING) {}
+            if (state == NetworkState.LOADING) { }
         })
     }
 
