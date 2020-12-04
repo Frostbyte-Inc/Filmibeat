@@ -36,7 +36,6 @@ class VideoAdapter(private val videoList: List<Video>,
 
             Glide.with(itemView.context)
                 .load(thumbUrl)
-                .error(R.drawable.ic_img_err)
                 .placeholder(R.drawable.ic_film)
                 .transition(DrawableTransitionOptions.withCrossFade())
                 .into(itemView.itemVideo_thumbnail)

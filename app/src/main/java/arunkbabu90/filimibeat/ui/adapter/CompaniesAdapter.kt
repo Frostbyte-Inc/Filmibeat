@@ -33,7 +33,7 @@ class CompaniesAdapter(private val companyList: List<Company>)
             Glide.with(itemView.context)
                 .load(logoUrl)
                 .transition(DrawableTransitionOptions.withCrossFade())
-                .placeholder(R.drawable.ic_movie)
+                .error(R.drawable.ic_movie)
                 .into(itemView.itemCompany_displayPicture)
 
             itemView.itemCompany_name.text = company?.name
