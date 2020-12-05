@@ -54,6 +54,7 @@ class FavouritesFragment : Fragment() {
         adapter = FavouritesAdapter(favouriteMovies) { favouriteMovie ->
             if (favouriteMovie != null) onFavouriteClick(favouriteMovie)
         }
+        tv_fav_err.visibility = if (favouriteMovies.isNullOrEmpty()) View.VISIBLE else View.GONE
 
         val lm = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         rv_favourites.setHasFixedSize(true)
@@ -187,6 +188,7 @@ class FavouritesFragment : Fragment() {
                     }
                 }
             }
+            tv_fav_err.visibility = if (favouriteMovies.isNullOrEmpty()) View.VISIBLE else View.GONE
             adapter.notifyDataSetChanged()
         }
     }
