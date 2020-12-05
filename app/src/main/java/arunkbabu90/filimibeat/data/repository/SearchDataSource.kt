@@ -5,14 +5,16 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.paging.PageKeyedDataSource
 import arunkbabu90.filimibeat.data.api.FIRST_PAGE
-import arunkbabu90.filimibeat.data.api.TMDBInterface
+import arunkbabu90.filimibeat.data.api.TMDBEndPoint
 import arunkbabu90.filimibeat.data.model.Movie
 import io.reactivex.disposables.CompositeDisposable
 
-class SearchDataSource(private val apiService: TMDBInterface,
+class SearchDataSource(private val apiService: TMDBEndPoint,
                        private val disposable: CompositeDisposable,
                        private val searchTerm: String)
     : PageKeyedDataSource<Int, Movie>() {
+
+    private val adult = false
 
     private val _networkState: MutableLiveData<NetworkState> = MutableLiveData()
     val networkState: LiveData<NetworkState>
@@ -29,7 +31,7 @@ class SearchDataSource(private val apiService: TMDBInterface,
         _networkState.postValue(NetworkState.LOADING)
 
         disposable.add(
-            apiService.searchForMovie(searchTerm, FIRST_PAGE)
+            apiService.searchForMovie(searchTerm, FIRST_PAGE, adult)
                 .subscribe(
                     { movieResponse ->
                         callback.onResult(movieResponse.movies, null, FIRST_PAGE + 1)
@@ -54,7 +56,7 @@ class SearchDataSource(private val apiService: TMDBInterface,
         _networkState.postValue(NetworkState.LOADING)
 
         disposable.add(
-            apiService.searchForMovie(searchTerm, params.key)
+            apiService.searchForMovie(searchTerm, params.key, adult)
                 .subscribe(
                     { movieResponse ->
                         if (movieResponse.totalPages >= params.key + 1) {

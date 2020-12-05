@@ -63,7 +63,7 @@
     <string name="weight_desc">Weight in kilograms</string>
     <string name="mobile_number">Mobile Number</string>
     <string name="sign_up_information">Sign Up</string>
-    <string name="sign_up_desc">Create your Care account. It\'s free</string>
+    <string name="sign_up_desc">Create your Filmibeat account. It\'s free</string>
     <string name="confirm_password">Confirm Password</string>
     <string name="create">Create</string>
     <string name="date_of_birth">Date of Birth</string>
@@ -114,4 +114,8 @@
     <string name="add_operation">added</string>
     <string name="modify_operation">modified</string>
     <string name="remove_operation">removed</string>
+    <string name="cast">Cast</string>
+    <string name="crew">Crew</string>
+    <string name="company_logo">Company Logo</string>
+    <string name="companies">Production Companies</string>
 </resources>

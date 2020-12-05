@@ -15,7 +15,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import arunkbabu90.filimibeat.R
 import arunkbabu90.filimibeat.calculateNoOfColumns
 import arunkbabu90.filimibeat.data.api.TMDBClient
-import arunkbabu90.filimibeat.data.api.TMDBInterface
+import arunkbabu90.filimibeat.data.api.TMDBEndPoint
 import arunkbabu90.filimibeat.data.model.Movie
 import arunkbabu90.filimibeat.data.repository.MovieNowPlayingRepository
 import arunkbabu90.filimibeat.data.repository.NetworkState
@@ -38,7 +38,7 @@ class NowPlayingFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val apiService: TMDBInterface = TMDBClient.getClient()
+        val apiService: TMDBEndPoint = TMDBClient.getClient()
         repository = MovieNowPlayingRepository(apiService)
 
         val noOfCols: Int = calculateNoOfColumns(context)

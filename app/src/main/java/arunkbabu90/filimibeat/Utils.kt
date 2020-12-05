@@ -10,6 +10,8 @@ import android.view.View
 import android.view.inputmethod.InputMethodManager
 import androidx.fragment.app.FragmentActivity
 import arunkbabu90.filimibeat.data.api.POSTER_BASE_URL
+import arunkbabu90.filimibeat.data.api.YOUTUBE_THUMB_BASE_URL
+import arunkbabu90.filimibeat.data.api.YOUTUBE_VIDEO_BASE_URL
 
 /**
  * App lvl variable used to indicate that the User is currently in VerificationEmailFragment
@@ -81,9 +83,24 @@ fun verifyEmail(email: String): Boolean {
 /**
  * Returns the full image URL from the image path endpoint
  * @param path The image path endpoint
- * @param size The size of the image to be loaded
+ * @param size The size of the image
+ *        One of [IMG_SIZE_MID, IMG_SIZE_LARGE, IMG_SIZE_ORIGINAL]
  */
 fun getImageUrl(path: String, size: String): String = POSTER_BASE_URL + size + path
+
+/**
+ * Returns the full YouTube thumbnail URL from the video id
+ * @param videoId The video's Id
+ * @param size The size of the image
+ *        One of [YT_IMG_SIZE_SMALL, YT_IMG_SIZE_MID, YT_IMG_SIZE_LARGE, YT_IMG_SIZE_ORIGINAL]
+ */
+fun getYouTubeThumbUrl(videoId: String, size: String): String = YOUTUBE_THUMB_BASE_URL + videoId + size
+
+/**
+ * Returns the full YouTube Video URL from the video id
+ * @param videoId The video's Id
+ */
+fun getYouTubeVideoUrl(videoId: String): String = YOUTUBE_VIDEO_BASE_URL + videoId
 
 
 
