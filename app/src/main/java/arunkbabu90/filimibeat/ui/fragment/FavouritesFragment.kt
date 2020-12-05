@@ -92,20 +92,21 @@ class FavouritesFragment : Fragment() {
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                 // Delete the Favourite Movie from the list (database)
                 val holder = viewHolder as FavouritesAdapter.FavouritesViewHolder
-                val movie = holder.movie ?: return
+                val movie: Favourite = holder.movie ?: return
 
                 db.collection(path)
                     .document(movie.movieId)
                     .delete()
                     .addOnSuccessListener {
                         // Undo Action
-                        val snackbar = Snackbar.make(favourites_fragment_layout, "${movie.title} Deleted", Snackbar.LENGTH_LONG)
+                        val snackbar = Snackbar.make(favourites_fragment_layout, "${movie.title} Removed", Snackbar.LENGTH_LONG)
                             .setAction(getString(R.string.undo)) {
                                 val favMovie = hashMapOf(
                                     Constants.FIELD_TITLE to movie.title,
                                     Constants.FIELD_POSTER_PATH to movie.posterPath,
                                     Constants.FIELD_BACKDROP_PATH to movie.backdropPath,
-                                    Constants.FIELD_RELEASE_YEAR to movie.releaseYear,
+                                    Constants.FIELD_OVERVIEW to movie.overview,
+                                    Constants.FIELD_RELEASE_DATE to movie.releaseDate,
                                     Constants.FIELD_RATING to movie.rating,
                                     Constants.FIELD_TIMESTAMP to Timestamp.now())
 
@@ -139,7 +140,7 @@ class FavouritesFragment : Fragment() {
         intent.putExtra(MovieDetailsActivity.KEY_BACKDROP_PATH_EXTRA, favMovie.backdropPath)
         intent.putExtra(MovieDetailsActivity.KEY_RATING_EXTRA, favMovie.rating)
         intent.putExtra(MovieDetailsActivity.KEY_OVERVIEW_EXTRA, favMovie.overview)
-        intent.putExtra(MovieDetailsActivity.KEY_RELEASE_YEAR_EXTRA, favMovie.releaseYear)
+        intent.putExtra(MovieDetailsActivity.KEY_RELEASE_DATE_EXTRA, favMovie.releaseDate)
         intent.putExtra(MovieDetailsActivity.KEY_TITLE_EXTRA, favMovie.title)
 
         if (transitionOptions != null)
@@ -174,9 +175,16 @@ class FavouritesFragment : Fragment() {
                 R.string.remove_operation -> {
                     // Remove
                     val removedMovie = operation.favMovie
-                    for (currentMovie in favouriteMovies)
-                        if (currentMovie.movieId == removedMovie.movieId)
-                            favouriteMovies.remove(currentMovie)
+                    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+                        favouriteMovies.removeIf { it.movieId == removedMovie.movieId }
+                    } else {
+                        val iterator = favouriteMovies.iterator()
+                        while (iterator.hasNext()) {
+                            val currMovie = iterator.next()
+                            if (currMovie.movieId == removedMovie.movieId)
+                                iterator.remove()
+                        }
+                    }
                 }
             }
             adapter.notifyDataSetChanged()

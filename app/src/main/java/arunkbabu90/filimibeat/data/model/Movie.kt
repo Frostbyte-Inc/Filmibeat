@@ -15,10 +15,10 @@ data class Movie(@PrimaryKey(autoGenerate = true) @ColumnInfo(name = "id") var I
                  @SerializedName("overview") @ColumnInfo(name = "overview") var overview: String,
                  @SerializedName("release_date") @ColumnInfo(name = "releaseDate") var releaseDate: String
 ) {
-    val releaseYear: String
-        get() {
-            // Extract only the release Year from the Release Date. Like: 2018-02-01 To 2018
-            val yrIndex = releaseDate.indexOf("-")
-            return if (yrIndex == -1) releaseDate else releaseDate.substring(0, yrIndex)
-        }
+
+    /**
+     * Contains the release date separated as Year, Month, Day in List positions 0, 1, 2 respectively
+     */
+    val date: List<String>
+        get() = releaseDate.split("-")
 }

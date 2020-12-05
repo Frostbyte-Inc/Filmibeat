@@ -41,7 +41,7 @@ class FavouritesAdapter(private val favouriteMovies: List<Favourite>,
             Glide.with(context).load(posterUrl).into(itemView.iv_fav_poster)
 
             itemView.tv_fav_title.text = favourite?.title
-            itemView.tv_fav_year.text = context.getString(R.string.released, favourite?.releaseYear)
+            itemView.tv_fav_year.text = context.getString(R.string.released, favourite?.releaseDate)
             itemView.tv_fav_rating.text = context.getString(R.string.rating, favourite?.rating)
 
             itemView.setOnClickListener{ itemClickListener(favourite) }

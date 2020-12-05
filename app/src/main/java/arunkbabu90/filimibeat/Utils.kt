@@ -102,6 +102,27 @@ fun getYouTubeThumbUrl(videoId: String, size: String): String = YOUTUBE_THUMB_BA
  */
 fun getYouTubeVideoUrl(videoId: String): String = YOUTUBE_VIDEO_BASE_URL + videoId
 
+/**
+ * Returns the short date string from the given month number [Ex: Jan, Feb..]
+ * @param month Int The month number. (must be in 1 - 12 range)
+ */
+fun getShortDateString(month: Int) =
+    when (month) {
+        1 -> "Jan"
+        2 -> "Feb"
+        3 -> "Mar"
+        4 -> "Apr"
+        5 -> "May"
+        6 -> "Jun"
+        7 -> "Jul"
+        8 -> "Aug"
+        9 -> "Sept"
+        10 -> "Oct"
+        11 -> "Nov"
+        12 -> "Dec"
+        else -> ""
+    }
+
 
 
 
