@@ -16,10 +16,6 @@ class FavouritesLiveData(private var query: Query,
         listenerRegistration = query.addSnapshotListener(this)
     }
 
-    override fun onInactive() {
-        listenerRegistration.remove()
-    }
-
     override fun onEvent(value: QuerySnapshot?, error: FirebaseFirestoreException?) {
         if (error != null || value == null) return
 
@@ -53,6 +49,13 @@ class FavouritesLiveData(private var query: Query,
             val lastVisibleMovie = value.documents[querySnapshotSize - 1]
             onLastVisibleMovieCallback.setLastVisibleProduct(lastVisibleMovie)
         }
+    }
+
+    /**
+     * Remove the Real-Time Event Listener of Firestore
+     */
+    fun removeEventListener() {
+        listenerRegistration.remove()
     }
 
     interface OnLastVisibleMovieCallback {

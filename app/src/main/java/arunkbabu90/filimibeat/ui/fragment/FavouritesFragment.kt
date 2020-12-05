@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView
 import arunkbabu90.filimibeat.Constants
 import arunkbabu90.filimibeat.R
 import arunkbabu90.filimibeat.data.model.Favourite
+import arunkbabu90.filimibeat.data.model.FavouritesLiveData
 import arunkbabu90.filimibeat.ui.activity.MovieDetailsActivity
 import arunkbabu90.filimibeat.ui.adapter.FavouritesAdapter
 import arunkbabu90.filimibeat.ui.viewmodel.FavouritesViewModel
@@ -32,13 +33,13 @@ import kotlinx.android.synthetic.main.fragment_favourites.*
 import kotlinx.android.synthetic.main.item_favourites.*
 
 class FavouritesFragment : Fragment() {
-
     private lateinit var adapter: FavouritesAdapter
 
     private val db: FirebaseFirestore = Firebase.firestore
     private val auth = Firebase.auth
     private val favouriteMovies = arrayListOf<Favourite>()
     private var isScrolling = false
+    private var favouritesLiveData: FavouritesLiveData? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
@@ -123,6 +124,7 @@ class FavouritesFragment : Fragment() {
 
     /**
      * Called when a Favourite Movie is clicked
+     * @param favMovie Favourite  The favourite movie that is clicked
      */
     private fun onFavouriteClick(favMovie: Favourite) {
         val intent = Intent(activity, MovieDetailsActivity::class.java)
@@ -136,7 +138,7 @@ class FavouritesFragment : Fragment() {
                 )
             }
 
-        intent.putExtra(MovieDetailsActivity.KEY_MOVIE_ID_EXTRA, favMovie.movieId)
+        intent.putExtra(MovieDetailsActivity.KEY_MOVIE_ID_EXTRA, favMovie.movieId.toInt())
         intent.putExtra(MovieDetailsActivity.KEY_POSTER_PATH_EXTRA, favMovie.posterPath)
         intent.putExtra(MovieDetailsActivity.KEY_BACKDROP_PATH_EXTRA, favMovie.backdropPath)
         intent.putExtra(MovieDetailsActivity.KEY_RATING_EXTRA, favMovie.rating)
@@ -154,9 +156,9 @@ class FavouritesFragment : Fragment() {
 
     private fun getMovies() {
         val viewModel = getViewModel()
-        val favMovies = viewModel.getFavouritesLiveData() ?: return
+        favouritesLiveData = viewModel.getFavouritesLiveData() ?: return
 
-        favMovies.observe(this) { operation ->
+        favouritesLiveData?.observe(this) { operation ->
             when (operation.type) {
                 R.string.add_operation -> {
                     // Add
@@ -191,5 +193,10 @@ class FavouritesFragment : Fragment() {
             tv_fav_err.visibility = if (favouriteMovies.isNullOrEmpty()) View.VISIBLE else View.GONE
             adapter.notifyDataSetChanged()
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        favouritesLiveData?.removeEventListener()
     }
 }
