@@ -53,8 +53,4 @@ class MovieActivity : AppCompatActivity() {
             }
         }
     }
-
-    fun setLayout() {
-
-    }
 }
