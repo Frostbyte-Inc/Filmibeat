@@ -37,5 +37,20 @@ class MovieActivity : AppCompatActivity() {
         movie_view_pager.offscreenPageLimit = 4
 
         tabLayoutMediator?.attach()
+
+
+        // Set Toolbar
+        binding.toolbarMain.setOnMenuItemClickListener { menuItem ->
+            when (menuItem.itemId) {
+                R.id.mnu_favourites -> {
+                    true
+                }
+
+                R.id.mnu_profile_name -> {
+                    true
+                }
+                else -> false
+            }
+        }
     }
 }
