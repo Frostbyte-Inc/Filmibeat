@@ -64,13 +64,22 @@ class MovieActivity : AppCompatActivity(), FirebaseAuth.AuthStateListener {
 
                 R.id.mnu_profile_name -> {
                     // Profile
-                    val profIntent = Intent(this, ProfileActivity::class.java)
-                    startActivity(profIntent)
+                    if (Constants.userType == Constants.USER_TYPE_PERSON) {
+                        // Prevent opening Profile if the user is a Guest
+                        val profIntent = Intent(this, ProfileActivity::class.java)
+                        startActivity(profIntent)
+                    }
                     true
                 }
                 R.id.mnu_sign_out -> {
                     // Sign Out
-                    auth.signOut()
+                    if (Constants.userType == Constants.USER_TYPE_PERSON) {
+                        auth.signOut()
+                    } else {
+                        startActivity(Intent(this, LoginActivity::class.java))
+                        Toast.makeText(this, getString(R.string.signed_out), Toast.LENGTH_SHORT).show()
+                        finish()
+                    }
                     true
                 }
                 else -> false
@@ -82,8 +91,8 @@ class MovieActivity : AppCompatActivity(), FirebaseAuth.AuthStateListener {
 
     override fun onAuthStateChanged(p0: FirebaseAuth) {
         // User is either signed out or the login credentials no longer exists. So launch the login
-        // activity again for the user to sign-in
-        if (auth.currentUser == null) {
+        // activity again for the user to sign-in if the user is not a Guest User
+        if (auth.currentUser == null && Constants.userType != Constants.USER_TYPE_GUEST) {
             startActivity(Intent(this, LoginActivity::class.java))
             Toast.makeText(this, getString(R.string.signed_out), Toast.LENGTH_SHORT).show()
             finish()
