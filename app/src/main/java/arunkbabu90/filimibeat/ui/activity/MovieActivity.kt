@@ -23,7 +23,13 @@ class MovieActivity : AppCompatActivity() {
 
         // Set the title of the tabs
         tabLayoutMediator = TabLayoutMediator(movie_tab_layout, movie_view_pager) { tab, position ->
-
+            tab.text = when (position) {
+                0 -> getString(R.string.tab_title_now_playing)
+                1 -> getString(R.string.tab_title_popular)
+                2 -> getString(R.string.tab_title_top_rated)
+                3 -> getString(R.string.tab_title_search)
+                else -> ""
+            }
         }
 
         val categoryAdapter = CategoryAdapter(supportFragmentManager, lifecycle)
