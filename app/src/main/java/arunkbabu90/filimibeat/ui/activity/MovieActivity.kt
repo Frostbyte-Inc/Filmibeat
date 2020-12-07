@@ -50,6 +50,8 @@ class MovieActivity : AppCompatActivity() {
                 }
 
                 R.id.mnu_profile_name -> {
+                    val profIntent = Intent(this, ProfileActivity::class.java)
+                    startActivity(profIntent)
                     true
                 }
                 else -> false
