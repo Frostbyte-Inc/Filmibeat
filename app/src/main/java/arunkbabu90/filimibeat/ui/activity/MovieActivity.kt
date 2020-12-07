@@ -1,5 +1,6 @@
 package arunkbabu90.filimibeat.ui.activity
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
@@ -43,7 +44,8 @@ class MovieActivity : AppCompatActivity() {
         binding.toolbarMain.setOnMenuItemClickListener { menuItem ->
             when (menuItem.itemId) {
                 R.id.mnu_favourites -> {
-
+                    val favIntent = Intent(this, FavouritesActivity::class.java)
+                    startActivity(favIntent)
                     true
                 }
 
