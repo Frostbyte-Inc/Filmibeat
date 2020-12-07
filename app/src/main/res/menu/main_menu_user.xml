@@ -8,8 +8,7 @@
         app:showAsAction="always"
         android:title="@string/tab_title_favourites"
         tools:ignore="AlwaysShowAction"
-        android:contentDescription="@string/favourite_movies"
-        android:visible="false"/>
+        android:contentDescription="@string/favourite_movies"/>
 
     <item
         android:id="@+id/mnu_profile_name"
