@@ -2,7 +2,6 @@ package arunkbabu90.filimibeat.ui.activity
 
 import android.content.Intent
 import android.os.Bundle
-import android.view.Menu
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import arunkbabu90.filimibeat.Constants
@@ -63,14 +62,5 @@ class MovieActivity : AppCompatActivity() {
         }
         val menu = if (Constants.userType == Constants.USER_TYPE_PERSON) R.menu.main_menu_user else R.menu.main_menu_guest
         binding.toolbarMain.inflateMenu(menu)
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        if (false) {
-            menuInflater.inflate(R.menu.main_menu_user, menu)
-        } else {
-            menuInflater.inflate(R.menu.main_menu_guest, menu)
-        }
-        return true
     }
 }
