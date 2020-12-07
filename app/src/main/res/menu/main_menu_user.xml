@@ -19,5 +19,5 @@
         android:icon="@drawable/ic_sign_out"
         app:showAsAction="ifRoom"
         android:title="@string/sign_out"
-        android:contentDescription="@string/favourite_movies"/>
+        android:contentDescription="@string/sign_out"/>
 </menu>
