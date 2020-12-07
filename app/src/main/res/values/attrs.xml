@@ -3,4 +3,10 @@
     <declare-styleable name="CustomInputTextField">
         <attr name="android:textColor" format="color"/>
     </declare-styleable>
+    <declare-styleable name="ActionCard"></declare-styleable>
 </resources>
+
+<declare-styleable name="ActionCard">
+<attr name="icon" format="reference|color"/>
+<attr name="description" format="string"/>
+</declare-styleable>
