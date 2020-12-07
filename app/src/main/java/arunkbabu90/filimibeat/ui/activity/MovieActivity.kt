@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
+import arunkbabu90.filimibeat.Constants
 import arunkbabu90.filimibeat.R
 import arunkbabu90.filimibeat.databinding.ActivityMovieBinding
 import arunkbabu90.filimibeat.ui.adapter.CategoryAdapter
@@ -44,8 +45,11 @@ class MovieActivity : AppCompatActivity() {
         binding.toolbarMain.setOnMenuItemClickListener { menuItem ->
             when (menuItem.itemId) {
                 R.id.mnu_favourites -> {
-                    val favIntent = Intent(this, FavouritesActivity::class.java)
-                    startActivity(favIntent)
+                    if (Constants.userType == Constants.USER_TYPE_PERSON) {
+                        // Safety Check to prevent opening Favourites if the user is a Guest
+                        val favIntent = Intent(this, FavouritesActivity::class.java)
+                        startActivity(favIntent)
+                    }
                     true
                 }
 
