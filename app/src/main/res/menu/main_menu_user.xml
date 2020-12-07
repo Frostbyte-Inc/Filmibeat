@@ -10,7 +10,7 @@
         app:showAsAction="always"/>
 
     <item android:id="@+id/mnu_favourites"
-        android:icon="@drawable/ic_favourite_outline"
+        android:icon="@drawable/ic_heart"
         app:showAsAction="ifRoom"
         android:title="@string/tab_title_favourites"
         android:contentDescription="@string/favourite_movies"/>
