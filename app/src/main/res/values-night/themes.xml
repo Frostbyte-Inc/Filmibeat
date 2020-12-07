@@ -46,4 +46,8 @@
         <item name="android:textSize">20sp</item>
         <item name="cornerRadius">10dp</item>
     </style>
+
+    <style name="CircularImageView">
+        <item name="cornerSize">50%</item>
+    </style>
 </resources>
