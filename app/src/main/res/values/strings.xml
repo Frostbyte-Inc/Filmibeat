@@ -118,4 +118,7 @@
     <string name="crew">Crew</string>
     <string name="company_logo">Company Logo</string>
     <string name="companies">Production Companies</string>
+    <string name="guest">Guest</string>
+    <string name="profile">Profile</string>
+    <string name="favourite_movies">Favourite Movies</string>
 </resources>
