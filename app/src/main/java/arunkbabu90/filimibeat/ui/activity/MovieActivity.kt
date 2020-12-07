@@ -43,6 +43,7 @@ class MovieActivity : AppCompatActivity() {
         binding.toolbarMain.setOnMenuItemClickListener { menuItem ->
             when (menuItem.itemId) {
                 R.id.mnu_favourites -> {
+
                     true
                 }
 
