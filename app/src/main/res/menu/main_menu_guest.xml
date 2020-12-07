@@ -6,4 +6,10 @@
         android:title="@string/guest"
         android:contentDescription="@string/profile"
         app:showAsAction="always"/>
+
+    <item android:id="@+id/mnu_sign_out"
+        android:icon="@drawable/ic_sign_out"
+        app:showAsAction="ifRoom"
+        android:title="@string/sign_out"
+        android:contentDescription="@string/favourite_movies"/>
 </menu>

@@ -3,16 +3,23 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <item android:id="@+id/mnu_favourites"
-        android:icon="@drawable/ic_favourite"
-        app:showAsAction="always"
-        android:title="@string/tab_title_favourites"
-        tools:ignore="AlwaysShowAction"
-        android:contentDescription="@string/favourite_movies"/>
-
     <item
         android:id="@+id/mnu_profile_name"
         android:title="@string/guest"
         android:contentDescription="@string/profile"
         app:showAsAction="always"/>
+
+    <item android:id="@+id/mnu_favourites"
+        android:icon="@drawable/ic_favourite"
+        app:showAsAction="always"
+        android:title="@string/tab_title_favourites"
+        tools:ignore="AlwaysShowAction"
+        android:visible="false"
+        android:contentDescription="@string/favourite_movies"/>
+
+    <item android:id="@+id/mnu_sign_out"
+        android:icon="@drawable/ic_sign_out"
+        app:showAsAction="ifRoom"
+        android:title="@string/sign_out"
+        android:contentDescription="@string/favourite_movies"/>
 </menu>

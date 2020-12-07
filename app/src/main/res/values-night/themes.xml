@@ -4,11 +4,11 @@
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/colorDarkGrey</item>
         <item name="colorPrimaryVariant">@color/colorDarkerGrey</item>
-        <item name="colorOnPrimary">@color/black</item>
+        <item name="colorOnPrimary">@color/white</item>
         <!-- Secondary brand color. -->
         <item name="colorSecondary">@color/colorVioletLight</item>
         <item name="colorSecondaryVariant">@color/colorVioletLight</item>
-        <item name="colorOnSecondary">@color/black</item>
+        <item name="colorOnSecondary">@color/white</item>
 
         <!-- Customize your theme here. -->
         <item name="android:textColor">@android:color/white</item>

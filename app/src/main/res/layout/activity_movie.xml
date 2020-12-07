@@ -9,12 +9,17 @@
 
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:paddingStart="0dp"
+        android:paddingEnd="10dp"
+        android:paddingTop="8dp"
+        app:elevation="0dp"
+        android:background="@color/colorPurpleDark">
 
         <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/toolbar_main"
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
+            android:layout_height="30dp"
             android:background="@color/colorPurpleDark"
             style="@style/Widget.MaterialComponents.Toolbar.Primary" />
 
