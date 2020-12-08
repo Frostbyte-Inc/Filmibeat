@@ -15,3 +15,5 @@ import androidx.annotation.LayoutRes
 fun ViewGroup.inflate(@LayoutRes layoutRes: Int, attachToRoot: Boolean = false): View {
     return LayoutInflater.from(context).inflate(layoutRes, this, attachToRoot)
 }
+
+fun List<String>.getShortDate() = "${this[2]} ${getShortDateString(this[1].toInt())} ${this[0]}"

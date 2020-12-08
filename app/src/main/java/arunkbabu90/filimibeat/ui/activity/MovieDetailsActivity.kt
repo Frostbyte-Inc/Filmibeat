@@ -31,7 +31,6 @@ import arunkbabu90.filimibeat.ui.viewmodel.CastCrewViewModel
 import arunkbabu90.filimibeat.ui.viewmodel.MovieDetailsViewModel
 import arunkbabu90.filimibeat.ui.viewmodel.VideoViewModel
 import com.bumptech.glide.Glide
-import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
 import com.google.android.material.appbar.AppBarLayout
@@ -66,7 +65,7 @@ class MovieDetailsActivity : AppCompatActivity(), View.OnClickListener {
         const val KEY_MOVIE_ID_EXTRA = "movieIdExtraKey"
         const val KEY_POSTER_PATH_EXTRA = "posterPathExtraKey"
         const val KEY_BACKDROP_PATH_EXTRA = "backdropPathExtraKey"
-        const val KEY_RELEASE_YEAR_EXTRA = "releaseYearExtraKey"
+        const val KEY_RELEASE_DATE_EXTRA = "releaseDateExtraKey"
         const val KEY_RATING_EXTRA = "ratingExtraKey"
         const val KEY_OVERVIEW_EXTRA = "overviewExtraKey"
         const val KEY_TITLE_EXTRA = "titleExtraKey"
@@ -77,8 +76,8 @@ class MovieDetailsActivity : AppCompatActivity(), View.OnClickListener {
     private var coverPath = ""
     private var rating = ""
     private var overview = ""
-    private var year = ""
     private var title = ""
+    private var date = ""
 
     private var isFavourite = false
     private var isFavLoaded = false
@@ -95,7 +94,7 @@ class MovieDetailsActivity : AppCompatActivity(), View.OnClickListener {
         coverPath = intent.getStringExtra(KEY_BACKDROP_PATH_EXTRA) ?: ""
         rating = intent.getStringExtra(KEY_RATING_EXTRA) ?: ""
         overview = intent.getStringExtra(KEY_OVERVIEW_EXTRA) ?: ""
-        year = intent.getStringExtra(KEY_RELEASE_YEAR_EXTRA) ?: ""
+        date = intent.getStringExtra(KEY_RELEASE_DATE_EXTRA) ?: ""
         title = intent.getStringExtra(KEY_TITLE_EXTRA) ?: ""
 
         val posterUrl = getImageUrl(posterPath, IMG_SIZE_MID)
@@ -109,7 +108,7 @@ class MovieDetailsActivity : AppCompatActivity(), View.OnClickListener {
         tv_movie_title.text = title
         tv_movie_description.text = overview
         tv_movie_rating.text = rating
-        tv_movie_year.text = year
+        tv_movie_date.text = date
 
         // Load Favourite Movie Information
         val user = auth.currentUser
@@ -214,7 +213,6 @@ class MovieDetailsActivity : AppCompatActivity(), View.OnClickListener {
 
         Glide.with(this)
             .load(coverUrl)
-            .transition(DrawableTransitionOptions.withCrossFade())
             .error(R.drawable.ic_img_err)
             .into(coverTarget)
     }
@@ -431,7 +429,7 @@ class MovieDetailsActivity : AppCompatActivity(), View.OnClickListener {
                 Constants.FIELD_TITLE to title,
                 Constants.FIELD_POSTER_PATH to posterPath,
                 Constants.FIELD_BACKDROP_PATH to coverPath,
-                Constants.FIELD_RELEASE_YEAR to year,
+                Constants.FIELD_RELEASE_DATE to date,
                 Constants.FIELD_RATING to rating,
                 Constants.FIELD_OVERVIEW to overview,
                 Constants.FIELD_TIMESTAMP to Timestamp.now())

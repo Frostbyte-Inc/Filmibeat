@@ -8,7 +8,7 @@
         <!-- Secondary brand color. -->
         <item name="colorSecondary">@color/colorVioletLight</item>
         <item name="colorSecondaryVariant">@color/colorVioletLight</item>
-        <item name="colorOnSecondary">@color/black</item>
+        <item name="colorOnSecondary">@color/white</item>
 
         <!-- Customize your theme here. -->
         <item name="android:textColor">@android:color/white</item>
@@ -45,5 +45,9 @@
         <item name="android:textAllCaps">false</item>
         <item name="android:textSize">20sp</item>
         <item name="cornerRadius">10dp</item>
+    </style>
+
+    <style name="CircularImageView">
+        <item name="cornerSize">50%</item>
     </style>
 </resources>

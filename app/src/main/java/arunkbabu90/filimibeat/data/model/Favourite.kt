@@ -7,6 +7,6 @@ data class Favourite(var movieId: String = "",
                      val posterPath: String = "",
                      val backdropPath: String = "",
                      val overview: String = "",
-                     val releaseYear: String = "",
+                     val releaseDate: String = "",
                      val rating: String = "",
                      val timestamp: Timestamp = Timestamp(0,0))

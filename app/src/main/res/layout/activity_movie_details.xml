@@ -102,28 +102,31 @@
             </com.google.android.material.card.MaterialCardView>
 
             <TextView
-                android:id="@+id/tv_movie_year"
+                android:id="@+id/tv_movie_date"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/year_margin_start"
+                android:layout_marginStart="@dimen/default_margin"
                 android:layout_marginTop="@dimen/year_margin_top"
-                android:fontFamily="sans-serif"
-                android:textSize="20sp"
-                android:textStyle="bold"
+                android:textColor="@color/colorTextGrey"
+                android:fontFamily="sans-serif-black"
+                android:textSize="16sp"
+                app:layout_constraintHorizontal_bias="0.3"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/poster_card"
                 app:layout_constraintTop_toTopOf="@id/poster_card"
-                tools:text="2015" />
+                tools:text="20 Aug 2015" />
 
             <TextView
                 android:id="@+id/tv_movie_rating"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="sans-serif"
+                android:textColor="@color/colorTextGrey"
                 android:textSize="16sp"
                 android:layout_marginTop="@dimen/default_margin"
-                app:layout_constraintEnd_toEndOf="@id/tv_movie_year"
-                app:layout_constraintStart_toStartOf="@id/tv_movie_year"
-                app:layout_constraintTop_toBottomOf="@id/tv_movie_year"
+                app:layout_constraintEnd_toEndOf="@id/tv_movie_date"
+                app:layout_constraintStart_toStartOf="@id/tv_movie_date"
+                app:layout_constraintTop_toBottomOf="@id/tv_movie_date"
                 tools:text="7.8" />
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -134,8 +137,8 @@
                 android:contentDescription="@string/mark_favourite"
                 android:src="@drawable/ic_favourite_outline"
                 app:backgroundTint="@color/colorDarkGrey"
-                app:layout_constraintEnd_toEndOf="@+id/tv_movie_year"
-                app:layout_constraintStart_toStartOf="@+id/tv_movie_year"
+                app:layout_constraintEnd_toEndOf="@id/tv_movie_rating"
+                app:layout_constraintStart_toStartOf="@id/tv_movie_rating"
                 app:layout_constraintTop_toBottomOf="@id/tv_movie_rating"
                 app:tint="@color/colorFavIcon" />
 

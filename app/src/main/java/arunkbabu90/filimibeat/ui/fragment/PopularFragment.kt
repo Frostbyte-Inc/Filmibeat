@@ -18,6 +18,7 @@ import arunkbabu90.filimibeat.data.api.TMDBEndPoint
 import arunkbabu90.filimibeat.data.model.Movie
 import arunkbabu90.filimibeat.data.repository.MoviePopularRepository
 import arunkbabu90.filimibeat.data.repository.NetworkState
+import arunkbabu90.filimibeat.getShortDate
 import arunkbabu90.filimibeat.ui.activity.MovieDetailsActivity
 import arunkbabu90.filimibeat.ui.adapter.MovieAdapter
 import arunkbabu90.filimibeat.ui.viewmodel.PopularMovieViewModel
@@ -82,6 +83,8 @@ class PopularFragment : Fragment() {
      * @param movie The popular movie
      */
     private fun onMovieClick(movie: Movie) {
+        val formattedDate = "${movie.date[2]} ${movie.date[1]} ${movie.date[0]}"
+
         val intent = Intent(activity, MovieDetailsActivity::class.java)
         val posterView = iv_main_poster
         val transitionOptions: ActivityOptionsCompat? =
@@ -98,7 +101,7 @@ class PopularFragment : Fragment() {
         intent.putExtra(MovieDetailsActivity.KEY_BACKDROP_PATH_EXTRA, movie.backdropPath)
         intent.putExtra(MovieDetailsActivity.KEY_RATING_EXTRA, movie.rating)
         intent.putExtra(MovieDetailsActivity.KEY_OVERVIEW_EXTRA, movie.overview)
-        intent.putExtra(MovieDetailsActivity.KEY_RELEASE_YEAR_EXTRA, movie.releaseYear)
+        intent.putExtra(MovieDetailsActivity.KEY_RELEASE_DATE_EXTRA, movie.date.getShortDate())
         intent.putExtra(MovieDetailsActivity.KEY_TITLE_EXTRA, movie.title)
 
         if (transitionOptions != null) {

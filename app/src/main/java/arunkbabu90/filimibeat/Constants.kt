@@ -17,7 +17,7 @@ class Constants {
         const val FIELD_MOVIE_ID = "movieId"
         const val FIELD_TITLE = "title"
         const val FIELD_POSTER_PATH = "posterPath"
-        const val FIELD_RELEASE_YEAR = "releaseYear"
+        const val FIELD_RELEASE_DATE = "releaseDate"
         const val FIELD_RATING = "rating"
         const val FIELD_OVERVIEW = "overview"
         const val FIELD_BACKDROP_PATH = "backdropPath"
