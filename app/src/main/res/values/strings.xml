@@ -123,4 +123,6 @@
     <string name="favourite_movies">Favourite Movies</string>
     <string name="sign_out">Sign Out</string>
     <string name="signed_out">Signed Out</string>
+    <string name="err_load_failed_default">Failed to Load Data. Please check your internet connection and try again</string>
+    <string name="err_unable_to_fetch">Error! Unable to fetch profile details. Please check your internet connection and try again</string>
 </resources>
