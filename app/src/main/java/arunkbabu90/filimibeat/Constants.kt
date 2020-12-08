@@ -27,5 +27,9 @@ class Constants {
 
         const val USER_TYPE_GUEST = 0
         const val USER_TYPE_PERSON = 1
+
+        const val DIRECTORY_PROFILE_PICTURE = "/ProfilePictures/"
+        const val PROFILE_PICTURE_FILE_NAME = "IMG_USER_PROFILE_PICTURE"
+        const val IMG_FORMAT_JPG = ".jpg"
     }
 }

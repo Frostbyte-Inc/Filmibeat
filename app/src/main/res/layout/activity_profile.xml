@@ -19,6 +19,29 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"/>
 
+    <ProgressBar
+        android:id="@+id/pb_profile_dp_loading"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:layout_constraintTop_toTopOf="@id/iv_profile_dp"
+        app:layout_constraintStart_toStartOf="@id/iv_profile_dp"
+        app:layout_constraintBottom_toBottomOf="@id/iv_profile_dp"
+        app:layout_constraintEnd_toEndOf="@id/iv_profile_dp" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab_doc_profile_dp_edit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_edit"
+        app:fabSize="mini"
+        app:backgroundTint="@color/colorGreen"
+        app:layout_constraintHorizontal_bias="0.95"
+        app:layout_constraintBottom_toBottomOf="@id/iv_profile_dp"
+        app:layout_constraintEnd_toEndOf="@id/iv_profile_dp"
+        app:layout_constraintStart_toStartOf="@id/iv_profile_dp"
+        android:contentDescription="@string/edit_profile_picture" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_profile"
         android:layout_width="match_parent"

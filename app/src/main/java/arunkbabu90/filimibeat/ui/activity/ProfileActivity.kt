@@ -1,9 +1,8 @@
 package arunkbabu90.filimibeat.ui.activity
 
 import android.graphics.Bitmap
-import android.net.Uri
+import android.net.*
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -32,11 +31,12 @@ class ProfileActivity : AppCompatActivity() {
     private lateinit var db: FirebaseFirestore
     private lateinit var auth: FirebaseAuth
 
-    private var userId = ""
     private var dpPath = ""
     private var fullName = ""
     private var userName = ""
     private var email = ""
+    private var isInternetConnected = false
+    private var isDataLoaded = false
 
     companion object {
         var isUpdatesAvailable = false
@@ -52,7 +52,6 @@ class ProfileActivity : AppCompatActivity() {
         storage = Firebase.storage
         db = Firebase.firestore
 
-        userId = auth.currentUser?.uid ?: ""
         email = auth.currentUser?.email ?: ""
     }
 
@@ -62,7 +61,9 @@ class ProfileActivity : AppCompatActivity() {
     private fun fetchData() {
         binding.pbProfileLoading.visibility = View.VISIBLE
 
-        db.collection(Constants.COLLECTION_USERS).document(userId).get()
+        val user = auth.currentUser
+        if (user != null)
+        db.collection(Constants.COLLECTION_USERS).document(user.uid).get()
             .addOnCompleteListener { snapshot ->
                 if (snapshot.isSuccessful) {
                     val d = snapshot.result
@@ -91,47 +92,80 @@ class ProfileActivity : AppCompatActivity() {
      * @param bitmap The image to upload
      */
     fun uploadImageFile(bitmap: Bitmap) {
-        binding. .showProgressBar()
-        Toast.makeText(this, com.google.firebase.database.R.string.uploading_photo, Toast.LENGTH_SHORT).show()
+        binding.pbProfileDpLoading.visibility = View.VISIBLE
+        Toast.makeText(this, getString(R.string.uploading_dp), Toast.LENGTH_SHORT).show()
 
         // Convert the image bitmap to InputStream
         val bos = ByteArrayOutputStream()
-        bitmap.compress(Bitmap.CompressFormat.JPEG, Constants.JPG_QUALITY, bos)
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, bos)
         val bs = ByteArrayInputStream(bos.toByteArray())
 
         val user = auth.currentUser
         if (user != null) {
             // Upload the image file
             val uploadPath = "${user.uid}/${Constants.DIRECTORY_PROFILE_PICTURE}/${Constants.PROFILE_PICTURE_FILE_NAME}${Constants.IMG_FORMAT_JPG}"
-            val storageReference = cloudStore.getReference(uploadPath)
+            val storageReference = storage.getReference(uploadPath)
             storageReference.putStream(bs).continueWithTask { task: Task<UploadTask.TaskSnapshot> ->
                 if (!task.isSuccessful) {
                     // Upload failed
-                    Toast.makeText(this, getString(com.google.firebase.database.R.string.err_get_download_image_url), Toast.LENGTH_LONG).show()
+                    Toast.makeText(this, getString(R.string.err_upload_failed), Toast.LENGTH_LONG).show()
                     return@continueWithTask null
                 }
                 storageReference.downloadUrl
-            }
-                .addOnCompleteListener { task: Task<Uri?> ->
+            }.addOnCompleteListener { task: Task<Uri?> ->
                     if (task.isSuccessful && task.result != null) {
                         // Upload success; push the download URL to the database, also update the mDoctorDpPath
                         val imagePath = task.result.toString()
-                        doctorDpPath = imagePath
+                        dpPath = imagePath
                         db.collection(Constants.COLLECTION_USERS).document(user.uid)
-                            .update(Constants.FIELD_PROFILE_PICTURE, imagePath)
-                            .addOnSuccessListener { Toast.makeText(this, com.google.firebase.database.R.string.saved, Toast.LENGTH_SHORT).show() }
-                            .addOnFailureListener { Toast.makeText(this, com.google.firebase.database.R.string.err_upload_failed, Toast.LENGTH_SHORT).show() }
-
-                        db.collection(Constants.COLLECTION_DOCTORS_LIST).document(user.uid)
-                            .update(Constants.FIELD_PROFILE_PICTURE, imagePath)
-                            .addOnSuccessListener { Log.d(TAG, "Dp path push to Doctor List Success") }
-                            .addOnFailureListener { Log.d(TAG, "Dp path push to Doctor List Failure") }
+                            .update(Constants.FIELD_DP_PATH, imagePath)
+                            .addOnSuccessListener { Toast.makeText(this, getString(R.string.saved), Toast.LENGTH_SHORT).show() }
+                            .addOnFailureListener { Toast.makeText(this, R.string.err_upload_failed, Toast.LENGTH_SHORT).show() }
                     } else {
-                        Toast.makeText(this, getString(com.google.firebase.database.R.string.err_get_download_image_url), Toast.LENGTH_LONG).show()
+                        Toast.makeText(this, getString(R.string.err_upload_failed), Toast.LENGTH_LONG).show()
                     }
-                    iv_doc_profile_photo.hideProgressBar()
+                    binding.pbProfileDpLoading.visibility = View.GONE
                 }
         }
-        DoctorProfileFragment.mIsUpdatesAvailable = false
+        isUpdatesAvailable = true
+    }
+
+
+    /**
+     * Register a callback to be invoked when network connectivity changes
+     * @return True If internet is available; False otherwise
+     */
+    private fun registerNetworkChangeCallback(): Boolean {
+        val isAvailable = BooleanArray(1)
+        val request = NetworkRequest.Builder()
+            .addTransportType(NetworkCapabilities.TRANSPORT_CELLULAR)
+            .addTransportType(NetworkCapabilities.TRANSPORT_ETHERNET)
+            .addTransportType(NetworkCapabilities.TRANSPORT_VPN)
+            .addTransportType(NetworkCapabilities.TRANSPORT_WIFI)
+            .build()
+
+        val cm = getSystemService(CONNECTIVITY_SERVICE) as ConnectivityManager
+        cm.registerNetworkCallback(request, object : ConnectivityManager.NetworkCallback() {
+            override fun onAvailable(network: Network) {
+                super.onAvailable(network)
+                // Internet is Available
+                runOnUiThread {
+                    isInternetConnected = true
+                    isAvailable[0] = true
+                    if (!isDataLoaded)
+                        fetchData()
+                }
+            }
+
+            override fun onLost(network: Network) {
+                super.onLost(network)
+                // Internet is Unavailable
+                isAvailable[0] = false
+                runOnUiThread {
+                    isInternetConnected = false
+                }
+            }
+        })
+        return isAvailable[0]
     }
 }
