@@ -10,7 +10,6 @@ class Constants {
 
         const val FIELD_USER_TYPE = "userType"
         const val FIELD_FULL_NAME = "name"
-        const val FIELD_USER_NAME = "username"
         const val FIELD_ACCOUNT_VERIFIED = "activated"
         const val FIELD_DP_PATH = "dpPath"
         const val FIELD_LANGUAGE = "language"

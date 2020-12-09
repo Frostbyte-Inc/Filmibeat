@@ -129,4 +129,5 @@
     <string name="uploading_dp">Uploading Photo...</string>
     <string name="err_upload_failed">Error! Upload Failed</string>
     <string name="saved">Saved</string>
+    <string name="save">Save</string>
 </resources>

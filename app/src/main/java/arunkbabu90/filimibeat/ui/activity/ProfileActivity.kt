@@ -7,12 +7,15 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentTransaction
 import androidx.recyclerview.widget.LinearLayoutManager
 import arunkbabu90.filimibeat.Constants
 import arunkbabu90.filimibeat.R
 import arunkbabu90.filimibeat.databinding.ActivityProfileBinding
 import arunkbabu90.filimibeat.runStackedRevealAnimation
 import arunkbabu90.filimibeat.ui.adapter.ProfileAdapter
+import arunkbabu90.filimibeat.ui.dialogs.SimpleInputDialog
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
@@ -20,6 +23,7 @@ import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.SetOptions
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
@@ -39,11 +43,13 @@ class ProfileActivity : AppCompatActivity() {
 
     private var dpPath = ""
     private var fullName = ""
-    private var userName = ""
     private var email = ""
 
     private var isInternetConnected = false
     private var isDataLoaded = false
+
+    private val nameTitle = "Name"
+    private val emailTitle = "Email"
 
     companion object {
         var isUpdatesAvailable = false
@@ -79,11 +85,11 @@ class ProfileActivity : AppCompatActivity() {
                     if (d != null) {
                         fullName = d.getString(Constants.FIELD_FULL_NAME) ?: ""
                         dpPath = d.getString(Constants.FIELD_DP_PATH) ?: ""
-                        userName = d.getString(Constants.FIELD_USER_NAME) ?: ""
 
                         isDataLoaded = true
 
                         populateViews()
+                        loadImageToView()
                     } else {
                         Toast.makeText(this, R.string.err_unable_to_fetch, Toast.LENGTH_SHORT).show()
                         isDataLoaded = false
@@ -99,13 +105,10 @@ class ProfileActivity : AppCompatActivity() {
      * Populate the views with loaded data
      */
     private fun populateViews() {
-        if (userName.isBlank())
-            userName = "Not Set"
 
         val profileData = arrayListOf(
-            "Name" to fullName,
-            "Username" to userName,
-            "Email" to email
+            nameTitle to fullName,
+            emailTitle to email
         )
 
         val adapter = ProfileAdapter(profileData) { dataPair -> onProfileItemClick(dataPair) }
@@ -119,6 +122,54 @@ class ProfileActivity : AppCompatActivity() {
     private fun onProfileItemClick(data: Pair<String, String>) {
         val (title, subtitle) = data
 
+        val ft: FragmentTransaction = supportFragmentManager.beginTransaction()
+        val prevFrag: Fragment? = supportFragmentManager.findFragmentByTag("dialog")
+        if (prevFrag != null) {
+            ft.remove(prevFrag)
+        }
+        ft.addToBackStack(null)
+
+        val dialog = SimpleInputDialog(this, this, title, subtitle, getString(R.string.save))
+        dialog.setButtonClickListener(object: SimpleInputDialog.ButtonClickListener {
+            override fun onPositiveButtonClick(inputText: String?) {
+                // Only push if the input text has some text in it
+                if (!inputText.isNullOrBlank())
+                    pushToDatabase(title, inputText)
+            }
+
+            override fun onNegativeButtonClick() { }
+
+        })
+        dialog.show(ft, "dialog")
+    }
+
+    /**
+     * Pushes the updated profile data to database
+     * @param title The Current Title of the dialog
+     * @param inputText The text entered in the input field of the dialog
+     */
+    private fun pushToDatabase(title: String, inputText: String) {
+        val dataMap = hashMapOf<String, String>()
+
+        when (title) {
+            nameTitle -> {
+                dataMap[Constants.FIELD_FULL_NAME] = inputText
+            }
+            emailTitle -> { }
+        }
+
+        val user = auth.currentUser
+        if (user != null) {
+            db.collection(Constants.COLLECTION_USERS).document(user.uid)
+                .set(dataMap, SetOptions.merge())
+                .addOnSuccessListener {
+                    Toast.makeText(this, R.string.saved, Toast.LENGTH_SHORT).show()
+                }.addOnFailureListener {
+                    Toast.makeText(this, R.string.err_no_internet, Toast.LENGTH_SHORT).show()
+                }
+        } else {
+            Toast.makeText(this, R.string.err_default, Toast.LENGTH_SHORT).show()
+        }
     }
 
     private fun loadImageToView() {
@@ -143,7 +194,6 @@ class ProfileActivity : AppCompatActivity() {
                     binding.pbProfileDpLoading.visibility = View.GONE
                 }
             })
-
     }
 
     /**
