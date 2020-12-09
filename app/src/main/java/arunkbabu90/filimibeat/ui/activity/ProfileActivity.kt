@@ -73,6 +73,7 @@ class ProfileActivity : AppCompatActivity(), View.OnClickListener {
         registerNetworkChangeCallback()
 
         binding.ivProfileDp.setOnClickListener(this)
+        binding.fabDocProfileDpEdit.setOnClickListener(this)
     }
 
     override fun onClick(p0: View?) {
@@ -215,8 +216,6 @@ class ProfileActivity : AppCompatActivity(), View.OnClickListener {
 
                     if (isUpdatesAvailable) {
                         // Scale Down the bitmap & Upload
-//                        val rBitmap = resource.resize(height = Constants.DP_UPLOAD_SIZE, width = Constants.DP_UPLOAD_SIZE)
-//                        (activity as DoctorActivity).uploadImageFile(rBitmap)
                         val resizedBitmap = resource.resize(height = Constants.DP_UPLOAD_SIZE, width = Constants.DP_UPLOAD_SIZE)
                         uploadImageFile(resizedBitmap)
                     }

@@ -10,7 +10,6 @@ import androidx.core.view.GestureDetectorCompat
 import arunkbabu90.filimibeat.R
 import arunkbabu90.filimibeat.databinding.ActivityViewPictureBinding
 import com.bumptech.glide.Glide
-import kotlinx.android.synthetic.main.activity_view_picture.*
 import kotlin.math.max
 import kotlin.math.min
 
@@ -42,7 +41,7 @@ class ViewPictureActivity : AppCompatActivity(), GestureDetector.OnGestureListen
         Glide.with(this).load(imagePath)
             .placeholder(R.drawable.default_dp)
             .error(R.drawable.default_dp)
-            .into(iv_viewPicture)
+            .into(binding.ivViewPicture)
 
         gestureDetector = GestureDetectorCompat(this, this)
         gestureDetector.setOnDoubleTapListener(this)
@@ -80,10 +79,10 @@ class ViewPictureActivity : AppCompatActivity(), GestureDetector.OnGestureListen
      * Applies the current position and scale to the ImageView
      */
     private fun invalidate() {
-        iv_viewPicture.scaleX = scaleFactor
-        iv_viewPicture.scaleY = scaleFactor
-        iv_viewPicture.x = posX
-        iv_viewPicture.y = posY
+        binding.ivViewPicture.scaleX = scaleFactor
+        binding.ivViewPicture.scaleY = scaleFactor
+        binding.ivViewPicture.x = posX
+        binding.ivViewPicture.y = posY
     }
 
     override fun onTouchEvent(event: MotionEvent?): Boolean {
@@ -143,8 +142,8 @@ class ViewPictureActivity : AppCompatActivity(), GestureDetector.OnGestureListen
         override fun onScale(detector: ScaleGestureDetector?): Boolean {
             scaleFactor *= detector?.scaleFactor ?: 1.0f
             scaleFactor = max(0.1f, min(scaleFactor, 10.0f))
-            iv_viewPicture.scaleX = scaleFactor
-            iv_viewPicture.scaleY = scaleFactor
+            binding.ivViewPicture.scaleX = scaleFactor
+            binding.ivViewPicture.scaleY = scaleFactor
             return true
         }
     }
