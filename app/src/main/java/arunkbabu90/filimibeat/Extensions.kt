@@ -1,5 +1,8 @@
 package arunkbabu90.filimibeat
 
+import android.graphics.Bitmap
+import android.graphics.Matrix
+import android.graphics.RectF
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,3 +20,19 @@ fun ViewGroup.inflate(@LayoutRes layoutRes: Int, attachToRoot: Boolean = false):
 }
 
 fun List<String>.getShortDate() = "${this[2]} ${getShortDateString(this[1].toInt())} ${this[0]}"
+
+/**
+ * Resize the bitmap keeping the aspect ratio, irrespective of the values
+ * @param height The target height
+ * @param width The target width
+ * @return Bitmap: The scaled down Bitmap
+ */
+fun Bitmap.resize(height: Int, width: Int): Bitmap {
+    val matrix = Matrix()
+    matrix.setRectToRect(
+        RectF(0f, 0f, this.width.toFloat(), this.height.toFloat()),
+        RectF(0f, 0f, height.toFloat(), width.toFloat()), Matrix.ScaleToFit.CENTER
+    )
+
+    return Bitmap.createBitmap(this, 0,0,this.width, this.height, matrix, true)
+}
