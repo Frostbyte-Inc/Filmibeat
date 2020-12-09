@@ -3,12 +3,12 @@ package arunkbabu90.filimibeat.data.repository
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import arunkbabu90.filimibeat.data.api.TMDBInterface
+import arunkbabu90.filimibeat.data.api.TMDBEndPoint
 import arunkbabu90.filimibeat.data.model.MovieDetails
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 
-class MovieDetailsDataSource(private val apiService: TMDBInterface,
+class MovieDetailsDataSource(private val apiService: TMDBEndPoint,
                              private val disposable: CompositeDisposable) {
 
     private val TAG = MovieDetailsDataSource::class.java.simpleName

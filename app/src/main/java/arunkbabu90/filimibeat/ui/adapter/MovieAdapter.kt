@@ -12,6 +12,7 @@ import arunkbabu90.filimibeat.data.repository.NetworkState
 import arunkbabu90.filimibeat.getImageUrl
 import arunkbabu90.filimibeat.inflate
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import kotlinx.android.synthetic.main.item_movie.view.*
 import kotlinx.android.synthetic.main.item_network_state.view.*
 
@@ -31,7 +32,6 @@ class MovieAdapter(private val itemClickListener: (Movie?) -> Unit)
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-
         if (getItemViewType(position) == VIEW_TYPE_MOVIE) {
             val movie = getItem(position)
             (holder as MovieViewHolder).bind(movie, itemClickListener)
@@ -70,7 +70,11 @@ class MovieAdapter(private val itemClickListener: (Movie?) -> Unit)
         fun bind(movie: Movie?, itemClickListener: (Movie?) -> Unit) {
 
             val posterUrl = getImageUrl(movie?.posterPath ?: "", IMG_SIZE_MID)
-            Glide.with(itemView.context).load(posterUrl).error(R.drawable.ic_img_err).into(itemView.iv_main_poster)
+            Glide.with(itemView.context)
+                .load(posterUrl)
+                .transition(DrawableTransitionOptions.withCrossFade())
+                .error(R.drawable.ic_img_err)
+                .into(itemView.iv_main_poster)
 
             itemView.tv_poster_title.text = movie?.title
 

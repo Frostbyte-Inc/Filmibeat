@@ -102,28 +102,31 @@
             </com.google.android.material.card.MaterialCardView>
 
             <TextView
-                android:id="@+id/tv_movie_year"
+                android:id="@+id/tv_movie_date"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/year_margin_start"
+                android:layout_marginStart="@dimen/default_margin"
                 android:layout_marginTop="@dimen/year_margin_top"
-                android:fontFamily="sans-serif"
-                android:textSize="20sp"
-                android:textStyle="bold"
+                android:textColor="@color/colorTextGrey"
+                android:fontFamily="sans-serif-black"
+                android:textSize="16sp"
+                app:layout_constraintHorizontal_bias="0.3"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/poster_card"
                 app:layout_constraintTop_toTopOf="@id/poster_card"
-                tools:text="2015" />
+                tools:text="20 Aug 2015" />
 
             <TextView
                 android:id="@+id/tv_movie_rating"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="sans-serif"
+                android:textColor="@color/colorTextGrey"
                 android:textSize="16sp"
                 android:layout_marginTop="@dimen/default_margin"
-                app:layout_constraintEnd_toEndOf="@id/tv_movie_year"
-                app:layout_constraintStart_toStartOf="@id/tv_movie_year"
-                app:layout_constraintTop_toBottomOf="@id/tv_movie_year"
+                app:layout_constraintEnd_toEndOf="@id/tv_movie_date"
+                app:layout_constraintStart_toStartOf="@id/tv_movie_date"
+                app:layout_constraintTop_toBottomOf="@id/tv_movie_date"
                 tools:text="7.8" />
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -134,8 +137,8 @@
                 android:contentDescription="@string/mark_favourite"
                 android:src="@drawable/ic_favourite_outline"
                 app:backgroundTint="@color/colorDarkGrey"
-                app:layout_constraintEnd_toEndOf="@+id/tv_movie_year"
-                app:layout_constraintStart_toStartOf="@+id/tv_movie_year"
+                app:layout_constraintEnd_toEndOf="@id/tv_movie_rating"
+                app:layout_constraintStart_toStartOf="@id/tv_movie_rating"
                 app:layout_constraintTop_toBottomOf="@id/tv_movie_rating"
                 app:tint="@color/colorFavIcon" />
 
@@ -147,7 +150,7 @@
                 android:layout_marginTop="@dimen/synopsis_margin_top"
                 android:fontFamily="sans-serif"
                 android:text="@string/synopsis"
-                android:textColor="@android:color/white"
+                android:textColor="@color/colorTextLightGrey"
                 android:textSize="18sp"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="@id/description_card"
@@ -181,53 +184,31 @@
                     tools:text="A volcanic eruption threatens the remaining dinosaurs on the island of Isla Nublar, where the creatures have freely roamed for several years after the demise of an animal theme park known as Jurassic World. Claire Dearing, the former park manager, has now founded the Dinosaur Protection Group, an organization dedicated to protecting the dinosaurs. To help with her cause, Claire has recruited Owen Grady, a former dinosaur trainer who worked at the park, to prevent the extinction of the dinosaurs once again" />
             </com.google.android.material.card.MaterialCardView>
 
-            <TextView
-                android:id="@+id/textView"
-                android:layout_width="wrap_content"
+            <!-- Cast & Crew -->
+            <include android:id="@+id/layout_cast"
+                layout="@layout/layout_cast_crew"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/small_margin"
-                android:layout_marginTop="@dimen/trailer_margin_top"
-                android:fontFamily="sans-serif"
-                android:text="@string/videos"
-                android:visibility="invisible"
-                android:textColor="@android:color/white"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                app:layout_constraintStart_toStartOf="@id/description_card"
-                app:layout_constraintTop_toBottomOf="@id/description_card" />
+                android:layout_width="match_parent"
+                android:layout_marginTop="@dimen/default_margin"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/description_card"/>
 
-            <!-- Trailers Card -->
-            <com.google.android.material.card.MaterialCardView
-                android:id="@+id/video_list_card"
+            <!-- Companies -->
+            <include android:id="@+id/layout_company"
+                layout="@layout/layout_production_companies"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_marginTop="@dimen/default_margin"
+                app:layout_constraintTop_toBottomOf="@id/layout_cast"
+                app:layout_constraintStart_toStartOf="parent"/>
+
+            <!-- Videos -->
+            <include android:id="@+id/layout_videos"
+                layout="@layout/layout_related_videos"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/trailer_card_margin"
-                android:visibility="gone"
-                app:cardBackgroundColor="@color/colorDarkGrey"
-                app:cardCornerRadius="@dimen/small_card_radius"
-                app:cardElevation="@dimen/small_card_elevation"
-                app:layout_constraintStart_toStartOf="@id/textView"
-                app:layout_constraintTop_toBottomOf="@id/textView">
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rv_video_list"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:clipToPadding="false" />
-
-                <TextView
-                    android:id="@+id/tv_video_failed"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="sans-serif"
-                    android:gravity="center"
-                    android:padding="16dp"
-                    android:text="@string/err_check_internet"
-                    android:textColor="@android:color/white"
-                    android:textSize="14sp"
-                    android:textStyle="italic"
-                    android:visibility="gone" />
-            </com.google.android.material.card.MaterialCardView>
+                app:layout_constraintTop_toBottomOf="@id/layout_company"
+                app:layout_constraintStart_toStartOf="parent"/>
 
             <!-- Review Card -->
             <RelativeLayout
@@ -239,7 +220,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/video_list_card">
+                app:layout_constraintTop_toBottomOf="@id/layout_videos">
 
                 <TextView
                     android:layout_width="match_parent"

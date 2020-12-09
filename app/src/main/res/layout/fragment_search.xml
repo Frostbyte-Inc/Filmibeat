@@ -29,6 +29,18 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/search_view" />
 
+    <ImageView
+        android:id="@+id/iv_search_err"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:src="@drawable/ic_search"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:tint="@color/colorPurpleLight"
+        tools:ignore="ContentDescription" />
+
     <TextView
         android:id="@+id/tv_search_err"
         android:layout_width="wrap_content"
@@ -43,17 +55,5 @@
         app:layout_constraintStart_toStartOf="@+id/iv_search_err"
         app:layout_constraintTop_toBottomOf="@id/iv_search_err"
         tools:text="@string/err_no_internet" />
-
-    <ImageView
-        android:id="@+id/iv_search_err"
-        android:layout_width="200dp"
-        android:layout_height="200dp"
-        android:src="@drawable/ic_search"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:tint="@color/colorPurpleLight"
-        tools:ignore="ContentDescription" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

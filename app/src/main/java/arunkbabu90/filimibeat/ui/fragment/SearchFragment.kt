@@ -16,10 +16,11 @@ import arunkbabu90.filimibeat.R
 import arunkbabu90.filimibeat.calculateNoOfColumns
 import arunkbabu90.filimibeat.closeSoftInput
 import arunkbabu90.filimibeat.data.api.TMDBClient
-import arunkbabu90.filimibeat.data.api.TMDBInterface
+import arunkbabu90.filimibeat.data.api.TMDBEndPoint
 import arunkbabu90.filimibeat.data.model.Movie
 import arunkbabu90.filimibeat.data.repository.MovieSearchRepository
 import arunkbabu90.filimibeat.data.repository.NetworkState
+import arunkbabu90.filimibeat.getShortDate
 import arunkbabu90.filimibeat.ui.activity.MovieDetailsActivity
 import arunkbabu90.filimibeat.ui.adapter.MovieAdapter
 import arunkbabu90.filimibeat.ui.viewmodel.SearchMovieViewModel
@@ -32,6 +33,8 @@ class SearchFragment : Fragment() {
     private lateinit var viewModel: SearchMovieViewModel
     private lateinit var adapter: MovieAdapter
 
+    private var lm: GridLayoutManager? = null
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_search, container, false)
@@ -40,14 +43,14 @@ class SearchFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val apiService: TMDBInterface = TMDBClient.getClient()
+        val apiService: TMDBEndPoint = TMDBClient.getClient()
         repository = MovieSearchRepository(apiService)
 
         val noOfCols = calculateNoOfColumns(context)
 
-        val lm = GridLayoutManager(context, noOfCols)
+        lm = GridLayoutManager(context, noOfCols)
         adapter = MovieAdapter { movie -> if (movie != null) onMovieClick(movie) }
-        lm.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
+        lm!!.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
             override fun getSpanSize(position: Int): Int {
                 val viewType = adapter.getItemViewType(position)
                 return if (viewType == adapter.VIEW_TYPE_MOVIE) 1 else noOfCols
@@ -111,7 +114,7 @@ class SearchFragment : Fragment() {
         intent.putExtra(MovieDetailsActivity.KEY_BACKDROP_PATH_EXTRA, movie.backdropPath)
         intent.putExtra(MovieDetailsActivity.KEY_RATING_EXTRA, movie.rating)
         intent.putExtra(MovieDetailsActivity.KEY_OVERVIEW_EXTRA, movie.overview)
-        intent.putExtra(MovieDetailsActivity.KEY_RELEASE_YEAR_EXTRA, movie.releaseYear)
+        intent.putExtra(MovieDetailsActivity.KEY_RELEASE_DATE_EXTRA, movie.date.getShortDate())
         intent.putExtra(MovieDetailsActivity.KEY_TITLE_EXTRA, movie.title)
 
         if (transitionOptions != null) {
@@ -128,6 +131,7 @@ class SearchFragment : Fragment() {
     private fun searchForMovies(searchTerm: String) {
         viewModel.searchMovie(searchTerm).observe(this, { moviePagedList ->
             adapter.submitList(moviePagedList)
+            lm?.scrollToPositionWithOffset(0,0)
 
             if (moviePagedList.size <= 0) {
                 // Movies List Empty; No Movies Found
