@@ -61,6 +61,7 @@
         android:id="@+id/pb_profile_loading"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:visibility="gone"
         app:layout_constraintTop_toTopOf="@id/rv_profile"
         app:layout_constraintStart_toStartOf="@id/rv_profile"
         app:layout_constraintBottom_toBottomOf="@id/rv_profile"

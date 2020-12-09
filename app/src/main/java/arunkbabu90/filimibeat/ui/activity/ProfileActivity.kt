@@ -18,6 +18,7 @@ import arunkbabu90.filimibeat.databinding.ActivityProfileBinding
 import arunkbabu90.filimibeat.ui.adapter.ProfileAdapter
 import arunkbabu90.filimibeat.ui.dialogs.SimpleInputDialog
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.BitmapTransitionOptions
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
 import com.google.android.gms.tasks.Task
@@ -55,7 +56,7 @@ class ProfileActivity : AppCompatActivity(), View.OnClickListener {
     private val emailTitle = "Email"
 
     companion object {
-        var isUpdatesAvailable = false
+        private var isUpdatesAvailable = false
         private const val REQUEST_CODE_PICK_IMAGE = 2000
     }
 
@@ -205,14 +206,15 @@ class ProfileActivity : AppCompatActivity(), View.OnClickListener {
         Glide.with(this)
             .asBitmap()
             .load(imageUri)
+            .transition(BitmapTransitionOptions.withCrossFade())
             .into(object : CustomTarget<Bitmap>() {
                 override fun onLoadStarted(placeholder: Drawable?) {
                     binding.pbProfileDpLoading.visibility = View.VISIBLE
                 }
 
                 override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {
-                    binding.ivProfileDp.setImageBitmap(resource)
                     binding.pbProfileDpLoading.visibility = View.GONE
+                    binding.ivProfileDp.setImageBitmap(resource)
 
                     if (isUpdatesAvailable) {
                         // Scale Down the bitmap & Upload

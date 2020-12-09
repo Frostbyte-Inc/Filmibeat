@@ -1,15 +1,16 @@
 package arunkbabu90.filimibeat.ui.activity
 
+import android.graphics.drawable.Drawable
 import android.os.Bundle
-import android.view.GestureDetector
-import android.view.MotionEvent
-import android.view.ScaleGestureDetector
-import android.view.WindowManager
+import android.view.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GestureDetectorCompat
 import arunkbabu90.filimibeat.R
 import arunkbabu90.filimibeat.databinding.ActivityViewPictureBinding
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
+import com.bumptech.glide.request.target.CustomTarget
+import com.bumptech.glide.request.transition.Transition
 import kotlin.math.max
 import kotlin.math.min
 
@@ -39,9 +40,27 @@ class ViewPictureActivity : AppCompatActivity(), GestureDetector.OnGestureListen
         val imagePath = intent.getStringExtra(PROFILE_PICTURE_PATH_EXTRA_KEY)
 
         Glide.with(this).load(imagePath)
-            .placeholder(R.drawable.default_dp)
             .error(R.drawable.default_dp)
-            .into(binding.ivViewPicture)
+            .transition(DrawableTransitionOptions.withCrossFade())
+            .into(object : CustomTarget<Drawable>() {
+                override fun onLoadStarted(placeholder: Drawable?) {
+                    binding.pbViewPicture.visibility = View.VISIBLE
+                }
+
+                override fun onResourceReady(resource: Drawable, transition: Transition<in Drawable>?) {
+                    binding.ivViewPicture.setImageDrawable(resource)
+                    binding.pbViewPicture.visibility = View.GONE
+                }
+
+                override fun onLoadCleared(placeholder: Drawable?) {
+                    binding.ivViewPicture.setImageDrawable(null)
+                }
+
+                override fun onLoadFailed(errorDrawable: Drawable?) {
+                    binding.ivViewPicture.setImageDrawable(errorDrawable)
+                    binding.pbViewPicture.visibility = View.GONE
+                }
+            })
 
         gestureDetector = GestureDetectorCompat(this, this)
         gestureDetector.setOnDoubleTapListener(this)
