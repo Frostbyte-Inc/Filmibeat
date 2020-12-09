@@ -19,6 +19,7 @@
     <!--string name="main_poster_transition_name">main_poster_shared_transition</string-->
     <string name="synopsis">Plot</string>
     <string name="err_no_internet">No Internet Connection</string>
+    <string name="err_img_load">Unable to load image. Please try again</string>
     <string name="no_favourites">No Movie Marked as Favourite Yet!</string>
     <string name="undo">UNDO</string>
     <string name="movie_poster">Movie Poster</string>
@@ -131,4 +132,5 @@
     <string name="saved">Saved</string>
     <string name="save">Save</string>
     <string name="not_saved">Not Saved!</string>
+    <string name="pick_photo">Pick a Photo</string>
 </resources>

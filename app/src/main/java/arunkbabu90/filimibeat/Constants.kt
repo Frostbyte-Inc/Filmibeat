@@ -30,5 +30,7 @@ class Constants {
         const val DIRECTORY_PROFILE_PICTURE = "/ProfilePictures/"
         const val PROFILE_PICTURE_FILE_NAME = "IMG_USER_PROFILE_PICTURE"
         const val IMG_FORMAT_JPG = ".jpg"
+
+        const val DP_UPLOAD_SIZE = 960
     }
 }

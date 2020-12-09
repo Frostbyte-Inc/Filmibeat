@@ -1,19 +1,20 @@
 package arunkbabu90.filimibeat.ui.activity
 
+import android.app.Activity
+import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
 import android.net.*
 import android.os.Bundle
+import android.provider.MediaStore
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import androidx.recyclerview.widget.LinearLayoutManager
-import arunkbabu90.filimibeat.Constants
-import arunkbabu90.filimibeat.R
+import arunkbabu90.filimibeat.*
 import arunkbabu90.filimibeat.databinding.ActivityProfileBinding
-import arunkbabu90.filimibeat.runStackedRevealAnimation
 import arunkbabu90.filimibeat.ui.adapter.ProfileAdapter
 import arunkbabu90.filimibeat.ui.dialogs.SimpleInputDialog
 import com.bumptech.glide.Glide
@@ -34,7 +35,7 @@ import java.io.ByteArrayInputStream
 import java.io.ByteArrayOutputStream
 import java.util.*
 
-class ProfileActivity : AppCompatActivity() {
+class ProfileActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var binding: ActivityProfileBinding
     private lateinit var storage: FirebaseStorage
     private lateinit var adapter: ProfileAdapter
@@ -70,6 +71,23 @@ class ProfileActivity : AppCompatActivity() {
         email = auth.currentUser?.email ?: ""
 
         registerNetworkChangeCallback()
+
+        binding.ivProfileDp.setOnClickListener(this)
+    }
+
+    override fun onClick(p0: View?) {
+        when(p0?.id) {
+            binding.ivProfileDp.id -> {
+                val viewIntent = Intent(this, ViewPictureActivity::class.java)
+                viewIntent.putExtra(ViewPictureActivity.PROFILE_PICTURE_PATH_EXTRA_KEY, dpPath)
+                startActivity(viewIntent)
+            }
+            binding.fabDocProfileDpEdit.id -> {
+                val pickImg = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+                pickImg.type = "image/*"
+                startActivityForResult(Intent.createChooser(pickImg, getString(R.string.pick_photo)), REQUEST_CODE_PICK_IMAGE)
+            }
+        }
     }
 
     /**
@@ -91,7 +109,7 @@ class ProfileActivity : AppCompatActivity() {
                         isDataLoaded = true
 
                         populateViews()
-                        loadImageToView()
+                        loadImageToView(Uri.parse(dpPath))
                     } else {
                         Toast.makeText(this, R.string.err_unable_to_fetch, Toast.LENGTH_SHORT).show()
                         isDataLoaded = false
@@ -182,10 +200,10 @@ class ProfileActivity : AppCompatActivity() {
         }
     }
 
-    private fun loadImageToView() {
+    private fun loadImageToView(imageUri: Uri) {
         Glide.with(this)
             .asBitmap()
-            .load(dpPath)
+            .load(imageUri)
             .into(object : CustomTarget<Bitmap>() {
                 override fun onLoadStarted(placeholder: Drawable?) {
                     binding.pbProfileDpLoading.visibility = View.VISIBLE
@@ -194,6 +212,14 @@ class ProfileActivity : AppCompatActivity() {
                 override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {
                     binding.ivProfileDp.setImageBitmap(resource)
                     binding.pbProfileDpLoading.visibility = View.GONE
+
+                    if (isUpdatesAvailable) {
+                        // Scale Down the bitmap & Upload
+//                        val rBitmap = resource.resize(height = Constants.DP_UPLOAD_SIZE, width = Constants.DP_UPLOAD_SIZE)
+//                        (activity as DoctorActivity).uploadImageFile(rBitmap)
+                        val resizedBitmap = resource.resize(height = Constants.DP_UPLOAD_SIZE, width = Constants.DP_UPLOAD_SIZE)
+                        uploadImageFile(resizedBitmap)
+                    }
                 }
 
                 override fun onLoadCleared(placeholder: Drawable?) {
@@ -286,5 +312,21 @@ class ProfileActivity : AppCompatActivity() {
             }
         })
         return isAvailable[0]
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == REQUEST_CODE_PICK_IMAGE && resultCode == Activity.RESULT_OK) {
+            val uri = data?.data
+            if (uri != null) {
+                if (isNetworkConnected(this)) {
+                    binding.pbProfileDpLoading.visibility = View.VISIBLE
+                    isUpdatesAvailable = true
+                    loadImageToView(uri)
+                } else {
+                    Toast.makeText(this, R.string.err_img_load, Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
     }
 }
