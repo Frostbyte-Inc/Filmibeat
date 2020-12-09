@@ -11,13 +11,15 @@
         android:id="@+id/iv_profile_dp"
         android:layout_width="@dimen/dp_image_view_size_large"
         android:layout_height="@dimen/dp_image_view_size_large"
-        android:layout_margin="@dimen/large_margin"
+        android:layout_marginStart="@dimen/default_margin"
+        android:layout_marginEnd="@dimen/default_margin"
+        android:layout_marginTop="100dp"
         android:scaleType="centerCrop"
-        app:shapeAppearance="@style/CircularImageView"
-        tools:srcCompat="@drawable/default_dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+        app:layout_constraintTop_toTopOf="parent"
+        app:shapeAppearance="@style/CircularImageView"
+        app:srcCompat="@drawable/default_dp" />
 
     <ProgressBar
         android:id="@+id/pb_profile_dp_loading"
@@ -49,7 +51,7 @@
         android:layout_marginStart="@dimen/default_margin"
         android:layout_marginEnd="@dimen/default_margin"
         android:layout_marginBottom="@dimen/medium_margin"
-        android:layout_marginTop="@dimen/default_margin"
+        android:layout_marginTop="@dimen/huge_margin"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

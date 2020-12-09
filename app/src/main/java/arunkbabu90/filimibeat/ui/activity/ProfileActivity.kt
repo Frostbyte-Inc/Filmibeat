@@ -1,6 +1,7 @@
 package arunkbabu90.filimibeat.ui.activity
 
 import android.graphics.Bitmap
+import android.graphics.drawable.Drawable
 import android.net.*
 import android.os.Bundle
 import android.view.View
@@ -10,8 +11,11 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import arunkbabu90.filimibeat.Constants
 import arunkbabu90.filimibeat.R
 import arunkbabu90.filimibeat.databinding.ActivityProfileBinding
+import arunkbabu90.filimibeat.runStackedRevealAnimation
 import arunkbabu90.filimibeat.ui.adapter.ProfileAdapter
 import com.bumptech.glide.Glide
+import com.bumptech.glide.request.target.CustomTarget
+import com.bumptech.glide.request.transition.Transition
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
@@ -104,13 +108,42 @@ class ProfileActivity : AppCompatActivity() {
             "Email" to email
         )
 
-        val adapter = ProfileAdapter(profileData)
+        val adapter = ProfileAdapter(profileData) { dataPair -> onProfileItemClick(dataPair) }
         binding.rvProfile.adapter = adapter
         binding.rvProfile.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
-
-        Glide.with(this).load(dpPath).placeholder(R.drawable.default_dp).into(binding.ivProfileDp)
+        runStackedRevealAnimation(this, binding.rvProfile, true)
 
         binding.pbProfileLoading.visibility = View.GONE
+    }
+
+    private fun onProfileItemClick(data: Pair<String, String>) {
+        val (title, subtitle) = data
+
+    }
+
+    private fun loadImageToView() {
+        Glide.with(this)
+            .asBitmap()
+            .load(dpPath)
+            .into(object : CustomTarget<Bitmap>() {
+                override fun onLoadStarted(placeholder: Drawable?) {
+                    binding.pbProfileDpLoading.visibility = View.VISIBLE
+                }
+
+                override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {
+                    binding.ivProfileDp.setImageBitmap(resource)
+                    binding.pbProfileDpLoading.visibility = View.GONE
+                }
+
+                override fun onLoadCleared(placeholder: Drawable?) {
+                    binding.ivProfileDp.setImageBitmap(null)
+                }
+
+                override fun onLoadFailed(errorDrawable: Drawable?) {
+                    binding.pbProfileDpLoading.visibility = View.GONE
+                }
+            })
+
     }
 
     /**

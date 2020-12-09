@@ -7,8 +7,11 @@ import android.net.ConnectivityManager
 import android.net.Network
 import android.net.NetworkCapabilities
 import android.view.View
+import android.view.animation.AnimationUtils
+import android.view.animation.LayoutAnimationController
 import android.view.inputmethod.InputMethodManager
 import androidx.fragment.app.FragmentActivity
+import androidx.recyclerview.widget.RecyclerView
 import arunkbabu90.filimibeat.data.api.POSTER_BASE_URL
 import arunkbabu90.filimibeat.data.api.YOUTUBE_THUMB_BASE_URL
 import arunkbabu90.filimibeat.data.api.YOUTUBE_VIDEO_BASE_URL
@@ -76,7 +79,7 @@ fun isNetworkConnected(context: Context?): Boolean {
  * @return True if the email is valid
  */
 fun verifyEmail(email: String): Boolean {
-    val mailFormat = Regex ("^([a-zA-B 0-9.-]+)@([a-zA-B 0-9]+)\\.([a-zA-Z]{2,8})(\\.[a-zA-Z]{2,8})?$")
+    val mailFormat = Regex("^([a-zA-B 0-9.-]+)@([a-zA-B 0-9]+)\\.([a-zA-Z]{2,8})(\\.[a-zA-Z]{2,8})?$")
     return !email.matches(mailFormat)
 }
 
@@ -122,6 +125,23 @@ fun getShortDateString(month: Int) =
         12 -> "Dec"
         else -> ""
     }
+
+/**
+ * Starts the Reveal Layout Animation on recycler view items
+ * @param context The context
+ * @param recyclerView The recyclerview to run the animation on
+ * @param reverseAnimation Whether to reverse the animation effect.
+ * If True then the animation will play in the reverse order
+ */
+fun runStackedRevealAnimation(context: Context, recyclerView: RecyclerView, reverseAnimation: Boolean) {
+    val controller: LayoutAnimationController = if (reverseAnimation) {
+        AnimationUtils.loadLayoutAnimation(context, R.anim.stacked_reveal_layout_animation_reverse)
+    } else {
+        AnimationUtils.loadLayoutAnimation(context, R.anim.stacked_reveal_layout_animation)
+    }
+    recyclerView.layoutAnimation = controller
+    recyclerView.scheduleLayoutAnimation()
+}
 
 
 
