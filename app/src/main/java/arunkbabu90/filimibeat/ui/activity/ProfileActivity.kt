@@ -6,10 +6,12 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.LinearLayoutManager
 import arunkbabu90.filimibeat.Constants
 import arunkbabu90.filimibeat.R
 import arunkbabu90.filimibeat.databinding.ActivityProfileBinding
 import arunkbabu90.filimibeat.ui.adapter.ProfileAdapter
+import com.bumptech.glide.Glide
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
@@ -35,6 +37,7 @@ class ProfileActivity : AppCompatActivity() {
     private var fullName = ""
     private var userName = ""
     private var email = ""
+
     private var isInternetConnected = false
     private var isDataLoaded = false
 
@@ -71,6 +74,8 @@ class ProfileActivity : AppCompatActivity() {
                         fullName = d.getString(Constants.FIELD_FULL_NAME) ?: ""
                         dpPath = d.getString(Constants.FIELD_DP_PATH) ?: ""
                         userName = d.getString(Constants.FIELD_USER_NAME) ?: ""
+
+                        populateViews()
                     } else {
                         Toast.makeText(this, R.string.err_unable_to_fetch, Toast.LENGTH_SHORT).show()
                     }
@@ -84,7 +89,22 @@ class ProfileActivity : AppCompatActivity() {
      * Populate the views with loaded data
      */
     private fun populateViews() {
+        if (userName.isBlank())
+            userName = "Not Set"
 
+        val profileData = arrayListOf(
+            "Name" to fullName,
+            "Username" to userName,
+            "Email" to email
+        )
+
+        val adapter = ProfileAdapter(profileData)
+        binding.rvProfile.adapter = adapter
+        binding.rvProfile.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+
+        Glide.with(this).load(dpPath).placeholder(R.drawable.default_dp).into(binding.ivProfileDp)
+
+        binding.pbProfileLoading.visibility = View.GONE
     }
 
     /**
