@@ -41,6 +41,8 @@ class ProfileActivity : AppCompatActivity() {
     private lateinit var db: FirebaseFirestore
     private lateinit var auth: FirebaseAuth
 
+    private var profileData = arrayListOf<Pair<String, String>>()
+
     private var dpPath = ""
     private var fullName = ""
     private var email = ""
@@ -105,13 +107,12 @@ class ProfileActivity : AppCompatActivity() {
      * Populate the views with loaded data
      */
     private fun populateViews() {
-
-        val profileData = arrayListOf(
+        profileData = arrayListOf(
             nameTitle to fullName,
             emailTitle to email
         )
 
-        val adapter = ProfileAdapter(profileData) { dataPair -> onProfileItemClick(dataPair) }
+        adapter = ProfileAdapter(profileData) { dataPair -> onProfileItemClick(dataPair) }
         binding.rvProfile.adapter = adapter
         binding.rvProfile.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         runStackedRevealAnimation(this, binding.rvProfile, true)
@@ -121,6 +122,7 @@ class ProfileActivity : AppCompatActivity() {
 
     private fun onProfileItemClick(data: Pair<String, String>) {
         val (title, subtitle) = data
+        if (title == emailTitle) return
 
         val ft: FragmentTransaction = supportFragmentManager.beginTransaction()
         val prevFrag: Fragment? = supportFragmentManager.findFragmentByTag("dialog")
@@ -130,14 +132,14 @@ class ProfileActivity : AppCompatActivity() {
         ft.addToBackStack(null)
 
         val dialog = SimpleInputDialog(this, this, title, subtitle, getString(R.string.save))
-        dialog.setButtonClickListener(object: SimpleInputDialog.ButtonClickListener {
+        dialog.setButtonClickListener(object : SimpleInputDialog.ButtonClickListener {
             override fun onPositiveButtonClick(inputText: String?) {
                 // Only push if the input text has some text in it
                 if (!inputText.isNullOrBlank())
                     pushToDatabase(title, inputText)
             }
 
-            override fun onNegativeButtonClick() { }
+            override fun onNegativeButtonClick() {}
 
         })
         dialog.show(ft, "dialog")
@@ -153,10 +155,14 @@ class ProfileActivity : AppCompatActivity() {
 
         when (title) {
             nameTitle -> {
-                dataMap[Constants.FIELD_FULL_NAME] = inputText
+                // Only add Updated values
+                if (fullName != inputText)
+                    dataMap[Constants.FIELD_FULL_NAME] = inputText
             }
             emailTitle -> { }
         }
+
+        if (dataMap.isEmpty()) return
 
         val user = auth.currentUser
         if (user != null) {
@@ -164,6 +170,10 @@ class ProfileActivity : AppCompatActivity() {
                 .set(dataMap, SetOptions.merge())
                 .addOnSuccessListener {
                     Toast.makeText(this, R.string.saved, Toast.LENGTH_SHORT).show()
+                    profileData.clear()
+                    profileData.add(nameTitle to inputText)
+                    profileData.add(emailTitle to email)
+                    adapter.notifyDataSetChanged()
                 }.addOnFailureListener {
                     Toast.makeText(this, R.string.err_no_internet, Toast.LENGTH_SHORT).show()
                 }

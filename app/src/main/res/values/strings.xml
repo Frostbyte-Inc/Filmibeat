@@ -130,4 +130,5 @@
     <string name="err_upload_failed">Error! Upload Failed</string>
     <string name="saved">Saved</string>
     <string name="save">Save</string>
+    <string name="not_saved">Not Saved!</string>
 </resources>
