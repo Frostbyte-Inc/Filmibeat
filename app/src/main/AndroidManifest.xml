@@ -20,7 +20,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Filmibeat">
-        <activity android:name=".ui.activity.FavouritesActivity"></activity>
+        <activity android:name=".ui.activity.ViewPictureActivity"></activity>
+        <activity android:name=".ui.activity.FavouritesActivity" />
         <activity android:name=".ui.activity.ForgotPasswordActivity" />
         <activity android:name=".ui.activity.AccountVerificationActivity" />
         <activity android:name=".ui.activity.SignUpActivity" />
