@@ -56,6 +56,8 @@ class ProfileActivity : AppCompatActivity() {
         db = Firebase.firestore
 
         email = auth.currentUser?.email ?: ""
+
+        registerNetworkChangeCallback()
     }
 
     /**
@@ -75,12 +77,16 @@ class ProfileActivity : AppCompatActivity() {
                         dpPath = d.getString(Constants.FIELD_DP_PATH) ?: ""
                         userName = d.getString(Constants.FIELD_USER_NAME) ?: ""
 
+                        isDataLoaded = true
+
                         populateViews()
                     } else {
                         Toast.makeText(this, R.string.err_unable_to_fetch, Toast.LENGTH_SHORT).show()
+                        isDataLoaded = false
                     }
                 } else {
                     Toast.makeText(this, R.string.err_unable_to_fetch, Toast.LENGTH_SHORT).show()
+                    isDataLoaded = false
                 }
             }
     }
