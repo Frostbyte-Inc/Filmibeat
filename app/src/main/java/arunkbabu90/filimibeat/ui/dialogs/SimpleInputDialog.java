@@ -101,6 +101,12 @@ public class SimpleInputDialog extends DialogFragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        mPositiveTextView = mBinding.simpleInputDialogPositiveButton;
+        mNegativeTextView = mBinding.simpleInputDialogNegativeButton;
+        mInputField = mBinding.simpleInputDialogInputField;
+        mInputTextInputLayout = mBinding.simpleInputDialogTextInputLayout;
+
         mPositiveTextView.setText(mPositiveButtonLabel);
 
         mInputTextInputLayout.requestFocus();
