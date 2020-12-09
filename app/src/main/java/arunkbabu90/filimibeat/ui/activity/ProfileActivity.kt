@@ -50,13 +50,13 @@ class ProfileActivity : AppCompatActivity(), View.OnClickListener {
     private var email = ""
 
     private var isInternetConnected = false
+    private var isUpdatesAvailable = false
     private var isDataLoaded = false
 
     private val nameTitle = "Name"
     private val emailTitle = "Email"
 
     companion object {
-        private var isUpdatesAvailable = false
         private const val REQUEST_CODE_PICK_IMAGE = 2000
     }
 
@@ -194,6 +194,8 @@ class ProfileActivity : AppCompatActivity(), View.OnClickListener {
                     profileData.add(nameTitle to inputText)
                     profileData.add(emailTitle to email)
                     adapter.notifyDataSetChanged()
+
+                    isUpdatesAvailable = false
                 }.addOnFailureListener {
                     Toast.makeText(this, R.string.err_no_internet, Toast.LENGTH_SHORT).show()
                 }
@@ -265,7 +267,10 @@ class ProfileActivity : AppCompatActivity(), View.OnClickListener {
                         dpPath = imagePath
                         db.collection(Constants.COLLECTION_USERS).document(user.uid)
                             .update(Constants.FIELD_DP_PATH, imagePath)
-                            .addOnSuccessListener { Toast.makeText(this, getString(R.string.saved), Toast.LENGTH_SHORT).show() }
+                            .addOnSuccessListener {
+                                Toast.makeText(this, getString(R.string.saved), Toast.LENGTH_SHORT).show()
+                                isUpdatesAvailable = false
+                            }
                             .addOnFailureListener { Toast.makeText(this, R.string.err_upload_failed, Toast.LENGTH_SHORT).show() }
                     } else {
                         Toast.makeText(this, getString(R.string.err_upload_failed), Toast.LENGTH_LONG).show()
