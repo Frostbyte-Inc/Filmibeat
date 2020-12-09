@@ -7,7 +7,7 @@ import android.widget.TextView
 import arunkbabu90.filimibeat.R
 import com.google.android.material.card.MaterialCardView
 
-class ActionCard@JvmOverloads constructor(context: Context, attr: AttributeSet, defStyleAttributeSet: int = 0)
+class ActionCard@JvmOverloads constructor(context: Context, attr: AttributeSet, defStyleAttributeSet: Int = 0)
     : MaterialCardView(context, attr, defStyleAttributeSet){
         init {
             inflate(context, R.layout.vm_action_card,this)
