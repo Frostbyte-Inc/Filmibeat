@@ -66,4 +66,5 @@
     <color name="colorTextYellow">#FFE082</color>
     <color name="colorTextBlue">#5081BC</color>
     <color name="colorVioletLight">#6c7fe9</color>
+    <color name="colorDarkerBackground">#121212</color>
 </resources>

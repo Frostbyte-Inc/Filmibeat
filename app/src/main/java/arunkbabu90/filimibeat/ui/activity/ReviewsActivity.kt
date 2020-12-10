@@ -3,6 +3,7 @@ package arunkbabu90.filimibeat.ui.activity
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -30,6 +31,8 @@ class ReviewsActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         movieId = intent.getIntExtra(REVIEW_MOVIE_ID_EXTRA_KEY, -1)
+
+        window.navigationBarColor = ContextCompat.getColor(this, R.color.colorDarkBackgroundGrey1)
 
         val apiService = TMDBClient.getClient()
         repository = ReviewRepository(apiService)
