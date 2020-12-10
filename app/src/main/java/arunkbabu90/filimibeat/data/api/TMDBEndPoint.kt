@@ -1,9 +1,6 @@
 package arunkbabu90.filimibeat.data.api
 
-import arunkbabu90.filimibeat.data.model.CastCrewResponse
-import arunkbabu90.filimibeat.data.model.MovieDetails
-import arunkbabu90.filimibeat.data.model.MovieResponse
-import arunkbabu90.filimibeat.data.model.VideoResponse
+import arunkbabu90.filimibeat.data.model.*
 import io.reactivex.Single
 import retrofit2.http.GET
 import retrofit2.http.Path
@@ -17,7 +14,8 @@ interface TMDBEndPoint {
     fun getTopRatedMovies(@Query("page") page: Int): Single<MovieResponse>
 
     @GET("movie/now_playing")
-    fun getNowPlayingMovies(@Query("page") page: Int, @Query("region") regionCode: String): Single<MovieResponse>
+    fun getNowPlayingMovies(@Query("page") page: Int,
+                            @Query("region") regionCode: String): Single<MovieResponse>
 
     @GET("movie/{movie_id}")
     fun getMovieDetails(@Path("movie_id") movieId: Int): Single<MovieDetails>
@@ -32,4 +30,8 @@ interface TMDBEndPoint {
 
     @GET("movie/{movie_id}/videos")
     fun getVideos(@Path("movie_id") movieId: Int): Single<VideoResponse>
+
+    @GET("movie/{movie_id}/reviews")
+    fun getReviews(@Path("movie_id") movieId: Int,
+                   @Query("page") page: Int): Single<ReviewResponse>
 }
