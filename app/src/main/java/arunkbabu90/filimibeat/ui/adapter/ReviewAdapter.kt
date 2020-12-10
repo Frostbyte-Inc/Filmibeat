@@ -34,19 +34,64 @@ class ReviewAdapter : PagedListAdapter<Review, RecyclerView.ViewHolder>(ReviewDi
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        (holder as ReviewViewHolder).bind(getItem(position))
-        (holder as NetworkStateViewHolder).bind(networkState)
+        if (getItemViewType(position) == VIEW_TYPE_REVIEW)
+            (holder as ReviewViewHolder).bind(getItem(position))
+        else
+            (holder as NetworkStateViewHolder).bind(networkState)
+    }
+
+    override fun getItemViewType(position: Int)
+        = if (hasExtraRow() && position == itemCount - 1) VIEW_TYPE_NETWORK else VIEW_TYPE_REVIEW
+
+    override fun getItemCount() = super.getItemCount() + if (hasExtraRow()) 1 else 0
+
+    private fun hasExtraRow(): Boolean = networkState != null && networkState != NetworkState.LOADED
+
+    fun setNetworkState(networkState: NetworkState) {
+        val prevState = this.networkState
+        val hadExtraRow = hasExtraRow()
+        this.networkState = networkState
+        val hasExtraRow = hasExtraRow()
+
+        if (hadExtraRow != hasExtraRow) {
+            if (hadExtraRow)
+                notifyItemRemoved(super.getItemCount())
+            else
+                notifyItemInserted(super.getItemCount())
+        } else if (hasExtraRow && prevState != networkState) {
+            notifyItemChanged(itemCount - 1)
+        }
     }
 
     private inner class ReviewViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         fun bind(review: Review?) {
-
+            binding.tvAuthor.text = review?.author
+            binding.tvContent.text = review?.content
         }
     }
 
-    private class NetworkStateViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    private inner class NetworkStateViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         fun bind(networkState: NetworkState?) {
+            if (networkState != null && networkState == NetworkState.LOADING) {
+                networkBinding.itemNetworkStateProgressBar.visibility = View.VISIBLE
+            } else {
+                networkBinding.itemNetworkStateProgressBar.visibility = View.GONE
+            }
 
+            if (networkState != null && networkState == NetworkState.ERROR) {
+                networkBinding.itemNetworkStateErrTextView.visibility = View.VISIBLE
+                networkBinding.itemNetworkStateErrTextView.text = networkState.msg
+            } else if (networkState != null && networkState == NetworkState.EOL) {
+                networkBinding.itemNetworkStateErrTextView.visibility = View.VISIBLE
+                networkBinding.itemNetworkStateErrTextView.text = networkState.msg
+            } else {
+                networkBinding.itemNetworkStateErrTextView.visibility = View.GONE
+            }
+
+            if (networkState != null && networkState == NetworkState.CLEAR) {
+                networkBinding.itemNetworkStateErrTextView.visibility = View.VISIBLE
+                networkBinding.itemNetworkStateErrTextView.text = networkState.msg
+            }
         }
     }
 
