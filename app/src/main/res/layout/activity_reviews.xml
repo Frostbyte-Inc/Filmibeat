@@ -19,6 +19,5 @@
         android:layout_gravity="center"
         android:gravity="center"
         android:visibility="gone"
-        tools:text="Unable to fetch reviews! Please check your intenet connection and try again" />
-
+        tools:text="@string/err_review_fetch" />
 </FrameLayout>

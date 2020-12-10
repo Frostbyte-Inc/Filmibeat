@@ -31,7 +31,7 @@ class FavouritesAdapter(private val favouriteMovies: List<Favourite>,
 
     override fun getItemCount(): Int = favouriteMovies.size
 
-    class FavouritesViewHolder(itemView: View, private val context: Context) : RecyclerView.ViewHolder(itemView) {
+    inner class FavouritesViewHolder(itemView: View, private val context: Context) : RecyclerView.ViewHolder(itemView) {
         var movie: Favourite? = null
 
         fun bind(favourite: Favourite?, itemClickListener: (Favourite?) -> Unit) {
