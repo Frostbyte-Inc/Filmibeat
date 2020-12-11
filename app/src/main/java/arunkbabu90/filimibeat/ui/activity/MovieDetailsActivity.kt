@@ -153,6 +153,13 @@ class MovieDetailsActivity : AppCompatActivity(), View.OnClickListener {
         setFeaturesBasedOnUser()
 
         fab_favourites.setOnClickListener(this)
+
+        //TODO: Should be deleted after testing
+        tv_movie_title.setOnClickListener {
+            val reviewIntent = Intent(this, ReviewsActivity::class.java)
+            reviewIntent.putExtra(ReviewsActivity.REVIEW_MOVIE_ID_EXTRA_KEY, movieId)
+            startActivity(reviewIntent)
+        }
     }
 
     override fun onClick(p0: View?) {

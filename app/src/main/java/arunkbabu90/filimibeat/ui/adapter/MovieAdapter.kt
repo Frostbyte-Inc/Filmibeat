@@ -66,7 +66,7 @@ class MovieAdapter(private val itemClickListener: (Movie?) -> Unit)
     /**
      * ViewHolder for the movies
      */
-    class MovieViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+    private inner class MovieViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         fun bind(movie: Movie?, itemClickListener: (Movie?) -> Unit) {
 
             val posterUrl = getImageUrl(movie?.posterPath ?: "", IMG_SIZE_MID)
@@ -85,7 +85,7 @@ class MovieAdapter(private val itemClickListener: (Movie?) -> Unit)
     /**
      * ViewHolder for the Network State
      */
-    class NetworkStateViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+    private inner class NetworkStateViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         fun bind(networkState: NetworkState?) {
             if (networkState != null && networkState == NetworkState.LOADING) {
                 itemView.item_network_state_progress_bar.visibility = View.VISIBLE

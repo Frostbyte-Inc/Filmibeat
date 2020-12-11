@@ -51,7 +51,8 @@ class NowPlayingMovieDataSource(private val apiService: TMDBEndPoint,
                 .subscribeOn(Schedulers.io())
                 .subscribe(
                     { movieResponse ->
-                        if (movieResponse.totalPages >= params.key + 1) {
+                        val nextPageKey = params.key + 1
+                        if (movieResponse.totalPages >= nextPageKey) {
                             // Not in Last Page
                             callback.onResult(movieResponse.movies, params.key + 1)
                             _networkState.postValue(NetworkState.LOADED)

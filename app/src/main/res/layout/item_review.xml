@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="12dp"
-    app:cardBackgroundColor="@color/colorGrey"
+    app:cardBackgroundColor="@color/colorDarkGrey"
     app:cardCornerRadius="@dimen/small_card_elevation"
     app:cardElevation="@dimen/smaller_card_elevation" >
 
@@ -35,7 +35,5 @@
             android:textSize="14sp"
             android:layout_below="@id/tv_author"
             tools:text="Good Movie.. Nice Play" />
-
-
     </RelativeLayout>
 </com.google.android.material.card.MaterialCardView>
