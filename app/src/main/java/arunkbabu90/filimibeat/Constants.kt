@@ -10,7 +10,6 @@ class Constants {
 
         const val FIELD_USER_TYPE = "userType"
         const val FIELD_FULL_NAME = "name"
-        const val FIELD_USER_NAME = "username"
         const val FIELD_ACCOUNT_VERIFIED = "activated"
         const val FIELD_DP_PATH = "dpPath"
         const val FIELD_LANGUAGE = "language"
@@ -31,5 +30,7 @@ class Constants {
         const val DIRECTORY_PROFILE_PICTURE = "/ProfilePictures/"
         const val PROFILE_PICTURE_FILE_NAME = "IMG_USER_PROFILE_PICTURE"
         const val IMG_FORMAT_JPG = ".jpg"
+
+        const val DP_UPLOAD_SIZE = 960
     }
 }

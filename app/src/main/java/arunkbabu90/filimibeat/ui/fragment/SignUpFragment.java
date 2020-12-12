@@ -14,6 +14,8 @@ import androidx.fragment.app.Fragment;
 import com.google.android.material.transition.MaterialSharedAxis;
 import com.google.firebase.auth.FirebaseAuth;
 
+import org.jetbrains.annotations.NotNull;
+
 import arunkbabu90.filimibeat.R;
 import arunkbabu90.filimibeat.Utils;
 import arunkbabu90.filimibeat.databinding.FragmentSignUpBinding;
@@ -67,7 +69,7 @@ public class SignUpFragment extends Fragment implements View.OnFocusChangeListen
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NotNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         binding = FragmentSignUpBinding.inflate(inflater, container, false);
         return binding.getRoot();

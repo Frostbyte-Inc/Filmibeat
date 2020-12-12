@@ -7,7 +7,8 @@ import arunkbabu90.filimibeat.R
 import arunkbabu90.filimibeat.inflate
 import kotlinx.android.synthetic.main.item_two_line_list.view.*
 
-class ProfileAdapter(private val data: ArrayList<Pair<String, String>>)
+class ProfileAdapter(private val data: ArrayList<Pair<String, String>>,
+                     private val itemCLickListener: (Pair<String, String>) -> Unit )
     : RecyclerView.Adapter<ProfileAdapter.ProfileViewHolder>() {
     
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProfileViewHolder {
@@ -26,6 +27,8 @@ class ProfileAdapter(private val data: ArrayList<Pair<String, String>>)
             val (title, subtitle) = data
             itemView.tv_twoLineList_title.text = title
             itemView.tv_twoLineList_subtitle.text = subtitle
+
+            itemView.setOnClickListener { itemCLickListener(title to subtitle) }
         }
     }
 }
