@@ -56,7 +56,12 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
-
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/movie_detail_guideline"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.5"/>
             <!-- Title Card -->
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
@@ -209,16 +214,18 @@
                 android:layout_height="wrap_content"
                 app:layout_constraintTop_toBottomOf="@id/layout_company"
                 app:layout_constraintStart_toStartOf="parent"/>
-
             <!-- Action Cards -->
             <arunkbabu90.filimibeat.ui.view.ActionCard
-                android:layout_width="280dp"
-                android:layout_height="230dp"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
                 app:layout_constraintTop_toBottomOf="@id/layout_videos"
                 app:layout_constraintStart_toStartOf="parent"
+                app:icn="@drawable/common_google_signin_btn_icon_dark"
+                app:description="REVIEW"
                 app:layout_constraintEnd_toEndOf="parent"
-                />
+                app:layout_constraintEnd_toStartOf="@id/movie_detail_guideline"/>
 
+            <!--- guideline -->
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
