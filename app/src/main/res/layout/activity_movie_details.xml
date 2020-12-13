@@ -56,7 +56,12 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
-
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/movie_detail_guideline"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.5"/>
             <!-- Title Card -->
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
@@ -209,38 +214,18 @@
                 android:layout_height="wrap_content"
                 app:layout_constraintTop_toBottomOf="@id/layout_company"
                 app:layout_constraintStart_toStartOf="parent"/>
-
-            <!-- Review Card -->
-            <RelativeLayout
-                android:layout_width="match_parent"
+            <!-- Action Cards -->
+            <arunkbabu90.filimibeat.ui.view.ActionCard
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/default_margin"
-                android:visibility="gone"
-                android:background="@color/colorDarkerGrey"
-                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/layout_videos"
                 app:layout_constraintStart_toStartOf="parent"
+                app:icn="@drawable/common_google_signin_btn_icon_dark"
+                app:description="REVIEW"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/layout_videos">
+                app:layout_constraintEnd_toStartOf="@id/movie_detail_guideline"/>
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="sans-serif"
-                    android:padding="22dp"
-                    android:text="@string/reviews"
-                    android:textColor="@android:color/white"
-                    android:textSize="18sp"
-                    android:textStyle="bold" />
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_centerVertical="true"
-                    android:padding="@dimen/default_padding"
-                    android:src="@drawable/ic_forward"
-                    android:contentDescription="@string/read_reviews" />
-            </RelativeLayout>
+            <!--- guideline -->
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -1,4 +1,4 @@
-package arunkbabu90.filimibeat.ui.activity;
+  package arunkbabu90.filimibeat.ui.activity;
 
 import android.content.Intent;
 import android.net.ConnectivityManager;
