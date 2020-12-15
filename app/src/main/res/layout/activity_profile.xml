@@ -93,7 +93,6 @@
         android:backgroundTint="@android:color/transparent"
         app:strokeColor="@color/colorSignOutButton"
         app:strokeWidth="2dp"
-        android:visibility="gone"
         app:cornerRadius="@dimen/small_corner_radius"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
