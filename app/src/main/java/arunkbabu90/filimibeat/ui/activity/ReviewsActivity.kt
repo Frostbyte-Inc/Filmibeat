@@ -32,6 +32,7 @@ class ReviewsActivity : AppCompatActivity() {
 
         movieId = intent.getIntExtra(REVIEW_MOVIE_ID_EXTRA_KEY, -1)
 
+        window.statusBarColor = ContextCompat.getColor(this, R.color.colorDarkerGrey)
         window.navigationBarColor = ContextCompat.getColor(this, R.color.colorDarkBackgroundGrey1)
 
         val apiService = TMDBClient.getClient()

@@ -153,18 +153,19 @@ class MovieDetailsActivity : AppCompatActivity(), View.OnClickListener {
         setFeaturesBasedOnUser()
 
         fab_favourites.setOnClickListener(this)
-
-        //TODO: Should be deleted after testing
-        tv_movie_title.setOnClickListener {
-            val reviewIntent = Intent(this, ReviewsActivity::class.java)
-            reviewIntent.putExtra(ReviewsActivity.REVIEW_MOVIE_ID_EXTRA_KEY, movieId)
-            startActivity(reviewIntent)
-        }
+        review_actionCard.setOnClickListener(this)
     }
 
     override fun onClick(p0: View?) {
         when (p0?.id) {
             R.id.fab_favourites -> addFavMovie()
+
+            R.id.review_actionCard -> {
+                // Open Movie Reviews
+                val reviewIntent = Intent(this, ReviewsActivity::class.java)
+                reviewIntent.putExtra(ReviewsActivity.REVIEW_MOVIE_ID_EXTRA_KEY, movieId)
+                startActivity(reviewIntent)
+            }
         }
     }
 
