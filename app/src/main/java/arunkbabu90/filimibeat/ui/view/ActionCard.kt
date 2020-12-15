@@ -9,26 +9,28 @@ import androidx.core.content.ContextCompat
 import arunkbabu90.filimibeat.R
 import com.google.android.material.card.MaterialCardView
 
-class ActionCard@JvmOverloads constructor(context: Context, attr: AttributeSet, defStyleAttributeSet: Int = 0)
-    : MaterialCardView(context, attr, defStyleAttributeSet){
+class ActionCard @JvmOverloads constructor(context: Context, attr: AttributeSet, defStyleAttributeSet: Int = 0)
+    : MaterialCardView(context, attr, defStyleAttributeSet) {
+
         init {
             inflate(context, R.layout.view_action_card,this)
 
             val imageView : ImageView = findViewById(R.id.action_card_icon_view)
             val textView : TextView = findViewById(R.id.action_card_desc)
 
-            val padding = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 20f, resources.displayMetrics).toInt()
-            val cardRadius = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 10f, resources.displayMetrics)
+            val padding = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 10f, resources.displayMetrics).toInt()
             setCardBackgroundColor(ContextCompat.getColor(context, R.color.colorDarkGrey))
-            radius = cardRadius
-            cardElevation = 10f
-            cardElevation = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 10f, resources.displayMetrics).toInt().toFloat()
+
+            radius = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 10f, resources.displayMetrics)
+            cardElevation = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 4f, resources.displayMetrics).toInt().toFloat()
             setPadding(padding, padding, padding, padding)
+
             val attributes = context.obtainStyledAttributes(attr, R.styleable.ActionCard)
-            imageView.setImageDrawable(attributes.getDrawable(R.styleable.ActionCard_icn))
-
-            textView.text = attributes.getString(R.styleable.ActionCard_description)
-
-            attributes.recycle()
+            try {
+                imageView.setImageDrawable(attributes.getDrawable(R.styleable.ActionCard_icn))
+                textView.text = attributes.getString(R.styleable.ActionCard_description)
+            } finally {
+                attributes.recycle()
+            }
         }
     }

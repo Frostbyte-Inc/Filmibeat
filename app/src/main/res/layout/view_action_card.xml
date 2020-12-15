@@ -2,7 +2,7 @@
 <merge xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="150dp">
+    android:layout_height="@dimen/action_card_height">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -14,7 +14,7 @@
             android:layout_width="@dimen/dp_image_view_size_small"
             android:layout_height="@dimen/dp_image_view_size_small"
             android:layout_gravity="start"
-            android:layout_marginStart="@dimen/default_margin"
+            android:layout_marginStart="20dp"
             android:layout_marginTop="@dimen/default_margin"
             android:scaleType="center"
             tools:src="@drawable/common_google_signin_btn_text_dark"
@@ -24,8 +24,12 @@
             android:id="@+id/action_card_desc"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/default_margin"
-            android:background="@color/colorDarkGrey"
+            android:layout_marginStart="@dimen/default_margin"
+            android:layout_marginEnd="@dimen/default_margin"
+            android:layout_marginBottom="@dimen/default_margin"
+            android:layout_marginTop="@dimen/small_margin"
+            android:textColor="@color/colorTextGrey"
+            tools:background="@color/colorDarkGrey"
             tools:text="Reviews" />
     </LinearLayout>
 </merge>
