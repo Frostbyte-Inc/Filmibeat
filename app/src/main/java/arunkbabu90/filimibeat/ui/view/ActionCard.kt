@@ -12,7 +12,7 @@ import com.google.android.material.card.MaterialCardView
 class ActionCard@JvmOverloads constructor(context: Context, attr: AttributeSet, defStyleAttributeSet: Int = 0)
     : MaterialCardView(context, attr, defStyleAttributeSet){
         init {
-            inflate(context, R.layout.vm_action_card,this)
+            inflate(context, R.layout.view_action_card,this)
 
             val imageView : ImageView = findViewById(R.id.action_card_icon_view)
             val textView : TextView = findViewById(R.id.action_card_desc)
