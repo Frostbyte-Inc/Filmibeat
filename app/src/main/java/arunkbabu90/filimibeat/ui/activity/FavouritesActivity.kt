@@ -11,5 +11,6 @@ class FavouritesActivity : AppCompatActivity() {
         setContentView(R.layout.activity_favourites)
 
         window.statusBarColor = ContextCompat.getColor(this, R.color.colorPurpleDark)
+        window.navigationBarColor = ContextCompat.getColor(this, R.color.colorPurple)
     }
 }
