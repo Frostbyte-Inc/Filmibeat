@@ -22,7 +22,7 @@ class ActionCard @JvmOverloads constructor(context: Context, attr: AttributeSet,
             setCardBackgroundColor(ContextCompat.getColor(context, R.color.colorDarkGrey))
 
             radius = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 10f, resources.displayMetrics)
-            cardElevation = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 4f, resources.displayMetrics).toInt().toFloat()
+            cardElevation = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 6f, resources.displayMetrics).toInt().toFloat()
             setPadding(padding, padding, padding, padding)
 
             val attributes = context.obtainStyledAttributes(attr, R.styleable.ActionCard)
