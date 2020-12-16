@@ -106,9 +106,17 @@ class MovieDetailsActivity : AppCompatActivity(), View.OnClickListener {
         // Load available data here for faster loading
         loadPosterAndCover(posterUrl, coverUrl)
         tv_movie_title.text = title
-        tv_movie_description.text = overview
         tv_movie_rating.text = rating
         tv_movie_date.text = date
+        // Hide synopsis if is empty
+        if (overview.isBlank()) {
+            synopsisTitle_textView.visibility = View.GONE
+            description_card.visibility = View.GONE
+        } else {
+            synopsisTitle_textView.visibility = View.VISIBLE
+            description_card.visibility = View.VISIBLE
+            tv_movie_description.text = overview
+        }
 
         // Load Favourite Movie Information
         val user = auth.currentUser

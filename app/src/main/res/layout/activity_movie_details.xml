@@ -144,7 +144,7 @@
                 app:tint="@color/colorFavIcon" />
 
             <TextView
-                android:id="@+id/textViewS"
+                android:id="@+id/synopsisTitle_textView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/small_margin"
@@ -171,7 +171,7 @@
                 app:cardElevation="@dimen/small_card_elevation"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/textViewS">
+                app:layout_constraintTop_toBottomOf="@id/synopsisTitle_textView">
 
                 <TextView
                     android:id="@+id/tv_movie_description"
