@@ -1,7 +1,5 @@
 <resources>
     <string name="app_name">Filmibeat</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
 
     <string name="err_check_internet">Failed to load video data. You need internet connection to view and play videos</string>
     <string name="err_review">Failed to load reviews. You need internet connection to load reviews</string>
