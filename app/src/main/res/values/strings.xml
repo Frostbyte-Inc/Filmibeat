@@ -15,7 +15,7 @@
     <string name="tab_title_search">Search</string>
     <string name="tab_title_favourites">Favourites</string>
     <!--string name="main_poster_transition_name">main_poster_shared_transition</string-->
-    <string name="synopsis">Plot</string>
+    <string name="synopsis">Synopsis</string>
     <string name="err_no_internet">No Internet Connection</string>
     <string name="err_img_load">Unable to load image. Please try again</string>
     <string name="no_favourites">No Movie Marked as Favourite Yet!</string>
