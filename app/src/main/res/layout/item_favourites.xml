@@ -55,7 +55,7 @@
             android:layout_marginStart="8dp"
             android:fontFamily="sans-serif"
             android:padding="@dimen/smaller_padding"
-            android:textColor="@color/colorGrey"
+            android:textColor="@color/colorTextGrey"
             app:layout_constraintStart_toStartOf="@+id/guideline"
             app:layout_constraintTop_toBottomOf="@+id/tv_fav_title"
             tools:text="Released:   2015" />
@@ -67,7 +67,7 @@
             android:layout_marginStart="8dp"
             android:fontFamily="sans-serif"
             android:padding="@dimen/smaller_padding"
-            android:textColor="@color/colorGrey"
+            android:textColor="@color/colorTextGrey"
             app:layout_constraintStart_toStartOf="@+id/guideline"
             app:layout_constraintTop_toBottomOf="@+id/tv_fav_year"
             tools:text="Rating:       7.8" />
@@ -78,7 +78,7 @@
             android:layout_marginEnd="@dimen/small_margin"
             android:fontFamily="sans-serif-condensed"
             android:text="@string/swipe_to_delete"
-            android:textColor="@color/colorGrey"
+            android:textColor="@color/colorTextGrey"
             android:textSize="12sp"
             android:textStyle="italic"
             app:layout_constraintBottom_toBottomOf="parent"

@@ -9,13 +9,12 @@
 
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/colorBlackBackground">
+        android:layout_height="wrap_content">
 
         <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/review_appBar"
             style="@style/Widget.MaterialComponents.Toolbar.Primary"
-            android:background="@color/colorBlackBackground"
+            android:background="@color/colorDarkBackgroundGrey1"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             app:title="Reviews" />

@@ -71,4 +71,6 @@
     <dimen name="category_card_radius">30dp</dimen>
     <dimen name="about_icon_size">90dp</dimen>
     <dimen name="tmdb_logo_size">40dp</dimen>
+    <dimen name="action_card_height">150dp</dimen>
+    <dimen name="action_card_icon_size">20dp</dimen>
 </resources>

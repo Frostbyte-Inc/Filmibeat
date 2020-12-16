@@ -73,21 +73,29 @@ class ProfileActivity : AppCompatActivity(), View.OnClickListener {
 
         registerNetworkChangeCallback()
 
-        binding.ivProfileDp.setOnClickListener(this)
         binding.fabDocProfileDpEdit.setOnClickListener(this)
+        binding.ivProfileDp.setOnClickListener(this)
+        binding.btnSignOut.setOnClickListener(this)
     }
 
     override fun onClick(p0: View?) {
         when(p0?.id) {
             binding.ivProfileDp.id -> {
+                // View Dp
                 val viewIntent = Intent(this, ViewPictureActivity::class.java)
                 viewIntent.putExtra(ViewPictureActivity.PROFILE_PICTURE_PATH_EXTRA_KEY, dpPath)
                 startActivity(viewIntent)
             }
             binding.fabDocProfileDpEdit.id -> {
+                // Pick Image
                 val pickImg = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
                 pickImg.type = "image/*"
                 startActivityForResult(Intent.createChooser(pickImg, getString(R.string.pick_photo)), REQUEST_CODE_PICK_IMAGE)
+            }
+            binding.btnSignOut.id -> {
+                // Sign out
+                auth.signOut()
+                finish()
             }
         }
     }
