@@ -133,4 +133,6 @@
     <string name="pick_photo">Pick a Photo</string>
     <string name="err_review_fetch">Unable to fetch reviews! Please check your internet connection and try again</string>
     <string name="no_reviews_found">No Reviews Found</string>
+    <string name="back">Back</string>
+    <string name="type_msg">Type a message</string>
 </resources>

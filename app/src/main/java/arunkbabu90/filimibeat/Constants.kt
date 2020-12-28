@@ -32,5 +32,8 @@ class Constants {
         const val IMG_FORMAT_JPG = ".jpg"
 
         const val DP_UPLOAD_SIZE = 960
+
+        const val ROOT_CHATS = "Chats"
+        const val ROOT_MESSAGES = "Messages"
     }
 }
