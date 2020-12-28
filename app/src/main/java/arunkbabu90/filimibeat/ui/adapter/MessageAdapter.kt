@@ -4,14 +4,10 @@ import android.content.Context
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import arunkbabu.care.Message
-import arunkbabu.care.R
-import arunkbabu.care.Utils
-import arunkbabu.care.inflate
+import arunkbabu90.filimibeat.R
+import arunkbabu90.filimibeat.data.model.Message
+import arunkbabu90.filimibeat.inflate
 import com.google.android.material.textview.MaterialTextView
-import kotlinx.android.synthetic.main.item_message_date.view.*
-import kotlinx.android.synthetic.main.item_message_lt.view.*
-import kotlinx.android.synthetic.main.item_message_rt.view.*
 import java.util.*
 
 class MessageAdapter(
