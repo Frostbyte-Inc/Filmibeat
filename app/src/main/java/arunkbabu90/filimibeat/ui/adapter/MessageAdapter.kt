@@ -9,6 +9,8 @@ import arunkbabu90.filimibeat.R
 import arunkbabu90.filimibeat.data.model.Message
 import arunkbabu90.filimibeat.databinding.ItemMessageLtBinding
 import arunkbabu90.filimibeat.databinding.ItemMessageRtBinding
+import arunkbabu90.filimibeat.getLogicalDateString
+import arunkbabu90.filimibeat.getTimeString
 import com.google.android.material.textview.MaterialTextView
 import java.util.*
 
@@ -61,7 +63,7 @@ class MessageAdapter(private val messages: ArrayList<Message>, private val userI
                                dtv: MaterialTextView, dl: View) {
         if (futureTs == 0L) {
             dl.visibility = View.VISIBLE
-            dtv.text = Utils.getLogicalDateString(msgTs)
+            dtv.text = getLogicalDateString(msgTs)
         } else {
             val c1: Calendar = Calendar.getInstance(TimeZone.getDefault())
             val c2: Calendar = Calendar.getInstance(TimeZone.getDefault())
@@ -71,35 +73,44 @@ class MessageAdapter(private val messages: ArrayList<Message>, private val userI
             val isSameDay = c1.get(Calendar.YEAR) == c2.get(Calendar.YEAR)
                     && c1.get(Calendar.MONTH) == c2.get(Calendar.MONTH)
                     && c1.get(Calendar.DAY_OF_YEAR) == c2.get(Calendar.DAY_OF_YEAR)
+
             if (isSameDay) {
                 dl.visibility = View.GONE
                 dtv.text = ""
             } else {
                 dl.visibility = View.VISIBLE
-                dtv.text = Utils.getLogicalDateString(msgTs)
+                dtv.text = getLogicalDateString(msgTs)
             }
         }
     }
 
-    inner class MessageViewHolderRt(private val context: Context, binding: ItemMessageRtBinding) : RecyclerView.ViewHolder(itemView) {
+    inner class MessageViewHolderRt(private val context: Context,
+                                    private val binding: ItemMessageRtBinding)
+        : RecyclerView.ViewHolder(binding.root) {
         fun bind(message: Message, futureTimestamp: Long) {
-            itemView.itemMsgRt_text.text = message.msg
+            binding.itemMsgRtText.text = message.msg
 
-            val time = Utils.getTimeString(context, message.msgTimestamp)
+            val time = getTimeString(context, message.msgTimestamp)
             // Set a tick if message is sent successfully
             if (message.status == Message.STATUS_SEND)
-                itemView.itemMsgRt_time.text =  context.getString(R.string.msg_sent, time)
+                binding.itemMsgRtTime.text = context.getString(R.string.msg_sent, time)
             else
-                itemView.itemMsgRt_time.text = time
+                binding.itemMsgRtTime.text = time
 
             groupMsgByDate(message.msgTimestamp, futureTimestamp,
                 itemView.tv_itemMsgDate, itemView.itemMsgRt_dateLayout)
+
+            groupMsgByDate(message.msgTimestamp, futureTimestamp, binding.)
         }
     }
 
-    inner class MessageViewHolderLt(private val context: Context, binding: ItemMessageLtBinding) : RecyclerView.ViewHolder(itemView) {
+    inner class MessageViewHolderLt(private val context: Context,
+                                    private val binding: ItemMessageLtBinding)
+        : RecyclerView.ViewHolder(binding.root) {
+
         fun bind(message: Message, futureTimestamp: Long) {
             itemView.itemMsgLt_text.text = message.msg
+            binding
 
             val time = Utils.getTimeString(context, message.msgTimestamp)
             // Set a tick if message is sent successfully

@@ -135,4 +135,5 @@
     <string name="no_reviews_found">No Reviews Found</string>
     <string name="back">Back</string>
     <string name="type_msg">Type a message</string>
+    <string name="msg_sent">%1$s</string>
 </resources>
