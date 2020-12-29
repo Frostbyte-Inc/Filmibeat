@@ -1,28 +1,26 @@
 package arunkbabu90.filimibeat.ui.adapter
 
 import android.content.Context
+import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import arunkbabu90.filimibeat.R
 import arunkbabu90.filimibeat.data.model.Message
-import arunkbabu90.filimibeat.inflate
+import arunkbabu90.filimibeat.databinding.ItemMessageLtBinding
+import arunkbabu90.filimibeat.databinding.ItemMessageRtBinding
 import com.google.android.material.textview.MaterialTextView
 import java.util.*
 
-class MessageAdapter(
-    private val messages: ArrayList<Message>,
-    private val userId: String
-)
+class MessageAdapter(private val messages: ArrayList<Message>, private val userId: String)
     : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+        val msgRtBinding = ItemMessageRtBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val msgLtBinding = ItemMessageLtBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return when (viewType) {
-            Message.TYPE_YOU -> MessageViewHolderRt(
-                parent.context,
-                parent.inflate(R.layout.item_message_rt)
-            )
-            else -> MessageViewHolderLt(parent.context, parent.inflate(R.layout.item_message_lt))
+            Message.TYPE_YOU -> MessageViewHolderRt(parent.context, msgRtBinding)
+            else -> MessageViewHolderLt(parent.context, msgLtBinding)
         }
     }
 
@@ -83,7 +81,7 @@ class MessageAdapter(
         }
     }
 
-    inner class MessageViewHolderRt(private val context: Context, itemView: View) : RecyclerView.ViewHolder(itemView) {
+    inner class MessageViewHolderRt(private val context: Context, binding: ItemMessageRtBinding) : RecyclerView.ViewHolder(itemView) {
         fun bind(message: Message, futureTimestamp: Long) {
             itemView.itemMsgRt_text.text = message.msg
 
@@ -99,7 +97,7 @@ class MessageAdapter(
         }
     }
 
-    inner class MessageViewHolderLt(private val context: Context, itemView: View) : RecyclerView.ViewHolder(itemView) {
+    inner class MessageViewHolderLt(private val context: Context, binding: ItemMessageLtBinding) : RecyclerView.ViewHolder(itemView) {
         fun bind(message: Message, futureTimestamp: Long) {
             itemView.itemMsgLt_text.text = message.msg
 
