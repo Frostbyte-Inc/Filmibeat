@@ -42,10 +42,6 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.SetOptions
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
-import kotlinx.android.synthetic.main.activity_movie_details.*
-import kotlinx.android.synthetic.main.layout_cast_crew.*
-import kotlinx.android.synthetic.main.layout_production_companies.*
-import kotlinx.android.synthetic.main.layout_related_videos.*
 
 class MovieDetailsActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var binding: ActivityMovieDetailsBinding
@@ -168,13 +164,20 @@ class MovieDetailsActivity : AppCompatActivity(), View.OnClickListener {
 
     override fun onClick(p0: View?) {
         when (p0?.id) {
-            R.id.fab_favourites -> addFavMovie()
+            binding.fabFavourites.id -> addFavMovie()
 
-            R.id.actionCard_review -> {
+            binding.actionCardReview.id -> {
                 // Open Movie Reviews
                 val reviewIntent = Intent(this, ReviewsActivity::class.java)
                 reviewIntent.putExtra(ReviewsActivity.REVIEW_MOVIE_ID_EXTRA_KEY, movieId)
                 startActivity(reviewIntent)
+            }
+
+            binding.actionCardGlobalChat.id -> {
+                // Open Movie Global Chat
+                val chatIntent = Intent(this, ChatActivity::class.java)
+                chatIntent.putExtra(ChatActivity.MOVIE_ID_EXTRA_KEY, movieId)
+                startActivity(chatIntent)
             }
         }
     }
@@ -243,13 +246,13 @@ class MovieDetailsActivity : AppCompatActivity(), View.OnClickListener {
         val castAdapter = CastCrewAdapter(true, castList)
         val crewAdapter = CastCrewAdapter(false, crewList)
 
-        rv_crew?.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
-        rv_crew?.setHasFixedSize(true)
-        rv_crew?.adapter = crewAdapter
+        binding.layoutCast.rvCrew.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+        binding.layoutCast.rvCrew.setHasFixedSize(true)
+        binding.layoutCast.rvCrew.adapter = crewAdapter
 
-        rv_cast?.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
-        rv_cast?.setHasFixedSize(true)
-        rv_cast?.adapter = castAdapter
+        binding.layoutCast.rvCast.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+        binding.layoutCast.rvCast.setHasFixedSize(true)
+        binding.layoutCast.rvCast.adapter = castAdapter
 
         // Cast & Crew Details
         val viewModel: CastCrewViewModel = getCastCrewViewModel(movieId)
@@ -266,8 +269,8 @@ class MovieDetailsActivity : AppCompatActivity(), View.OnClickListener {
             // Cast
             if (casts.isNullOrEmpty()) {
                 // Cast list empty so hide the related layout elements
-                rv_cast.visibility = View.GONE
-                cast_title.visibility = View.GONE
+                binding.layoutCast.rvCast.visibility = View.GONE
+                binding.layoutCast.castTitle.visibility = View.GONE
             } else {
                 castList.addAll(casts)
                 castAdapter.notifyDataSetChanged()
@@ -275,8 +278,8 @@ class MovieDetailsActivity : AppCompatActivity(), View.OnClickListener {
 
             // Crew
             if (filteredCrew.isNullOrEmpty()) {
-                rv_crew.visibility = View.GONE
-                crew_title.visibility = View.GONE
+                binding.layoutCast.rvCrew.visibility = View.GONE
+                binding.layoutCast.crewTitle.visibility = View.GONE
             } else {
                 crewList.addAll(filteredCrew)
                 crewAdapter.notifyDataSetChanged()
@@ -302,11 +305,12 @@ class MovieDetailsActivity : AppCompatActivity(), View.OnClickListener {
         // Populate Production Companies
         if (companyList.isNullOrEmpty()) {
             // No companies to show so hide the layout
-            layout_company.visibility = View.GONE
+            binding.layoutCompany.root.visibility = View.GONE
         }
-        rv_production_company?.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
-        rv_production_company?.adapter = CompaniesAdapter(companyList)
-        rv_production_company?.setHasFixedSize(true)
+        val lm = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+        binding.layoutCompany.rvProductionCompany.layoutManager = lm
+        binding.layoutCompany.rvProductionCompany.adapter = CompaniesAdapter(companyList)
+        binding.layoutCompany.rvProductionCompany.setHasFixedSize(true)
     }
 
     /**
@@ -317,16 +321,17 @@ class MovieDetailsActivity : AppCompatActivity(), View.OnClickListener {
             itemClickListener = { videoUrl -> onVideoClick(videoUrl) },
             itemLongClickListener = { videoUrl -> onVideoLongClick(videoUrl) })
 
-        rv_videos?.setHasFixedSize(true)
-        rv_videos?.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
-        rv_videos?.adapter = videoAdapter
+        val lm = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+        binding.layoutVideos.rvVideos.setHasFixedSize(true)
+        binding.layoutVideos.rvVideos.layoutManager = lm
+        binding.layoutVideos.rvVideos.adapter = videoAdapter
 
         val viewModel = getVideoViewModel(movieId)
         viewModel.videoList.observe(this, { videoResponse ->
             // Populate the videos to the adapter
             val videos = videoResponse.videos
             if (videos.isNullOrEmpty())
-                layout_videos.visibility = View.GONE
+                binding.layoutVideos.root.visibility = View.GONE
 
             videoList.addAll(videos)
             videoAdapter.notifyDataSetChanged()
@@ -412,10 +417,10 @@ class MovieDetailsActivity : AppCompatActivity(), View.OnClickListener {
     private fun setFeaturesBasedOnUser() {
         if (Constants.userType == Constants.USER_TYPE_PERSON) {
             // Normal User
-            fab_favourites.show()
+            binding.fabFavourites.show()
         } else {
             // Other user; Guest
-            fab_favourites.hide()
+            binding.fabFavourites.hide()
         }
     }
 
@@ -431,18 +436,18 @@ class MovieDetailsActivity : AppCompatActivity(), View.OnClickListener {
 
         if (isFavourite) {
             // Remove from Favourites
-            fab_favourites.setImageResource(R.drawable.ic_favourite_outline)
+            binding.fabFavourites.setImageResource(R.drawable.ic_favourite_outline)
             db.collection(path)
                 .document(movieId.toString())
                 .delete()
                 .addOnFailureListener { e ->
                     Toast.makeText(applicationContext, getString(R.string.err_remove_fav), Toast.LENGTH_LONG).show()
-                    fab_favourites.setImageResource(R.drawable.ic_favourite)
+                    binding.fabFavourites.setImageResource(R.drawable.ic_favourite)
                 }
                 .addOnSuccessListener { isFavourite = false }
         } else {
             // Add Movie As Favourite
-            fab_favourites.setImageResource(R.drawable.ic_favourite)
+            binding.fabFavourites.setImageResource(R.drawable.ic_favourite)
             val movie = hashMapOf(
                 Constants.FIELD_TITLE to title,
                 Constants.FIELD_POSTER_PATH to posterPath,
@@ -457,7 +462,7 @@ class MovieDetailsActivity : AppCompatActivity(), View.OnClickListener {
                 .addOnFailureListener { e ->
                     // Failed to add
                     Toast.makeText(applicationContext, getString(R.string.err_add_fav, e), Toast.LENGTH_LONG).show()
-                    fab_favourites.setImageResource(R.drawable.ic_favourite_outline)
+                    binding.fabFavourites.setImageResource(R.drawable.ic_favourite_outline)
                 }
                 .addOnSuccessListener { isFavourite = true }
         }

@@ -136,4 +136,5 @@
     <string name="back">Back</string>
     <string name="type_msg">Type a message</string>
     <string name="msg_sent">%1$s</string>
+    <string name="global_chat">Global Chat</string>
 </resources>
