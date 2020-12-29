@@ -87,6 +87,7 @@ class MessageAdapter(private val messages: ArrayList<Message>, private val userI
     inner class MessageViewHolderRt(private val context: Context,
                                     private val binding: ItemMessageRtBinding)
         : RecyclerView.ViewHolder(binding.root) {
+
         fun bind(message: Message, futureTimestamp: Long) {
             binding.itemMsgRtText.text = message.msg
 
@@ -98,9 +99,7 @@ class MessageAdapter(private val messages: ArrayList<Message>, private val userI
                 binding.itemMsgRtTime.text = time
 
             groupMsgByDate(message.msgTimestamp, futureTimestamp,
-                itemView.tv_itemMsgDate, itemView.itemMsgRt_dateLayout)
-
-            groupMsgByDate(message.msgTimestamp, futureTimestamp, binding.)
+                binding.itemMsgRtDateLayout.tvItemMsgDate, binding.itemMsgRtDateLayout.root)
         }
     }
 
@@ -109,18 +108,17 @@ class MessageAdapter(private val messages: ArrayList<Message>, private val userI
         : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(message: Message, futureTimestamp: Long) {
-            itemView.itemMsgLt_text.text = message.msg
-            binding
+            binding.itemMsgLtText.text = message.msg
 
-            val time = Utils.getTimeString(context, message.msgTimestamp)
+            val time = getTimeString(context, message.msgTimestamp)
             // Set a tick if message is sent successfully
             if (message.status == Message.STATUS_SEND)
-                itemView.itemMsgLt_text.text =  context.getString(R.string.msg_sent, time)
+                binding.itemMsgLtText.text = context.getString(R.string.msg_sent, time)
             else
-                itemView.itemMsgLt_time.text = time
+                binding.itemMsgLtText.text = time
 
             groupMsgByDate(message.msgTimestamp, futureTimestamp,
-                itemView.tv_itemMsgDate, itemView.itemMsgLt_dateLayout)
+                binding.itemMsgLtDateLayout.tvItemMsgDate, binding.itemMsgLtDateLayout.root)
         }
     }
 }
