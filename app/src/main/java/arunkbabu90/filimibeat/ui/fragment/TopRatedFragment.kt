@@ -29,7 +29,6 @@ import kotlinx.android.synthetic.main.item_network_state.*
 import kotlin.concurrent.thread
 
 class TopRatedFragment : Fragment() {
-
     private lateinit var repository: MovieTopRatedRepository
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {

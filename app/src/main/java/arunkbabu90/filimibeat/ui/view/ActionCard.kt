@@ -28,6 +28,7 @@ class ActionCard @JvmOverloads constructor(context: Context, attr: AttributeSet,
             val attributes = context.obtainStyledAttributes(attr, R.styleable.ActionCard)
             try {
                 imageView.setImageDrawable(attributes.getDrawable(R.styleable.ActionCard_icn))
+                imageView.imageTintList = attributes.getColorStateList(R.styleable.ActionCard_tint)
                 textView.text = attributes.getString(R.styleable.ActionCard_description)
             } finally {
                 attributes.recycle()

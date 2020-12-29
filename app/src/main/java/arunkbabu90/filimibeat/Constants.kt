@@ -12,9 +12,6 @@ class Constants {
         const val FIELD_FULL_NAME = "name"
         const val FIELD_ACCOUNT_VERIFIED = "activated"
         const val FIELD_DP_PATH = "dpPath"
-        const val FIELD_LANGUAGE = "language"
-
-        const val FIELD_MOVIE_ID = "movieId"
         const val FIELD_TITLE = "title"
         const val FIELD_POSTER_PATH = "posterPath"
         const val FIELD_RELEASE_DATE = "releaseDate"
@@ -38,8 +35,5 @@ class Constants {
         const val FIELD_SENDER_ID = "senderId"
         const val FIELD_RECEIVER_ID = "receiverId"
         const val FIELD_MSG_TIMESTAMP = "msgTimestamp"
-        const val FIELD_CHAT_TIMESTAMP = "chatTimestamp"
-        const val FIELD_LAST_MESSAGE = "lastMessage"
-        const val FIELD_STATUS = "status"
     }
 }

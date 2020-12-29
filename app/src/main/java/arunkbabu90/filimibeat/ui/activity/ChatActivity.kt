@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import arunkbabu90.filimibeat.Constants
 import arunkbabu90.filimibeat.data.model.Message
 import arunkbabu90.filimibeat.databinding.ActivityChatBinding
+import arunkbabu90.filimibeat.runPullDownAnimation
 import arunkbabu90.filimibeat.ui.adapter.ChatAdapter
 import com.google.firebase.database.*
 import com.google.firebase.database.ktx.database
@@ -107,12 +108,12 @@ class ChatActivity : AppCompatActivity(), View.OnClickListener, ChildEventListen
         messages.add(message)
 
         if (isFirstLaunch) {
-            Utils.runPullDownAnimation(this, rv_messages)
+            runPullDownAnimation(this, binding.rvMessages)
             isFirstLaunch = false
         }
 
-        rv_messages.smoothScrollToPosition(messages.size)
-        adapter.notifyDataSetChanged()
+        binding.rvMessages.smoothScrollToPosition(messages.size)
+        adapter?.notifyDataSetChanged()
     }
 
     override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {

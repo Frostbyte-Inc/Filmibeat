@@ -269,6 +269,7 @@ public class SignUpFragment extends Fragment implements View.OnFocusChangeListen
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+        binding = null;
         signUpFragActive = false;
     }
 }

@@ -213,7 +213,7 @@
 
             <!-- Action Cards -->
             <arunkbabu90.filimibeat.ui.view.ActionCard
-                android:id="@+id/review_actionCard"
+                android:id="@+id/actionCard_review"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/default_margin"
@@ -221,6 +221,22 @@
                 android:layout_marginBottom="@dimen/default_margin"
                 app:icn="@drawable/ic_review"
                 app:description="@string/reviews"
+                app:tint="@color/colorCatYellow"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/layout_videos"
+                app:layout_constraintEnd_toStartOf="@id/movie_detail_guideline"/>
+
+            <arunkbabu90.filimibeat.ui.view.ActionCard
+                android:id="@+id/actionCard_globalChat"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/default_margin"
+                android:layout_marginTop="@dimen/large_margin"
+                android:layout_marginBottom="@dimen/default_margin"
+                app:icn="@drawable/ic_review"
+                app:description="@string/reviews"
+                app:tint="@color/colorCatGreen"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/layout_videos"
