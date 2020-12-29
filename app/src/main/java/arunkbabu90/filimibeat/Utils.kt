@@ -6,7 +6,6 @@ import android.content.Context
 import android.net.ConnectivityManager
 import android.net.Network
 import android.net.NetworkCapabilities
-import android.text.format.DateFormat
 import android.view.View
 import android.view.animation.AnimationUtils
 import android.view.animation.LayoutAnimationController
@@ -209,20 +208,3 @@ fun getLogicalShortDate(timestamp: Long): String {
 
     return sdf.format(date)
 }
-
-/**
- * Get the time in (HH:mm) or (hh:mm) format based on system preferences
- * (ie 24Hr/12Hr format based on the settings in Android System)
- * @param epoch The epoch timestamp
- * @param applicationContext The Application Context
- * @return String: The human readable time string in (HH:mm) or (hh:mm) format
- */
-fun getTimeString(applicationContext: Context, epoch: Long): String {
-    val d = Date(epoch)
-    val tf = DateFormat.getTimeFormat(applicationContext)
-    return tf.format(d)
-}
-
-
-
-

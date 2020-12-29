@@ -5,16 +5,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import arunkbabu90.filimibeat.R
 import arunkbabu90.filimibeat.data.model.Message
 import arunkbabu90.filimibeat.databinding.ItemMessageLtBinding
 import arunkbabu90.filimibeat.databinding.ItemMessageRtBinding
 import arunkbabu90.filimibeat.getLogicalDateString
-import arunkbabu90.filimibeat.getTimeString
 import com.google.android.material.textview.MaterialTextView
 import java.util.*
 
-class MessageAdapter(private val messages: ArrayList<Message>, private val userId: String)
+class ChatAdapter(private val messages: ArrayList<Message>, private val userId: String)
     : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
@@ -91,13 +89,6 @@ class MessageAdapter(private val messages: ArrayList<Message>, private val userI
         fun bind(message: Message, futureTimestamp: Long) {
             binding.itemMsgRtText.text = message.msg
 
-            val time = getTimeString(context, message.msgTimestamp)
-            // Set a tick if message is sent successfully
-            if (message.status == Message.STATUS_SEND)
-                binding.itemMsgRtTime.text = context.getString(R.string.msg_sent, time)
-            else
-                binding.itemMsgRtTime.text = time
-
             groupMsgByDate(message.msgTimestamp, futureTimestamp,
                 binding.itemMsgRtDateLayout.tvItemMsgDate, binding.itemMsgRtDateLayout.root)
         }
@@ -109,13 +100,7 @@ class MessageAdapter(private val messages: ArrayList<Message>, private val userI
 
         fun bind(message: Message, futureTimestamp: Long) {
             binding.itemMsgLtText.text = message.msg
-
-            val time = getTimeString(context, message.msgTimestamp)
-            // Set a tick if message is sent successfully
-            if (message.status == Message.STATUS_SEND)
-                binding.itemMsgLtText.text = context.getString(R.string.msg_sent, time)
-            else
-                binding.itemMsgLtText.text = time
+            binding.itemMsgLtName.text = message.senderName
 
             groupMsgByDate(message.msgTimestamp, futureTimestamp,
                 binding.itemMsgLtDateLayout.tvItemMsgDate, binding.itemMsgLtDateLayout.root)

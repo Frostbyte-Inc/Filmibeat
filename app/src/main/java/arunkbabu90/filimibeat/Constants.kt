@@ -33,7 +33,13 @@ class Constants {
 
         const val DP_UPLOAD_SIZE = 960
 
-        const val ROOT_CHATS = "Chats"
-        const val ROOT_MESSAGES = "Messages"
+        const val ROOT_MOVIE_ROOMS = "MovieRooms"
+        const val FIELD_MESSAGE = "msg"
+        const val FIELD_SENDER_ID = "senderId"
+        const val FIELD_RECEIVER_ID = "receiverId"
+        const val FIELD_MSG_TIMESTAMP = "msgTimestamp"
+        const val FIELD_CHAT_TIMESTAMP = "chatTimestamp"
+        const val FIELD_LAST_MESSAGE = "lastMessage"
+        const val FIELD_STATUS = "status"
     }
 }

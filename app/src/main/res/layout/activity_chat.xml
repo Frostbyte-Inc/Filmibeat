@@ -25,15 +25,6 @@
             android:padding="@dimen/small_margin"
             android:src="@drawable/ic_back" />
 
-        <com.google.android.material.imageview.ShapeableImageView
-            android:id="@+id/toolbar_dp"
-            android:layout_width="@dimen/dp_image_view_size_small"
-            android:layout_height="@dimen/dp_image_view_size_small"
-            android:layout_marginEnd="@dimen/default_margin"
-            app:scaleType="centerCrop"
-            app:shapeAppearance="@style/CircularImageView"
-            app:src="@drawable/default_dp" />
-
         <TextView
             android:id="@+id/toolbar_name"
             android:layout_width="wrap_content"
@@ -43,7 +34,7 @@
             android:paddingStart="0dp"
             android:gravity="center"
             android:textSize="18sp"
-            tools:text="Arun K Babu" />
+            tools:text="Avatar (2010)" />
     </com.google.android.material.appbar.MaterialToolbar>
 
     <!-- Messages View -->
