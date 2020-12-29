@@ -175,9 +175,15 @@ class MovieDetailsActivity : AppCompatActivity(), View.OnClickListener {
 
             binding.actionCardGlobalChat.id -> {
                 // Open Movie Global Chat
-                val chatIntent = Intent(this, ChatActivity::class.java)
-                chatIntent.putExtra(ChatActivity.MOVIE_ID_EXTRA_KEY, movieId)
-                startActivity(chatIntent)
+                if (Constants.userType == Constants.USER_TYPE_PERSON) {
+                    // Allow access to chat only to registered Users
+                    val chatIntent = Intent(this, ChatActivity::class.java)
+                    chatIntent.putExtra(ChatActivity.MOVIE_ID_EXTRA_KEY, movieId)
+                    startActivity(chatIntent)
+                } else {
+                    // User is a Guest; Don't allow access to the chat
+                    Toast.makeText(this, R.string.feature_unavaliable_for_guest, Toast.LENGTH_SHORT).show()
+                }
             }
         }
     }
