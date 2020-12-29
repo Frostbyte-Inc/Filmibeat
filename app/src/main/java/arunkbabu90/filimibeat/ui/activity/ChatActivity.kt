@@ -1,6 +1,5 @@
 package arunkbabu90.filimibeat.ui.activity
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
@@ -13,31 +12,24 @@ import com.google.firebase.database.*
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 
-class ChatActivity : AppCompatActivity(), View.OnClickListener {
+class ChatActivity : AppCompatActivity(), View.OnClickListener, ChildEventListener {
     private lateinit var binding: ActivityChatBinding
 
-    private lateinit var msgRoot: DatabaseReference
-    private lateinit var receiverChatRoot: DatabaseReference
-    private lateinit var senderChatRoot: DatabaseReference
-    private lateinit var msgQuery: Query
+    private lateinit var roomRoot: DatabaseReference
+    private lateinit var roomQuery: Query
     private var adapter: ChatAdapter? = null
 
     private val messages = ArrayList<Message>()
-    private var senderId = ""
-    private var receiverId = ""
-    private var receiverName = ""
     private var senderName = ""
-    private var receiverUserType: Int = -1
+    private var senderId = ""
+    private var movieId = ""
 
     private var isFirstLaunch = true
 
     companion object {
-        const val RECEIVER_NAME_EXTRA_KEY = "key_chat_receiver_name_extra"
-        const val RECEIVER_ID_EXTRA_KEY = "key_chat_receiver_id_extra"
+        const val MOVIE_ID_EXTRA_KEY = "key_chat_receiver_id_extra"
         const val SENDER_NAME_EXTRA_KEY = "key_chat_sender_name_extra"
-        const val SENDER_DP_EXTRA_KEY = "key_chat_sender_dp_extra"
         const val SENDER_ID_EXTRA_KEY = "key_chat_sender_id_extra"
-        const val RECEIVER_USER_TYPE_EXTRA_KEY = "key_user_type_receiver_extra"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -45,29 +37,16 @@ class ChatActivity : AppCompatActivity(), View.OnClickListener {
         binding = ActivityChatBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        receiverUserType = intent.getIntExtra(RECEIVER_USER_TYPE_EXTRA_KEY, -1)
-        receiverName = intent.getStringExtra(RECEIVER_NAME_EXTRA_KEY) ?: ""
-        receiverId = intent.getStringExtra(RECEIVER_ID_EXTRA_KEY) ?: ""
+        movieId = intent.getStringExtra(MOVIE_ID_EXTRA_KEY) ?: ""
         senderId = intent.getStringExtra(SENDER_ID_EXTRA_KEY) ?: ""
         senderName = intent.getStringExtra(SENDER_NAME_EXTRA_KEY) ?: ""
 
         setSupportActionBar(binding.toolbar)
         supportActionBar?.setDisplayShowTitleEnabled(false)
 
-        receiverChatRoot = Firebase.database.reference.root
+        roomRoot = Firebase.database.reference
             .child(Constants.ROOT_MOVIE_ROOMS)
-            .child(receiverId)
-            .child(senderId)
-
-        senderChatRoot = Firebase.database.reference.root
-            .child(Constants.ROOT_MOVIE_ROOMS)
-            .child(senderId)
-            .child(receiverId)
-
-        msgRoot = Firebase.database.reference
-            .child(Constants.ROOT_MESSAGES)
-            .child(senderId)
-            .child(receiverId)
+            .child(movieId)
         loadMessages()
 
         val lm = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
@@ -94,44 +73,19 @@ class ChatActivity : AppCompatActivity(), View.OnClickListener {
             }
             binding.fabSendMessage.id -> {
                 val message: String = binding.etTypeMessage.text.toString()
-                val newMsgRoot = msgRoot.push()
-                val newMsgKey = newMsgRoot.key
+                val newMsgRoot = roomRoot.push()
+
                 if (message.isNotBlank()) {
                     val msgMap = hashMapOf(
                         Constants.FIELD_MESSAGE to message,
                         Constants.FIELD_SENDER_ID to senderId,
-                        Constants.FIELD_RECEIVER_ID to receiverId,
+                        Constants.FIELD_RECEIVER_ID to movieId,
                         Constants.FIELD_MSG_TIMESTAMP to ServerValue.TIMESTAMP
                     )
                     newMsgRoot.updateChildren(msgMap)
-                    // Also push your id to doctor's chat index in "Chats". So that the receiver can
-                    // connect with you
-                    val sChatMap = hashMapOf(
-                        Constants.FIELD_FULL_NAME to senderName,
-                        Constants.FIELD_DP_PATH to senderDpPath,
-                        Constants.FIELD_CHAT_TIMESTAMP to ServerValue.TIMESTAMP,
-                        Constants.FIELD_LAST_MESSAGE to message
-                    )
-                    val rChatMap = hashMapOf(
-                        Constants.FIELD_FULL_NAME to receiverName,
-                        Constants.FIELD_DP_PATH to receiverDpPath,
-                        Constants.FIELD_CHAT_TIMESTAMP to ServerValue.TIMESTAMP,
-                        Constants.FIELD_LAST_MESSAGE to message
-                    )
-                    receiverChatRoot.updateChildren(sChatMap)
-                    senderChatRoot.updateChildren(rChatMap)
 
                     binding.etTypeMessage.setText("")
                 }
-            }
-            binding.toolbarName.id -> {
-                val vpIntent = Intent(this, ViewProfileActivity::class.java)
-                vpIntent.putExtra(ViewProfileActivity.USER_ID_EXTRAS_KEY, receiverId)
-                vpIntent.putExtra(ViewProfileActivity.NAME_EXTRAS_KEY, receiverName)
-                vpIntent.putExtra(ViewProfileActivity.DP_EXTRAS_KEY, receiverDpPath)
-                vpIntent.putExtra(ViewProfileActivity.USER_TYPE_EXTRAS_KEY, receiverUserType)
-                vpIntent.putExtra(ViewProfileActivity.IS_VIEW_MODE_EXTRAS_KEY, true)
-                startActivity(vpIntent)
             }
         }
     }
@@ -140,8 +94,8 @@ class ChatActivity : AppCompatActivity(), View.OnClickListener {
      * Loads the messages
      */
     private fun loadMessages() {
-        msgQuery = msgRoot.orderByChild(Constants.FIELD_MSG_TIMESTAMP)
-        msgQuery.addChildEventListener(this)
+        roomQuery = roomRoot.orderByChild(Constants.FIELD_MSG_TIMESTAMP)
+        roomQuery.addChildEventListener(this)
     }
 
     /**

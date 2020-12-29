@@ -135,16 +135,24 @@ fun getShortDateString(month: Int) =
  * @param reverseAnimation Whether to reverse the animation effect.
  * If True then the animation will play in the reverse order
  */
-fun runStackedRevealAnimation(
-    context: Context,
-    recyclerView: RecyclerView,
-    reverseAnimation: Boolean
-) {
+fun runStackedRevealAnimation(context: Context, recyclerView: RecyclerView, reverseAnimation: Boolean) {
     val controller: LayoutAnimationController = if (reverseAnimation) {
         AnimationUtils.loadLayoutAnimation(context, R.anim.stacked_reveal_layout_animation_reverse)
     } else {
         AnimationUtils.loadLayoutAnimation(context, R.anim.stacked_reveal_layout_animation)
     }
+
+    recyclerView.layoutAnimation = controller
+    recyclerView.scheduleLayoutAnimation()
+}
+
+/**
+ * Starts the Pull-Down Layout Animation on recycler view items
+ * @param context The context
+ * @param recyclerView The recyclerview to run the animation on
+ */
+fun runPullDownAnimation(context: Context, recyclerView: RecyclerView) {
+    val controller = AnimationUtils.loadLayoutAnimation(context, R.anim.pull_down_layout_animation_reverse)
     recyclerView.layoutAnimation = controller
     recyclerView.scheduleLayoutAnimation()
 }

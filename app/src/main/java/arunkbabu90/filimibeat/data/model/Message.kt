@@ -7,7 +7,6 @@ data class Message(var key: String = "",
                    val msg: String = "",
                    val senderId: String = "",
                    val senderName: String = "",
-                   val senderDpPath: String = "",
                    val msgTimestamp: Long = -1) {
 
     companion object {
