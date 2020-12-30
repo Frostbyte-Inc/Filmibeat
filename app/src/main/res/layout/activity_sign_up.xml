@@ -20,19 +20,19 @@
         android:paddingBottom="@dimen/default_padding"
         android:text="@string/sign_up_information"
         android:fontFamily="@font/muli_bold"
-        android:textSize="40sp" />
+        android:textSize="35sp" />
 
     <TextView
         android:id="@+id/sign_up_sub_head"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/sign_up_heading"
+        android:fontFamily="sans-serif-light"
         android:gravity="center"
         android:paddingStart="36dp"
         android:paddingEnd="36dp"
         android:text="@string/sign_up_desc"
-        android:textColor="@color/colorTextLightGrey"
-        android:textSize="14sp" />
+        android:textColor="@color/colorTextLightGrey" />
 
     <TextView
         android:id="@+id/tv_sign_up_error"
@@ -43,14 +43,16 @@
         android:paddingStart="@dimen/default_padding"
         android:paddingTop="@dimen/default_padding"
         android:paddingEnd="@dimen/default_padding"
-        android:textColor="@color/colorRed"
-        android:visibility="invisible"
+        android:textColor="@color/colorCatRed"
+        android:textSize="12sp"
+        android:visibility="visible"
         tools:text="@string/err_login" />
 
     <FrameLayout
         android:id="@+id/sign_up_fragment_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/medium_margin"
         android:layout_above="@id/btn_sign_up_next"
         android:layout_below="@id/tv_sign_up_error" />
 

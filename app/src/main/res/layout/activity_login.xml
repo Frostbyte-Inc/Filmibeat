@@ -42,6 +42,7 @@
             android:layout_marginTop="@dimen/default_margin"
             android:textColor="@color/colorCatRed"
             android:visibility="invisible"
+            android:textSize="12sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/login_textView"
@@ -81,8 +82,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/sign_up_et_state_list_drawable"
-                android:paddingTop="8dp"
-                android:paddingBottom="5dp"
+                android:paddingTop="6dp"
+                android:paddingBottom="2dp"
                 android:textColorHint="@color/colorTextLightGrey"
                 app:hintTextColor="@color/colorVioletLight"
                 app:errorEnabled="true">
@@ -96,7 +97,7 @@
                     android:fontFamily="@font/muli_light"
                     android:hint="@string/email"
                     android:inputType="textEmailAddress"
-                    android:paddingTop="5dp"
+                    android:paddingTop="2dp"
                     android:selectAllOnFocus="true" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -105,10 +106,10 @@
                 style="@style/Widget.Design.TextInputLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="@dimen/medium_margin"
                 android:background="@drawable/sign_up_et_state_list_drawable"
-                android:paddingTop="8dp"
-                android:paddingBottom="4dp"
+                android:paddingTop="6dp"
+                android:paddingBottom="2dp"
                 android:textColorHint="@color/colorTextLightGrey"
                 app:hintTextColor="@color/colorVioletLight"
                 app:errorEnabled="true">
@@ -125,7 +126,7 @@
                     android:imeOptions="actionDone"
                     android:inputType="text"
                     android:maxLines="1"
-                    android:paddingTop="5dp"
+                    android:paddingTop="2dp"
                     android:selectAllOnFocus="true" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -153,7 +154,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginStart="@dimen/default_margin"
-                android:layout_marginTop="@dimen/default_margin"
+                android:layout_marginTop="@dimen/medium_margin"
                 android:layout_marginEnd="@dimen/default_margin"
                 android:fontFamily="@font/muli_light"
                 android:onClick="onForgotPasswordClick"
@@ -167,29 +168,29 @@
             android:id="@+id/tv_sign_up"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:gravity="center"
-            android:layout_margin="@dimen/default_margin"
+            android:layout_margin="@dimen/medium_margin"
             android:fontFamily="@font/muli_light"
+            android:gravity="center"
             android:onClick="onSignUpTextViewClick"
             android:padding="@dimen/default_padding"
             android:text="@string/sign_up_message"
             android:textColor="@color/colorBlue"
             app:layout_constraintEnd_toStartOf="@+id/guideline2"
-            app:layout_constraintStart_toStartOf="@id/login_layout"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/login_layout" />
 
         <TextView
             android:id="@+id/tv_login_guest"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:gravity="center"
-            android:layout_margin="@dimen/default_margin"
+            android:layout_margin="@dimen/medium_margin"
             android:fontFamily="@font/muli_light"
+            android:gravity="center"
             android:onClick="onLoginGuestClick"
             android:padding="@dimen/default_padding"
             android:text="@string/login_as_guest"
             android:textColor="@color/colorBlue"
-            app:layout_constraintEnd_toEndOf="@id/login_layout"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@+id/guideline2"
             app:layout_constraintTop_toBottomOf="@id/login_layout" />
 

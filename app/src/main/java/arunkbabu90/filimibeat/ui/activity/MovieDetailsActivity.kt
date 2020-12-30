@@ -181,6 +181,7 @@ class MovieDetailsActivity : AppCompatActivity(), View.OnClickListener {
                     // Allow access to chat only to registered Users
                     val chatIntent = Intent(this, ChatActivity::class.java)
                     chatIntent.putExtra(ChatActivity.MOVIE_ID_EXTRA_KEY, movieId)
+                    chatIntent.putExtra(ChatActivity.MOVIE_NAME_EXTRA_KEY, title)
                     startActivity(chatIntent)
                 } else {
                     // User is a Guest; Don't allow access to the chat

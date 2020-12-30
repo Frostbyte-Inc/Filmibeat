@@ -28,7 +28,8 @@ class ChatActivity : AppCompatActivity(), View.OnClickListener, ChildEventListen
     private var isFirstLaunch = true
 
     companion object {
-        const val MOVIE_ID_EXTRA_KEY = "key_chat_receiver_id_extra"
+        const val MOVIE_ID_EXTRA_KEY = "key_chat_movie_id_extra"
+        const val MOVIE_NAME_EXTRA_KEY = "key_movie_name_extra"
         const val SENDER_NAME_EXTRA_KEY = "key_chat_sender_name_extra"
         const val SENDER_ID_EXTRA_KEY = "key_chat_sender_id_extra"
     }
@@ -38,12 +39,14 @@ class ChatActivity : AppCompatActivity(), View.OnClickListener, ChildEventListen
         binding = ActivityChatBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        val movieTitle = intent.getStringExtra(MOVIE_NAME_EXTRA_KEY) ?: ""
         movieId = intent.getStringExtra(MOVIE_ID_EXTRA_KEY) ?: ""
         senderId = intent.getStringExtra(SENDER_ID_EXTRA_KEY) ?: ""
         senderName = intent.getStringExtra(SENDER_NAME_EXTRA_KEY) ?: ""
 
         setSupportActionBar(binding.toolbar)
         supportActionBar?.setDisplayShowTitleEnabled(false)
+        binding.toolbarName.text = movieTitle
 
         roomRoot = Firebase.database.reference
             .child(Constants.ROOT_MOVIE_ROOMS)
@@ -63,7 +66,6 @@ class ChatActivity : AppCompatActivity(), View.OnClickListener, ChildEventListen
         }
 
         binding.toolbarBackBtn.setOnClickListener(this)
-        binding.toolbarName.setOnClickListener(this)
         binding.fabSendMessage.setOnClickListener(this)
     }
 
