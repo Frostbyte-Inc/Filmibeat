@@ -52,7 +52,8 @@
         android:id="@+id/sign_up_fragment_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/medium_margin"
+        android:layout_marginTop="@dimen/default_margin"
+        android:layout_marginBottom="@dimen/medium_margin"
         android:layout_above="@id/btn_sign_up_next"
         android:layout_below="@id/tv_sign_up_error" />
 
@@ -71,7 +72,7 @@
         android:stateListAnimator="@null"
         android:text="@string/create"
         android:textAllCaps="true"
-        android:textSize="16sp"
+        android:textSize="14sp"
         android:translationZ="5dp"
         app:cornerRadius="90dp"
         android:onClick="onNextClick"/>

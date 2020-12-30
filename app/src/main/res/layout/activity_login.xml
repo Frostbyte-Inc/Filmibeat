@@ -48,21 +48,6 @@
             app:layout_constraintTop_toBottomOf="@id/login_textView"
             tools:text="@string/err_login" />
 
-        <ProgressBar
-            android:id="@+id/pb_login"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_margin="@dimen/default_margin"
-            android:indeterminate="true"
-            android:visibility="invisible"
-            android:indeterminateDrawable="@drawable/custom_green_progress_circle_drawable"
-            app:layout_constraintBottom_toTopOf="@id/tv_powered_by"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintVertical_bias="0.1"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_sign_up" />
-
         <LinearLayout
             android:id="@+id/login_layout"
             android:layout_width="match_parent"
@@ -161,7 +146,6 @@
                 android:padding="@dimen/default_padding"
                 android:text="@string/forgot_password"
                 android:textColor="@color/colorBlue" />
-
         </LinearLayout>
 
         <TextView
@@ -207,6 +191,21 @@
             app:layout_constraintHorizontal_bias="0.4"
             app:layout_constraintStart_toStartOf="parent" />
 
+        <ProgressBar
+            android:id="@+id/pb_login"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="@dimen/default_margin"
+            android:indeterminate="true"
+            android:visibility="invisible"
+            android:indeterminateDrawable="@drawable/custom_green_progress_circle_drawable"
+            app:layout_constraintBottom_toTopOf="@id/tv_powered_by"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintVertical_bias="0.1"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_sign_up" />
+
         <ImageView
             android:id="@+id/iv_tmdb_logo"
             android:layout_width="@dimen/tmdb_logo_size"
@@ -217,7 +216,5 @@
             app:layout_constraintTop_toTopOf="@id/tv_powered_by"
             tools:src="@drawable/tmdb_logo_short"
             tools:ignore="ContentDescription" />
-
-
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>
