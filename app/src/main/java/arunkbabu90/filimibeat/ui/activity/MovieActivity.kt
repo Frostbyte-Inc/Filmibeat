@@ -1,6 +1,11 @@
 package arunkbabu90.filimibeat.ui.activity
 
 import android.content.Intent
+import android.net.ConnectivityManager
+import android.net.ConnectivityManager.NetworkCallback
+import android.net.Network
+import android.net.NetworkCapabilities
+import android.net.NetworkRequest
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -26,6 +31,7 @@ class MovieActivity : AppCompatActivity(), FirebaseAuth.AuthStateListener {
     private lateinit var auth: FirebaseAuth
     private lateinit var db: FirebaseFirestore
 
+    private var networkListener: NetworkConnectivityChangeListener? = null
     private var tabLayoutMediator: TabLayoutMediator? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -91,7 +97,8 @@ class MovieActivity : AppCompatActivity(), FirebaseAuth.AuthStateListener {
                         auth.signOut()
                     } else {
                         startActivity(Intent(this, LoginActivity::class.java))
-                        Toast.makeText(this, getString(R.string.signed_out), Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this, getString(R.string.signed_out), Toast.LENGTH_SHORT)
+                            .show()
                         finish()
                     }
                     true
@@ -160,7 +167,12 @@ class MovieActivity : AppCompatActivity(), FirebaseAuth.AuthStateListener {
                 pushVerificationStatusFlag(false)
                 binding.tvPatientErrMsg.visibility = View.VISIBLE
                 binding.tvPatientErrMsg.setText(R.string.err_account_not_verified_desc)
-                binding.tvPatientErrMsg.setBackgroundColor(ContextCompat.getColor(this, R.color.colorStatusUnverified))
+                binding.tvPatientErrMsg.setBackgroundColor(
+                    ContextCompat.getColor(
+                        this,
+                        R.color.colorStatusUnverified
+                    )
+                )
                 window.statusBarColor = ContextCompat.getColor(this, R.color.colorStatusUnverified)
                 binding.tvPatientErrMsg.isClickable = true
                 binding.tvPatientErrMsg.isFocusable = true
@@ -168,7 +180,10 @@ class MovieActivity : AppCompatActivity(), FirebaseAuth.AuthStateListener {
                     // Launch the Verification Activity
                     val i = Intent(this, AccountVerificationActivity::class.java)
                     i.putExtra(AccountVerificationActivity.KEY_USER_EMAIL, user.email)
-                    i.putExtra(AccountVerificationActivity.KEY_BACK_BUTTON_BEHAVIOUR, AccountVerificationActivity.BEHAVIOUR_CLOSE)
+                    i.putExtra(
+                        AccountVerificationActivity.KEY_BACK_BUTTON_BEHAVIOUR,
+                        AccountVerificationActivity.BEHAVIOUR_CLOSE
+                    )
                     startActivity(i)
                 }
             }
@@ -190,7 +205,12 @@ class MovieActivity : AppCompatActivity(), FirebaseAuth.AuthStateListener {
                 pushVerificationStatusFlag(true)
                 tv_patient_err_msg.visibility = View.VISIBLE
                 tv_patient_err_msg.setText(R.string.account_verified)
-                tv_patient_err_msg.setBackgroundColor(ContextCompat.getColor(this, R.color.colorStatusVerified))
+                tv_patient_err_msg.setBackgroundColor(
+                    ContextCompat.getColor(
+                        this,
+                        R.color.colorStatusVerified
+                    )
+                )
                 tv_patient_err_msg.isClickable = false
                 tv_patient_err_msg.isFocusable = false
                 Handler(Looper.getMainLooper()).postDelayed({
@@ -203,14 +223,22 @@ class MovieActivity : AppCompatActivity(), FirebaseAuth.AuthStateListener {
                 window.statusBarColor = ContextCompat.getColor(this, R.color.colorStatusUnverified)
                 tv_patient_err_msg.visibility = View.VISIBLE
                 tv_patient_err_msg.setText(R.string.err_account_not_verified_desc)
-                tv_patient_err_msg.setBackgroundColor(ContextCompat.getColor(this, R.color.colorStatusUnverified))
+                tv_patient_err_msg.setBackgroundColor(
+                    ContextCompat.getColor(
+                        this,
+                        R.color.colorStatusUnverified
+                    )
+                )
                 tv_patient_err_msg.isClickable = true
                 tv_patient_err_msg.isFocusable = true
                 tv_patient_err_msg.setOnClickListener {
                     // Launch the Verification Activity
                     val i = Intent(this, AccountVerificationActivity::class.java)
                     i.putExtra(AccountVerificationActivity.KEY_USER_EMAIL, user.email)
-                    i.putExtra(AccountVerificationActivity.KEY_BACK_BUTTON_BEHAVIOUR, AccountVerificationActivity.BEHAVIOUR_CLOSE)
+                    i.putExtra(
+                        AccountVerificationActivity.KEY_BACK_BUTTON_BEHAVIOUR,
+                        AccountVerificationActivity.BEHAVIOUR_CLOSE
+                    )
                     startActivity(i)
                 }
             }
@@ -233,11 +261,59 @@ class MovieActivity : AppCompatActivity(), FirebaseAuth.AuthStateListener {
         }
     }
 
+
+    /**
+     * Register a callback to be invoked when network connectivity changes
+     */
+    private fun registerNetworkChangeCallback() {
+        val request = NetworkRequest.Builder()
+            .addTransportType(NetworkCapabilities.TRANSPORT_CELLULAR)
+            .addTransportType(NetworkCapabilities.TRANSPORT_ETHERNET)
+            .addTransportType(NetworkCapabilities.TRANSPORT_VPN)
+            .addTransportType(NetworkCapabilities.TRANSPORT_WIFI)
+            .build()
+
+        val cm = getSystemService(CONNECTIVITY_SERVICE) as ConnectivityManager
+        cm.registerNetworkCallback(request, object : NetworkCallback() {
+            override fun onAvailable(network: Network) {
+                super.onAvailable(network)
+                // Internet is Available
+                networkListener?.onNetworkChange(true)
+            }
+
+            override fun onLost(network: Network) {
+                super.onLost(network)
+                // Internet is Unavailable
+                networkListener?.onNetworkChange(false)
+            }
+        })
+    }
+
     override fun onResume() {
         super.onResume()
         if (!Constants.isAccountActivated) {
             // If email NOT Already Verified; check the status again
             checkAccountVerificationStatus()
         }
+    }
+
+
+    /**
+     * Interface callback for NetworkConnectivity Changes
+     */
+    interface NetworkConnectivityChangeListener {
+        /**
+         * Invoked when a network change occurs
+         * @param isAvailable True when Internet is available; False otherwise
+         */
+        fun onNetworkChange(isAvailable: Boolean)
+    }
+
+    /**
+     * Register a callback to be invoked when network connectivity changes
+     * @param listener The NetworkConnectivityChangeListener
+     */
+    fun setNetworkChangeListener(listener: NetworkConnectivityChangeListener) {
+        networkListener = listener
     }
 }

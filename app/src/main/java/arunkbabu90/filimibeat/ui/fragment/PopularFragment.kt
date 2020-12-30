@@ -59,13 +59,13 @@ class PopularFragment : Fragment() {
         tv_err?.text = getString(R.string.loading)
 
         val viewModel = getViewModel()
-        viewModel.popularMovies.observe(this, { moviePagedList ->
+        viewModel.popularMovies.observe(viewLifecycleOwner, { moviePagedList ->
             thread {
                 adapter.submitList(moviePagedList)
             }
         })
 
-        viewModel.networkState.observe(this, { state ->
+        viewModel.networkState.observe(viewLifecycleOwner, { state ->
             item_network_state_progress_bar?.visibility = if (viewModel.isEmpty() && state == NetworkState.LOADING) View.VISIBLE else View.GONE
             item_network_state_err_text_view?.visibility = if (viewModel.isEmpty() && state == NetworkState.ERROR) View.VISIBLE else View.GONE
 

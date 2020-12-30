@@ -60,13 +60,13 @@ class TopRatedFragment : Fragment() {
         tv_err?.visibility = View.VISIBLE
 
         val viewModel = getViewModel()
-        viewModel.topRatedMovies.observe(this, Observer { moviePagedList ->
+        viewModel.topRatedMovies.observe(viewLifecycleOwner, Observer { moviePagedList ->
             thread {
                 adapter.submitList(moviePagedList)
             }
         })
 
-        viewModel.networkState.observe(this, Observer { state ->
+        viewModel.networkState.observe(viewLifecycleOwner, Observer { state ->
             item_network_state_progress_bar?.visibility = if (viewModel.isEmpty() && state == NetworkState.LOADING) View.VISIBLE else View.GONE
             item_network_state_err_text_view?.visibility = if (viewModel.isEmpty() && state == NetworkState.ERROR) View.VISIBLE else View.GONE
 

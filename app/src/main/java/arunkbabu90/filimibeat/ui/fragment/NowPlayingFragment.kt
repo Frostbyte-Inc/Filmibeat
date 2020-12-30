@@ -20,6 +20,8 @@ import arunkbabu90.filimibeat.data.model.Movie
 import arunkbabu90.filimibeat.data.repository.MovieNowPlayingRepository
 import arunkbabu90.filimibeat.data.repository.NetworkState
 import arunkbabu90.filimibeat.getShortDate
+import arunkbabu90.filimibeat.isNetworkConnected
+import arunkbabu90.filimibeat.ui.activity.MovieActivity
 import arunkbabu90.filimibeat.ui.activity.MovieDetailsActivity
 import arunkbabu90.filimibeat.ui.adapter.MovieAdapter
 import arunkbabu90.filimibeat.ui.viewmodel.NowPlayingMovieViewModel
@@ -28,8 +30,9 @@ import kotlinx.android.synthetic.main.item_movie.*
 import kotlinx.android.synthetic.main.item_network_state.*
 import kotlin.concurrent.thread
 
-class NowPlayingFragment : Fragment() {
+class NowPlayingFragment : Fragment(), MovieActivity.NetworkConnectivityChangeListener {
     private lateinit var repository: MovieNowPlayingRepository
+    private var adapter: MovieAdapter? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
@@ -45,38 +48,28 @@ class NowPlayingFragment : Fragment() {
         val noOfCols: Int = calculateNoOfColumns(context)
 
         val lm = GridLayoutManager(context, noOfCols)
-        val adapter = MovieAdapter { movie -> if (movie != null) onMovieClick(movie) }
+        adapter = MovieAdapter { movie -> if (movie != null) onMovieClick(movie) }
         lm.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
             override fun getSpanSize(position: Int): Int {
-                val viewType = adapter.getItemViewType(position)
-                return if (viewType == adapter.VIEW_TYPE_MOVIE) 1 else noOfCols
+                val viewType = adapter?.getItemViewType(position)
+                return if (viewType == adapter?.VIEW_TYPE_MOVIE) 1 else noOfCols
             }
         }
         rv_movie_list?.setHasFixedSize(true)
         rv_movie_list?.layoutManager = lm
         rv_movie_list?.adapter = adapter
 
-        tv_err?.text = getString(R.string.loading)
+        // Show status to UI accordingly
+        if (isNetworkConnected(context)) {
+            loadMovies()
+        } else {
+            tv_err?.text = getString(R.string.err_no_internet)
+            return
+        }
         tv_err?.visibility = View.VISIBLE
 
-        val viewModel = getViewModel()
-        viewModel.nowPlayingMovies.observe(this, Observer { moviePagedList ->
-            thread {
-                adapter.submitList(moviePagedList)
-            }
-        })
-
-        viewModel.networkState.observe(this, Observer { state ->
-            item_network_state_progress_bar?.visibility = if (viewModel.isEmpty() && state == NetworkState.LOADING) View.VISIBLE else View.GONE
-            item_network_state_err_text_view?.visibility = if (viewModel.isEmpty() && state == NetworkState.ERROR) View.VISIBLE else View.GONE
-
-            if (state == NetworkState.LOADED)
-                tv_err?.visibility = View.GONE
-
-            if (!viewModel.isEmpty()) {
-                adapter.setNetworkState(state)
-            }
-        })
+        // Set the Network Change Listener
+        (activity as MovieActivity).setNetworkChangeListener(this)
     }
 
     /**
@@ -109,10 +102,44 @@ class NowPlayingFragment : Fragment() {
             startActivity(intent)
     }
 
+    /**
+     * Helper method to start loading the movies
+     */
+    private fun loadMovies() {
+        tv_err?.text = getString(R.string.loading)
+
+        val viewModel = getViewModel()
+        viewModel.nowPlayingMovies.observe(viewLifecycleOwner, Observer { moviePagedList ->
+            thread {
+                adapter?.submitList(moviePagedList)
+            }
+        })
+
+        viewModel.networkState.observe(viewLifecycleOwner, Observer { state ->
+            item_network_state_progress_bar?.visibility = if (viewModel.isEmpty() && state == NetworkState.LOADING) View.VISIBLE else View.GONE
+            item_network_state_err_text_view?.visibility = if (viewModel.isEmpty() && state == NetworkState.ERROR) View.VISIBLE else View.GONE
+
+            if (state == NetworkState.LOADED)
+                tv_err?.visibility = View.GONE
+
+            if (!viewModel.isEmpty()) {
+                adapter?.setNetworkState(state)
+            }
+        })
+    }
+
     private fun getViewModel(): NowPlayingMovieViewModel {
         return ViewModelProvider(this, object : ViewModelProvider.Factory {
             @Suppress("UNCHECKED_CAST")
             override fun <T : ViewModel?> create(modelClass: Class<T>): T = NowPlayingMovieViewModel(repository) as T
         })[NowPlayingMovieViewModel::class.java]
+    }
+
+    override fun onNetworkChange(isAvailable: Boolean) {
+        if (isAvailable) {
+            loadMovies()
+        } else {
+            tv_err?.text = getString(R.string.err_no_internet)
+        }
     }
 }
