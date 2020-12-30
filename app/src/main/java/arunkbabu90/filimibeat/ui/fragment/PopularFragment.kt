@@ -2,6 +2,7 @@ package arunkbabu90.filimibeat.ui.fragment
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,6 +20,7 @@ import arunkbabu90.filimibeat.data.model.Movie
 import arunkbabu90.filimibeat.data.repository.MoviePopularRepository
 import arunkbabu90.filimibeat.data.repository.NetworkState
 import arunkbabu90.filimibeat.getShortDate
+import arunkbabu90.filimibeat.ui.activity.MovieActivity
 import arunkbabu90.filimibeat.ui.activity.MovieDetailsActivity
 import arunkbabu90.filimibeat.ui.adapter.MovieAdapter
 import arunkbabu90.filimibeat.ui.viewmodel.PopularMovieViewModel
@@ -29,6 +31,10 @@ import kotlin.concurrent.thread
 
 class PopularFragment : Fragment() {
     private lateinit var repository: MoviePopularRepository
+    private var adapter: MovieAdapter? = null
+    private var isLoaded: Boolean = false
+
+    private val TAG = NowPlayingFragment::class.simpleName
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
@@ -44,11 +50,11 @@ class PopularFragment : Fragment() {
         val noOfCols: Int = calculateNoOfColumns(context)
 
         val lm = GridLayoutManager(context, noOfCols)
-        val adapter = MovieAdapter { movie -> if (movie != null) onMovieClick(movie) }
+        adapter = MovieAdapter { movie -> if (movie != null) onMovieClick(movie) }
         lm.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
             override fun getSpanSize(position: Int): Int {
-                val viewType = adapter.getItemViewType(position)
-                return if (viewType == adapter.VIEW_TYPE_MOVIE) 1 else noOfCols
+                val viewType = adapter?.getItemViewType(position)
+                return if (viewType == adapter?.VIEW_TYPE_MOVIE) 1 else noOfCols
             }
         }
         rv_movie_list?.setHasFixedSize(true)
@@ -58,22 +64,12 @@ class PopularFragment : Fragment() {
         tv_err?.visibility = View.VISIBLE
         tv_err?.text = getString(R.string.loading)
 
-        val viewModel = getViewModel()
-        viewModel.popularMovies.observe(viewLifecycleOwner, { moviePagedList ->
-            thread {
-                adapter.submitList(moviePagedList)
-            }
-        })
-
-        viewModel.networkState.observe(viewLifecycleOwner, { state ->
-            item_network_state_progress_bar?.visibility = if (viewModel.isEmpty() && state == NetworkState.LOADING) View.VISIBLE else View.GONE
-            item_network_state_err_text_view?.visibility = if (viewModel.isEmpty() && state == NetworkState.ERROR) View.VISIBLE else View.GONE
-
-            if (state == NetworkState.LOADED)
-                tv_err?.visibility = View.GONE
-
-            if (!viewModel.isEmpty()) {
-                adapter.setNetworkState(state)
+        // Network Change Live Data
+        (activity as MovieActivity).networkChangeLiveData.observe(viewLifecycleOwner, { isAvailable ->
+            if (isAvailable) {
+                loadMovies()
+            } else {
+                tv_err?.text = getString(R.string.err_no_internet)
             }
         })
     }
@@ -102,11 +98,41 @@ class PopularFragment : Fragment() {
         intent.putExtra(MovieDetailsActivity.KEY_RELEASE_DATE_EXTRA, movie.date.getShortDate())
         intent.putExtra(MovieDetailsActivity.KEY_TITLE_EXTRA, movie.title)
 
-        if (transitionOptions != null) {
+        if (transitionOptions != null)
             startActivity(intent, transitionOptions.toBundle())
-        }
         else
             startActivity(intent)
+    }
+
+    /**
+     * Helper method to start loading the movies
+     */
+    private fun loadMovies() {
+        // Execute this method exactly once
+        if (isLoaded) return
+
+        tv_err?.text = getString(R.string.loading)
+
+        val viewModel = getViewModel()
+        viewModel.popularMovies.observe(viewLifecycleOwner, { moviePagedList ->
+            thread {
+                adapter?.submitList(moviePagedList)
+                isLoaded = true
+                Log.d(TAG, "isLoaded = true")
+            }
+        })
+
+        viewModel.networkState.observe(viewLifecycleOwner, { state ->
+            item_network_state_progress_bar?.visibility = if (viewModel.isEmpty() && state == NetworkState.LOADING) View.VISIBLE else View.GONE
+            item_network_state_err_text_view?.visibility = if (viewModel.isEmpty() && state == NetworkState.ERROR) View.VISIBLE else View.GONE
+
+            if (state == NetworkState.LOADED)
+                tv_err?.visibility = View.GONE
+
+            if (!viewModel.isEmpty()) {
+                adapter?.setNetworkState(state)
+            }
+        })
     }
 
 

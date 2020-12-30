@@ -2,6 +2,7 @@ package arunkbabu90.filimibeat.ui.fragment
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -30,6 +31,10 @@ import kotlin.concurrent.thread
 
 class TopRatedFragment : Fragment() {
     private lateinit var repository: MovieTopRatedRepository
+    private var adapter: MovieAdapter? = null
+    private var isLoaded: Boolean = false
+
+    private val TAG = NowPlayingFragment::class.simpleName
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
@@ -45,11 +50,11 @@ class TopRatedFragment : Fragment() {
         val noOfCols: Int = calculateNoOfColumns(context)
 
         val lm = GridLayoutManager(context, noOfCols)
-        val adapter = MovieAdapter { movie -> if (movie != null) onMovieClick(movie) }
+        adapter = MovieAdapter { movie -> if (movie != null) onMovieClick(movie) }
         lm.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
             override fun getSpanSize(position: Int): Int {
-                val viewType = adapter.getItemViewType(position)
-                return if (viewType == adapter.VIEW_TYPE_MOVIE) 1 else noOfCols
+                val viewType = adapter?.getItemViewType(position)
+                return if (viewType == adapter?.VIEW_TYPE_MOVIE) 1 else noOfCols
             }
         }
         rv_movie_list?.setHasFixedSize(true)
@@ -59,24 +64,6 @@ class TopRatedFragment : Fragment() {
         tv_err?.text = getString(R.string.loading)
         tv_err?.visibility = View.VISIBLE
 
-        val viewModel = getViewModel()
-        viewModel.topRatedMovies.observe(viewLifecycleOwner, Observer { moviePagedList ->
-            thread {
-                adapter.submitList(moviePagedList)
-            }
-        })
-
-        viewModel.networkState.observe(viewLifecycleOwner, Observer { state ->
-            item_network_state_progress_bar?.visibility = if (viewModel.isEmpty() && state == NetworkState.LOADING) View.VISIBLE else View.GONE
-            item_network_state_err_text_view?.visibility = if (viewModel.isEmpty() && state == NetworkState.ERROR) View.VISIBLE else View.GONE
-
-            if (state == NetworkState.LOADED)
-                tv_err?.visibility = View.GONE
-
-            if (!viewModel.isEmpty()) {
-                adapter.setNetworkState(state)
-            }
-        })
     }
 
     /**
@@ -107,6 +94,37 @@ class TopRatedFragment : Fragment() {
             startActivity(intent, transitionOptions.toBundle())
         else
             startActivity(intent)
+    }
+
+    /**
+     * Helper method to start loading the movies
+     */
+    private fun loadMovies() {
+        // Execute this method exactly once
+        if (isLoaded) return
+
+        tv_err?.text = getString(R.string.loading)
+
+        val viewModel = getViewModel()
+        viewModel.topRatedMovies.observe(viewLifecycleOwner, Observer { moviePagedList ->
+            thread {
+                adapter?.submitList(moviePagedList)
+                isLoaded = true
+                Log.d(TAG, "isLoaded = true")
+            }
+        })
+
+        viewModel.networkState.observe(viewLifecycleOwner, Observer { state ->
+            item_network_state_progress_bar?.visibility = if (viewModel.isEmpty() && state == NetworkState.LOADING) View.VISIBLE else View.GONE
+            item_network_state_err_text_view?.visibility = if (viewModel.isEmpty() && state == NetworkState.ERROR) View.VISIBLE else View.GONE
+
+            if (state == NetworkState.LOADED)
+                tv_err?.visibility = View.GONE
+
+            if (!viewModel.isEmpty()) {
+                adapter?.setNetworkState(state)
+            }
+        })
     }
 
     private fun getViewModel(): TopRatedMovieViewModel {

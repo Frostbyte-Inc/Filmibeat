@@ -32,7 +32,6 @@ import kotlin.concurrent.thread
 
 class NowPlayingFragment : Fragment() {
     private lateinit var repository: MovieNowPlayingRepository
-
     private var adapter: MovieAdapter? = null
     private var isLoaded: Boolean = false
 
