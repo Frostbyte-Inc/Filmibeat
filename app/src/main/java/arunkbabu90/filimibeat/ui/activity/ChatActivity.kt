@@ -84,6 +84,8 @@ class ChatActivity : AppCompatActivity(), View.OnClickListener, ChildEventListen
                 if (message.isNotBlank()) {
                     val msgMap = hashMapOf(
                         Constants.FIELD_MESSAGE to message,
+                        Constants.FIELD_SENDER_ID to senderId,
+                        Constants.FIELD_SENDER_NAME to senderName,
                         Constants.FIELD_MSG_TIMESTAMP to ServerValue.TIMESTAMP
                     )
                     newMsgRoot.updateChildren(msgMap)
