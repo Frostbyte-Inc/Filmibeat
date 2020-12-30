@@ -7,6 +7,7 @@ import android.graphics.drawable.Drawable
 import android.net.*
 import android.os.Bundle
 import android.provider.MediaStore
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -56,6 +57,8 @@ class ProfileActivity : AppCompatActivity(), View.OnClickListener {
 
     private val nameTitle = "Name"
     private val emailTitle = "Email"
+
+    private val TAG = ProfileActivity::class.simpleName
 
     companion object {
         private const val REQUEST_CODE_PICK_IMAGE = 2000
@@ -177,7 +180,7 @@ class ProfileActivity : AppCompatActivity(), View.OnClickListener {
             override fun onPositiveButtonClick(inputText: String?) {
                 // Only push if the input text has some text in it
                 if (!inputText.isNullOrBlank())
-                    updateProfile(title, inputText)
+                    pushToDatabase(title, inputText)
             }
 
             override fun onNegativeButtonClick() {}
@@ -192,6 +195,24 @@ class ProfileActivity : AppCompatActivity(), View.OnClickListener {
      * @param inputText The text entered in the input field of the dialog
      */
     private fun pushToDatabase(title: String, inputText: String) {
+        // Only update non empty and different values
+        if (inputText.isBlank() || fullName == inputText) return
+
+        val user = auth.currentUser
+
+        // Update the Display Name of Firebase Auth
+        val profileUpdateRequest = UserProfileChangeRequest.Builder()
+            .setDisplayName(inputText)
+            .build()
+
+        user?.updateProfile(profileUpdateRequest)?.addOnSuccessListener {
+            Log.d(TAG, "Profile Update: Success")
+        }?.addOnFailureListener { e: Exception? ->
+            // Show error
+            Toast.makeText(this, R.string.err_default, Toast.LENGTH_SHORT).show()
+            Log.d(TAG, "Profile Update: Failure")
+        }
+
         val dataMap = hashMapOf<String, String>()
 
         when (title) {
@@ -206,45 +227,24 @@ class ProfileActivity : AppCompatActivity(), View.OnClickListener {
 
         if (dataMap.isEmpty()) return
 
-        val user = auth.currentUser
         if (user != null) {
+            // Push details to database
             db.collection(Constants.COLLECTION_USERS).document(user.uid)
                 .set(dataMap, SetOptions.merge())
                 .addOnSuccessListener {
+                    // Name Change Success
                     Toast.makeText(this, R.string.saved, Toast.LENGTH_SHORT).show()
                     profileData.clear()
                     profileData.add(nameTitle to inputText)
                     profileData.add(emailTitle to email)
                     adapter.notifyDataSetChanged()
+                    Constants.userFullName = inputText
 
                     isUpdatesAvailable = false
                 }.addOnFailureListener {
                     Toast.makeText(this, R.string.err_no_internet, Toast.LENGTH_SHORT).show()
                 }
         } else {
-            Toast.makeText(this, R.string.err_default, Toast.LENGTH_SHORT).show()
-        }
-    }
-
-    /**
-     * Helper method to update Firebase Profile
-     * @param title The Current Title of the dialog
-     * @param inputText The text entered in the input field of the dialog
-     */
-    private fun updateProfile(title: String, inputText: String) {
-        // Only add updated non empty values
-        if (inputText.isBlank() || fullName == inputText) return
-
-        val profileUpdateRequest = UserProfileChangeRequest.Builder()
-            .setDisplayName(inputText)
-            .build()
-
-        val user = auth.currentUser
-        user?.updateProfile(profileUpdateRequest)?.addOnSuccessListener {
-            // Push the user data to database
-            pushToDatabase(title, inputText)
-        }?.addOnFailureListener { e: Exception? ->
-            // Show error
             Toast.makeText(this, R.string.err_default, Toast.LENGTH_SHORT).show()
         }
     }

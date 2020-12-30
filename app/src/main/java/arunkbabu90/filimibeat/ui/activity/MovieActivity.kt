@@ -49,9 +49,8 @@ class MovieActivity : AppCompatActivity(), FirebaseAuth.AuthStateListener {
 
         fetchUserData()
 
-        // Set the user id and name globally available in the app to the user
+        // Set the user id globally available in the app
         Constants.userId = auth.currentUser?.uid ?: ""
-        Constants.userFullName = auth.currentUser?.displayName ?: ""
 
         window.statusBarColor = ActivityCompat.getColor(this, R.color.colorPurpleDark)
         window.navigationBarColor = ActivityCompat.getColor(this, R.color.colorPurple)
@@ -132,6 +131,9 @@ class MovieActivity : AppCompatActivity(), FirebaseAuth.AuthStateListener {
                     if (snapshot.isSuccessful) {
                         val d = snapshot.result
                         if (d != null) {
+                            // Set user full name globally available in the app
+                            Constants.userFullName = d.getString(Constants.FIELD_FULL_NAME) ?: ""
+
                             // Check Account Verification Status
                             Constants.isAccountActivated = d.getBoolean(Constants.FIELD_ACCOUNT_VERIFIED) ?: false
                             if (!Constants.isAccountActivated) {
