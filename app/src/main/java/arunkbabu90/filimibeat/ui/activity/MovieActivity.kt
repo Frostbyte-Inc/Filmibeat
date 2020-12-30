@@ -232,4 +232,12 @@ class MovieActivity : AppCompatActivity(), FirebaseAuth.AuthStateListener {
                 }
         }
     }
+
+    override fun onResume() {
+        super.onResume()
+        if (!Constants.isAccountActivated) {
+            // If email NOT Already Verified; check the status again
+            checkAccountVerificationStatus()
+        }
+    }
 }
