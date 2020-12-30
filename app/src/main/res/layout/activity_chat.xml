@@ -37,6 +37,37 @@
             tools:text="Avatar (2010)" />
     </com.google.android.material.appbar.MaterialToolbar>
 
+    <LinearLayout
+        android:id="@+id/chatErr_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="@id/rv_messages"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/rv_messages"
+        app:layout_constraintVertical_bias="0.4">
+
+        <ImageView
+            android:id="@+id/iv_chat_err"
+            android:layout_width="@dimen/large_icon_size"
+            android:layout_height="@dimen/large_icon_size"
+            tools:src="@drawable/ic_no_message"
+            app:tint="@color/colorLightBlue"
+            tools:ignore="ContentDescription" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/tv_chat_err"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif"
+            android:layout_margin="@dimen/default_margin"
+            android:textColor="@color/colorLightBlue"
+            android:textStyle="bold"
+            android:layout_gravity="center"
+            tools:text="@string/err_no_messages" />
+    </LinearLayout>
+
     <!-- Messages View -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_messages"

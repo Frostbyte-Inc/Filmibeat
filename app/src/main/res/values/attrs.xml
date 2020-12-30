@@ -5,7 +5,7 @@
     </declare-styleable>
     <declare-styleable name="ActionCard">
         <attr name="icn" format="reference|color"/>
-        <attr name="tint" format="reference|color"/>
+        <attr name="iconTint" format="reference|color"/>
         <attr name="description" format="string"/>
     </declare-styleable>
 </resources>

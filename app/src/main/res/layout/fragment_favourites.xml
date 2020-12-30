@@ -22,7 +22,6 @@
         android:text="@string/no_favourites"
         android:textStyle="bold"
         android:textColor="@color/colorTransparentWhite70"
-        android:textSize="16sp"
+        android:textSize="14sp"
         android:visibility="gone" />
-
 </FrameLayout>

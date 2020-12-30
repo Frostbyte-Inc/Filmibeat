@@ -12,7 +12,8 @@ import arunkbabu90.filimibeat.getLogicalDateString
 import com.google.android.material.textview.MaterialTextView
 import java.util.*
 
-class ChatAdapter(private val messages: ArrayList<Message>, private val userId: String)
+class ChatAdapter(private val messages: ArrayList<Message>,
+                  private val userId: String,)
     : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {

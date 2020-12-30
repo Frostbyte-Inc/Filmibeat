@@ -5,6 +5,7 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import arunkbabu90.filimibeat.Constants
+import arunkbabu90.filimibeat.R
 import arunkbabu90.filimibeat.data.model.Message
 import arunkbabu90.filimibeat.databinding.ActivityChatBinding
 import arunkbabu90.filimibeat.runPullDownAnimation
@@ -30,8 +31,6 @@ class ChatActivity : AppCompatActivity(), View.OnClickListener, ChildEventListen
     companion object {
         const val MOVIE_ID_EXTRA_KEY = "key_chat_movie_id_extra"
         const val MOVIE_NAME_EXTRA_KEY = "key_movie_name_extra"
-        const val SENDER_NAME_EXTRA_KEY = "key_chat_sender_name_extra"
-        const val SENDER_ID_EXTRA_KEY = "key_chat_sender_id_extra"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -102,6 +101,20 @@ class ChatActivity : AppCompatActivity(), View.OnClickListener, ChildEventListen
     private fun loadMessages() {
         roomQuery = roomRoot.orderByChild(Constants.FIELD_MSG_TIMESTAMP)
         roomQuery.addChildEventListener(this)
+
+        roomQuery.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                if (messages.size <= 0) {
+                    binding.chatErrLayout.visibility = View.VISIBLE
+                    binding.tvChatErr.text = getString(R.string.err_no_messages)
+                    binding.ivChatErr.setImageResource(R.drawable.ic_no_message)
+                } else {
+                    binding.chatErrLayout.visibility = View.GONE
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {}
+        })
     }
 
     /**

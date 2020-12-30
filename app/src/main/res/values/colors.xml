@@ -58,6 +58,7 @@
     <color name="colorSignOutButton">#ec6a6a</color>
     <color name="colorCatRed">#FF6666</color>
     <color name="colorCatBlue">#426DE5</color>
+    <color name="colorLightBlue">#CD426DE5</color>
     <color name="colorCatGreen">#0DF45A</color>
     <color name="colorCatIndigo">#4d5ab0</color>
     <color name="colorCatYellow">#FFEE58</color>
