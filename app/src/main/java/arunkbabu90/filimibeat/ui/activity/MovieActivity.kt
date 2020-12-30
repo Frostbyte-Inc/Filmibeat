@@ -14,6 +14,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.MutableLiveData
 import arunkbabu90.filimibeat.Constants
 import arunkbabu90.filimibeat.R
 import arunkbabu90.filimibeat.databinding.ActivityMovieBinding
@@ -31,13 +32,16 @@ class MovieActivity : AppCompatActivity(), FirebaseAuth.AuthStateListener {
     private lateinit var auth: FirebaseAuth
     private lateinit var db: FirebaseFirestore
 
-    private var networkListener: NetworkConnectivityChangeListener? = null
     private var tabLayoutMediator: TabLayoutMediator? = null
+    var networkChangeLiveData = MutableLiveData<Boolean>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMovieBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        // Invoke Network Change Callback
+        registerNetworkChangeCallback()
 
         auth = Firebase.auth
         db = Firebase.firestore
@@ -278,13 +282,17 @@ class MovieActivity : AppCompatActivity(), FirebaseAuth.AuthStateListener {
             override fun onAvailable(network: Network) {
                 super.onAvailable(network)
                 // Internet is Available
-                networkListener?.onNetworkChange(true)
+                runOnUiThread {
+                    networkChangeLiveData.postValue(true)
+                }
             }
 
             override fun onLost(network: Network) {
                 super.onLost(network)
                 // Internet is Unavailable
-                networkListener?.onNetworkChange(false)
+                runOnUiThread {
+                    networkChangeLiveData.postValue(false)
+                }
             }
         })
     }
@@ -295,25 +303,5 @@ class MovieActivity : AppCompatActivity(), FirebaseAuth.AuthStateListener {
             // If email NOT Already Verified; check the status again
             checkAccountVerificationStatus()
         }
-    }
-
-
-    /**
-     * Interface callback for NetworkConnectivity Changes
-     */
-    interface NetworkConnectivityChangeListener {
-        /**
-         * Invoked when a network change occurs
-         * @param isAvailable True when Internet is available; False otherwise
-         */
-        fun onNetworkChange(isAvailable: Boolean)
-    }
-
-    /**
-     * Register a callback to be invoked when network connectivity changes
-     * @param listener The NetworkConnectivityChangeListener
-     */
-    fun setNetworkChangeListener(listener: NetworkConnectivityChangeListener) {
-        networkListener = listener
     }
 }

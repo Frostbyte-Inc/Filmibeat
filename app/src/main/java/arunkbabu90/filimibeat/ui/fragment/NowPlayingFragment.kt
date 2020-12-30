@@ -2,13 +2,13 @@ package arunkbabu90.filimibeat.ui.fragment
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.app.ActivityOptionsCompat
 import androidx.core.view.ViewCompat
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
@@ -30,9 +30,13 @@ import kotlinx.android.synthetic.main.item_movie.*
 import kotlinx.android.synthetic.main.item_network_state.*
 import kotlin.concurrent.thread
 
-class NowPlayingFragment : Fragment(), MovieActivity.NetworkConnectivityChangeListener {
+class NowPlayingFragment : Fragment() {
     private lateinit var repository: MovieNowPlayingRepository
+
     private var adapter: MovieAdapter? = null
+    private var isLoaded: Boolean = false
+
+    private val TAG = NowPlayingFragment::class.simpleName
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
@@ -64,12 +68,17 @@ class NowPlayingFragment : Fragment(), MovieActivity.NetworkConnectivityChangeLi
             loadMovies()
         } else {
             tv_err?.text = getString(R.string.err_no_internet)
-            return
         }
         tv_err?.visibility = View.VISIBLE
 
-        // Set the Network Change Listener
-        (activity as MovieActivity).setNetworkChangeListener(this)
+        // Network Change Live Data
+        (activity as MovieActivity).networkChangeLiveData.observe(viewLifecycleOwner, { isAvailable ->
+            if (isAvailable) {
+                loadMovies()
+            } else {
+                tv_err?.text = getString(R.string.err_no_internet)
+            }
+        })
     }
 
     /**
@@ -106,16 +115,21 @@ class NowPlayingFragment : Fragment(), MovieActivity.NetworkConnectivityChangeLi
      * Helper method to start loading the movies
      */
     private fun loadMovies() {
+        // Execute this method exactly once
+        if (isLoaded) return
+
         tv_err?.text = getString(R.string.loading)
 
         val viewModel = getViewModel()
-        viewModel.nowPlayingMovies.observe(viewLifecycleOwner, Observer { moviePagedList ->
+        viewModel.nowPlayingMovies.observe(viewLifecycleOwner, { moviePagedList ->
             thread {
                 adapter?.submitList(moviePagedList)
+                isLoaded = true
+                Log.d(TAG, "isLoaded = true")
             }
         })
 
-        viewModel.networkState.observe(viewLifecycleOwner, Observer { state ->
+        viewModel.networkState.observe(viewLifecycleOwner, { state ->
             item_network_state_progress_bar?.visibility = if (viewModel.isEmpty() && state == NetworkState.LOADING) View.VISIBLE else View.GONE
             item_network_state_err_text_view?.visibility = if (viewModel.isEmpty() && state == NetworkState.ERROR) View.VISIBLE else View.GONE
 
@@ -133,13 +147,5 @@ class NowPlayingFragment : Fragment(), MovieActivity.NetworkConnectivityChangeLi
             @Suppress("UNCHECKED_CAST")
             override fun <T : ViewModel?> create(modelClass: Class<T>): T = NowPlayingMovieViewModel(repository) as T
         })[NowPlayingMovieViewModel::class.java]
-    }
-
-    override fun onNetworkChange(isAvailable: Boolean) {
-        if (isAvailable) {
-            loadMovies()
-        } else {
-            tv_err?.text = getString(R.string.err_no_internet)
-        }
     }
 }
