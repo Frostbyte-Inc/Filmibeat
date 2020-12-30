@@ -114,6 +114,7 @@ class ChatActivity : AppCompatActivity(), View.OnClickListener {
         // Single Value Event Listener; Guaranteed to be called when all the data is loaded
         roomQuery.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
+                // Show error message if the chat is empty
                 if (messages.size <= 0) {
                     binding.chatErrLayout.visibility = View.VISIBLE
                     binding.tvChatErr.text = getString(R.string.err_no_messages)
@@ -142,5 +143,14 @@ class ChatActivity : AppCompatActivity(), View.OnClickListener {
 
         binding.rvMessages.smoothScrollToPosition(messages.size)
         adapter?.notifyDataSetChanged()
+
+        // Show error message if the chat is empty
+        if (messages.size <= 0) {
+            binding.chatErrLayout.visibility = View.VISIBLE
+            binding.tvChatErr.text = getString(R.string.err_no_messages)
+            binding.ivChatErr.setImageResource(R.drawable.ic_no_message)
+        } else {
+            binding.chatErrLayout.visibility = View.GONE
+        }
     }
 }
