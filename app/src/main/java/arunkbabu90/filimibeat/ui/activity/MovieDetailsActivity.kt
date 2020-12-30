@@ -160,6 +160,8 @@ class MovieDetailsActivity : AppCompatActivity(), View.OnClickListener {
         setFeaturesBasedOnUser()
 
         binding.fabFavourites.setOnClickListener(this)
+        binding.actionCardReview.setOnClickListener(this)
+        binding.actionCardGlobalChat.setOnClickListener(this)
     }
 
     override fun onClick(p0: View?) {
