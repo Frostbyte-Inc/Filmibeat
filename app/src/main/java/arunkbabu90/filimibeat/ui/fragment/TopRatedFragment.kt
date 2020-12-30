@@ -36,7 +36,7 @@ class TopRatedFragment : Fragment() {
     private var adapter: MovieAdapter? = null
     private var isLoaded: Boolean = false
 
-    private val TAG = NowPlayingFragment::class.simpleName
+    private val TAG = TopRatedFragment::class.simpleName
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
