@@ -21,6 +21,8 @@ import arunkbabu90.filimibeat.data.model.Movie
 import arunkbabu90.filimibeat.data.repository.MovieTopRatedRepository
 import arunkbabu90.filimibeat.data.repository.NetworkState
 import arunkbabu90.filimibeat.getShortDate
+import arunkbabu90.filimibeat.isNetworkConnected
+import arunkbabu90.filimibeat.ui.activity.MovieActivity
 import arunkbabu90.filimibeat.ui.activity.MovieDetailsActivity
 import arunkbabu90.filimibeat.ui.adapter.MovieAdapter
 import arunkbabu90.filimibeat.ui.viewmodel.TopRatedMovieViewModel
@@ -61,9 +63,22 @@ class TopRatedFragment : Fragment() {
         rv_movie_list?.layoutManager = lm
         rv_movie_list?.adapter = adapter
 
-        tv_err?.text = getString(R.string.loading)
+        // Show status to UI accordingly
+        if (isNetworkConnected(context)) {
+            loadMovies()
+        } else {
+            tv_err?.text = getString(R.string.err_no_internet)
+        }
         tv_err?.visibility = View.VISIBLE
 
+        // Network Change Live Data
+        (activity as MovieActivity).networkChangeLiveData.observe(viewLifecycleOwner, { isAvailable ->
+            if (isAvailable) {
+                loadMovies()
+            } else {
+                tv_err?.text = getString(R.string.err_no_internet)
+            }
+        })
     }
 
     /**
