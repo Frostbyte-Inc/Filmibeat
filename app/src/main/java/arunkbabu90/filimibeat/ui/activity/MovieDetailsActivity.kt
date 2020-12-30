@@ -191,7 +191,7 @@ class MovieDetailsActivity : AppCompatActivity(), View.OnClickListener {
                     startActivity(chatIntent)
                 } else {
                     // User is a Guest; Don't allow access to the chat
-                    Toast.makeText(this, R.string.feature_unavaliable_for_guest, Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, R.string.feature_disabled_for_guest, Toast.LENGTH_SHORT).show()
                 }
             }
         }

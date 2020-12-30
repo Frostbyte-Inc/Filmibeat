@@ -137,9 +137,10 @@
     <string name="type_msg">Type a message</string>
     <string name="msg_sent">%1$s</string>
     <string name="global_chat">Global Chat</string>
-    <string name="feature_unavaliable_for_guest">This feature is only available to registered users</string>
     <string name="send">Send</string>
     <string name="err_no_messages">It\'s lonely here!</string>
+
+    <string name="feature_disabled_for_guest">This feature is only available to registered users</string>
     <string name="err_feature_disabled">This feature is disabled because your account is not verified</string>
     <string name="err_feature_disabled_short">Feature Disabled: Account Unverified</string>
 </resources>
