@@ -6,6 +6,7 @@ class Constants {
         var userType: Int = -1
         var userId = ""
         var userFullName = ""
+        var isAccountActivated = false
 
         const val COLLECTION_USERS = "Users"
         const val COLLECTION_FAVOURITES = "Favourites"

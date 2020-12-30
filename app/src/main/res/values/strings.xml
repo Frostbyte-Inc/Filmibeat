@@ -96,7 +96,7 @@
     <string name="_continue">Continue</string>
     <string name="err_verification_email_already_sent">Error! Most probably the verification email is already sent. Please check your email</string>
     <string name="err_account_not_verified">Account Not Verified! Click here to verify</string>
-    <string name="err_account_not_verified_desc">Account Not Verified!\nYou can\'t send reports to a doctor unless you verify your account</string>
+    <string name="err_account_not_verified_desc">Account Not Verified!\nSome features will stay disabled unless you verify your account</string>
     <string name="err_account_not_verified_desc_doc">Account Not Verified!\nPatients can\'t send reports to you and you won\'t appear in searches unless you verify</string>
     <string name="err_account_not_verified_desc2">Account Not Verified!\nYou can\'t send reports to a doctor unless you verify</string>
     <string name="account_verified">Account Verified</string>
@@ -125,7 +125,7 @@
     <string name="err_load_failed_default">Failed to Load Data. Please check your internet connection and try again</string>
     <string name="err_unable_to_fetch">Error! Unable to fetch profile details. Please check your internet connection and try again</string>
     <string name="edit_profile_picture">Edit Profile Picture</string>
-    <string name="uploading_dp">Uploading Photo...</string>
+    <string name="uploading_dp">Uploading Photo…</string>
     <string name="err_upload_failed">Error! Upload Failed</string>
     <string name="saved">Saved</string>
     <string name="save">Save</string>
@@ -140,4 +140,6 @@
     <string name="feature_unavaliable_for_guest">This feature is only available to registered users</string>
     <string name="send">Send</string>
     <string name="err_no_messages">It\'s lonely here!</string>
+    <string name="err_feature_disabled">This feature is disabled because your account is not verified</string>
+    <string name="err_feature_disabled_short">Feature Disabled: Account Unverified</string>
 </resources>

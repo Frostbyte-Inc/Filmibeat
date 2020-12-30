@@ -166,7 +166,13 @@ class MovieDetailsActivity : AppCompatActivity(), View.OnClickListener {
 
     override fun onClick(p0: View?) {
         when (p0?.id) {
-            binding.fabFavourites.id -> addFavMovie()
+            binding.fabFavourites.id -> {
+                if (Constants.isAccountActivated) {
+                    addFavMovie()
+                } else {
+                    Toast.makeText(this, R.string.err_feature_disabled, Toast.LENGTH_SHORT).show()
+                }
+            }
 
             binding.actionCardReview.id -> {
                 // Open Movie Reviews

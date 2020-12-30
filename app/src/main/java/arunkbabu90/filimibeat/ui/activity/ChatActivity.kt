@@ -38,6 +38,12 @@ class ChatActivity : AppCompatActivity(), View.OnClickListener {
         binding = ActivityChatBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        if (!Constants.isAccountActivated) {
+            // Account NOT Activated
+            binding.etTypeMessage.isEnabled = false
+            binding.etTypeMessage.hint = getString(R.string.err_feature_disabled_short)
+        }
+
         val movieTitle = intent.getStringExtra(MOVIE_NAME_EXTRA_KEY) ?: ""
         movieId = intent.getStringExtra(MOVIE_ID_EXTRA_KEY) ?: ""
 

@@ -50,7 +50,7 @@
     <color name="colorBlueActivated">#00BBFF</color>
     <color name="colorHoloOrangeActivated">#FFC400</color>
     <color name="colorStatusUnverified">#f4706e</color>
-    <color name="colorStatusVerified">#59cd5d</color>
+    <color name="colorStatusVerified">#66BB6A</color>
     <color name="colorDocProfileButton">#FFFFFF</color>
 
     <!-- Dark Theme Special Colors -->
