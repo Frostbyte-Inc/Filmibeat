@@ -4,6 +4,8 @@ class Constants {
     companion object {
         @JvmStatic
         var userType: Int = -1
+        var userId = ""
+        var userFullName = ""
 
         const val COLLECTION_USERS = "Users"
         const val COLLECTION_FAVOURITES = "Favourites"
@@ -33,7 +35,7 @@ class Constants {
         const val ROOT_MOVIE_ROOMS = "MovieRooms"
         const val FIELD_MESSAGE = "msg"
         const val FIELD_SENDER_ID = "senderId"
-        const val FIELD_RECEIVER_ID = "receiverId"
+        const val FIELD_SENDER_NAME = "senderName"
         const val FIELD_MSG_TIMESTAMP = "msgTimestamp"
     }
 }

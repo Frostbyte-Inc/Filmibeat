@@ -44,7 +44,7 @@
         android:layout_height="0dp"
         android:layout_marginStart="@dimen/default_margin"
         android:layout_marginEnd="@dimen/default_margin"
-        android:layout_marginBottom="10dp"
+        android:layout_marginBottom="@dimen/medium_margin"
         app:layout_constraintBottom_toTopOf="@id/et_typeMessage"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -65,20 +65,22 @@
         android:inputType="textCapSentences"
         android:textColor="@color/colorTextLightGrey"
         android:textColorHint="@color/colorTextGrey"
+        android:textSize="@dimen/edit_text_text_size"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/fab_sendMessage"
         app:layout_constraintStart_toStartOf="parent" />
 
     <!-- Send Button -->
-    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab_sendMessage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/default_margin"
+        android:src="@drawable/ic_send"
+        app:fabCustomSize="45dp"
         app:backgroundTint="@color/colorLightIndigoDark"
-        app:icon="@drawable/ic_send"
-        app:iconTint="@android:color/white"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        android:contentDescription="@string/send" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

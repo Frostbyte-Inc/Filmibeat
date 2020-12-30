@@ -29,6 +29,10 @@ class MovieActivity : AppCompatActivity(), FirebaseAuth.AuthStateListener {
         auth = Firebase.auth
         auth.addAuthStateListener(this)
 
+        // Set the user id and name globally available in the app to the user
+        Constants.userId = auth.currentUser?.uid ?: ""
+        Constants.userFullName = auth.currentUser?.displayName ?: ""
+
         window.statusBarColor = ActivityCompat.getColor(this, R.color.colorPurpleDark)
         window.navigationBarColor = ActivityCompat.getColor(this, R.color.colorPurple)
 

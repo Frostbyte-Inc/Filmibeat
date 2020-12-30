@@ -41,8 +41,9 @@ class ChatActivity : AppCompatActivity(), View.OnClickListener, ChildEventListen
 
         val movieTitle = intent.getStringExtra(MOVIE_NAME_EXTRA_KEY) ?: ""
         movieId = intent.getStringExtra(MOVIE_ID_EXTRA_KEY) ?: ""
-        senderId = intent.getStringExtra(SENDER_ID_EXTRA_KEY) ?: ""
-        senderName = intent.getStringExtra(SENDER_NAME_EXTRA_KEY) ?: ""
+
+        senderId = Constants.userId
+        senderName = Constants.userFullName
 
         setSupportActionBar(binding.toolbar)
         supportActionBar?.setDisplayShowTitleEnabled(false)
@@ -72,17 +73,17 @@ class ChatActivity : AppCompatActivity(), View.OnClickListener, ChildEventListen
     override fun onClick(p0: View?) {
         when (p0?.id) {
             binding.toolbarBackBtn.id -> {
+                // Back
                 finish()
             }
             binding.fabSendMessage.id -> {
+                // Send
                 val message: String = binding.etTypeMessage.text.toString()
                 val newMsgRoot = roomRoot.push()
 
                 if (message.isNotBlank()) {
                     val msgMap = hashMapOf(
                         Constants.FIELD_MESSAGE to message,
-                        Constants.FIELD_SENDER_ID to senderId,
-                        Constants.FIELD_RECEIVER_ID to movieId,
                         Constants.FIELD_MSG_TIMESTAMP to ServerValue.TIMESTAMP
                     )
                     newMsgRoot.updateChildren(msgMap)

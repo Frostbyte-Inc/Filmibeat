@@ -45,7 +45,7 @@
         android:paddingEnd="@dimen/default_padding"
         android:textColor="@color/colorCatRed"
         android:textSize="12sp"
-        android:visibility="visible"
+        android:visibility="invisible"
         tools:text="@string/err_login" />
 
     <FrameLayout

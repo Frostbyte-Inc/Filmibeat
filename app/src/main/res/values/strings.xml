@@ -138,4 +138,5 @@
     <string name="msg_sent">%1$s</string>
     <string name="global_chat">Global Chat</string>
     <string name="feature_unavaliable_for_guest">This feature is only available to registered users</string>
+    <string name="send">Send</string>
 </resources>

@@ -180,7 +180,7 @@ class MovieDetailsActivity : AppCompatActivity(), View.OnClickListener {
                 if (Constants.userType == Constants.USER_TYPE_PERSON) {
                     // Allow access to chat only to registered Users
                     val chatIntent = Intent(this, ChatActivity::class.java)
-                    chatIntent.putExtra(ChatActivity.MOVIE_ID_EXTRA_KEY, movieId)
+                    chatIntent.putExtra(ChatActivity.MOVIE_ID_EXTRA_KEY, movieId.toString())
                     chatIntent.putExtra(ChatActivity.MOVIE_NAME_EXTRA_KEY, title)
                     startActivity(chatIntent)
                 } else {
