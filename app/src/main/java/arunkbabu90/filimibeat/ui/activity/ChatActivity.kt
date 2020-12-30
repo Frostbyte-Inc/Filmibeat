@@ -3,6 +3,7 @@ package arunkbabu90.filimibeat.ui.activity
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import arunkbabu90.filimibeat.Constants
 import arunkbabu90.filimibeat.R
@@ -38,7 +39,13 @@ class ChatActivity : AppCompatActivity(), View.OnClickListener {
         binding = ActivityChatBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-
+        if (!Constants.isAccountActivated) {
+            // Account NOT Activated; Disable the input fields and Visually make them disabled
+            binding.fabSendMessage.isEnabled = false
+            binding.etTypeMessage.isEnabled = false
+            binding.etTypeMessage.setHintTextColor(ContextCompat.getColor(this, R.color.colorTextDisabled))
+            binding.etTypeMessage.hint = getString(R.string.err_feature_disabled_short)
+        }
 
         val movieTitle = intent.getStringExtra(MOVIE_NAME_EXTRA_KEY) ?: ""
         movieId = intent.getStringExtra(MOVIE_ID_EXTRA_KEY) ?: ""
