@@ -14,7 +14,7 @@ import com.google.firebase.database.*
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 
-class ChatActivity : AppCompatActivity(), View.OnClickListener, ChildEventListener {
+class ChatActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var binding: ActivityChatBinding
 
     private lateinit var roomRoot: DatabaseReference
@@ -100,8 +100,18 @@ class ChatActivity : AppCompatActivity(), View.OnClickListener, ChildEventListen
      */
     private fun loadMessages() {
         roomQuery = roomRoot.orderByChild(Constants.FIELD_MSG_TIMESTAMP)
-        roomQuery.addChildEventListener(this)
+        // Child Event Listener
+        roomQuery.addChildEventListener(object : ChildEventListener {
+            override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
+                updateDataItems(snapshot)
+            }
+            override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) { }
+            override fun onChildRemoved(snapshot: DataSnapshot) {   }
+            override fun onChildMoved(snapshot: DataSnapshot, previousChildName: String?) {  }
+            override fun onCancelled(error: DatabaseError) {  }
+        })
 
+        // Single Value Event Listener; Guaranteed to be called when all the data is loaded
         roomQuery.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 if (messages.size <= 0) {
@@ -133,13 +143,4 @@ class ChatActivity : AppCompatActivity(), View.OnClickListener, ChildEventListen
         binding.rvMessages.smoothScrollToPosition(messages.size)
         adapter?.notifyDataSetChanged()
     }
-
-    override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
-        updateDataItems(snapshot)
-    }
-
-    override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) { }
-    override fun onChildRemoved(snapshot: DataSnapshot) { }
-    override fun onChildMoved(snapshot: DataSnapshot, previousChildName: String?) {  }
-    override fun onCancelled(error: DatabaseError) { }
 }
