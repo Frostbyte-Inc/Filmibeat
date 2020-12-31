@@ -20,6 +20,8 @@ class ReviewsActivity : AppCompatActivity() {
     private lateinit var binding: ActivityReviewsBinding
 
     private var movieId = -1
+    private var isLoaded = false
+    private var isListEmpty = false
 
     companion object {
         const val REVIEW_MOVIE_ID_EXTRA_KEY = "reviewMovieIdExtraKey"
@@ -46,29 +48,27 @@ class ReviewsActivity : AppCompatActivity() {
 
         val viewModel = getViewModel()
         viewModel.fetchReviews(movieId).observe(this, { reviewPagedList ->
-            if (reviewPagedList.size <= 0) {
-                binding.tvReviewsErr.visibility = View.VISIBLE
-                binding.tvReviewsErr.text = getString(R.string.no_reviews_found)
-                adapter.submitList(reviewPagedList)
-            } else {
-                adapter.submitList(reviewPagedList)
-                binding.tvReviewsErr.visibility = View.GONE
-            }
+            isListEmpty = reviewPagedList.isEmpty()
+            adapter.submitList(reviewPagedList)
         })
 
         viewModel.networkState.observe(this, { state ->
             binding.pbReviews.visibility =
                 if (viewModel.isEmpty() && state == NetworkState.LOADING) View.VISIBLE else View.GONE
 
-            if (state == NetworkState.ERROR)
-                binding.tvReviewsErr.visibility = View.VISIBLE
-            else
-                binding.tvReviewsErr.visibility = View.GONE
+            isLoaded = state == NetworkState.LOADED
 
-            if (viewModel.isEmpty())
+            if (isLoaded && isListEmpty) {
                 binding.tvReviewsErr.visibility = View.VISIBLE
-            else
+                binding.tvReviewsErr.text = getString(R.string.no_reviews_found)
+            } else {
                 binding.tvReviewsErr.visibility = View.GONE
+            }
+
+
+            binding.tvReviewsErr.visibility = if (state == NetworkState.ERROR) View.VISIBLE else View.GONE
+
+            binding.tvReviewsErr.visibility = if (viewModel.isEmpty()) View.VISIBLE else View.GONE
 
             if (!viewModel.isEmpty())
                 adapter.setNetworkState(state)

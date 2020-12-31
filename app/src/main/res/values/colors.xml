@@ -17,6 +17,7 @@
     <color name="colorPurpleDark">#553987</color>
     <color name="colorTextLightGrey">#DEDEDE</color>
     <color name="colorTextGrey">#B3B3B3</color>
+    <color name="colorTextDisabled">#616161</color>
     <color name="semiTransparentTextColor">#60ffffff</color>
     <color name="colorTransparentBlack">#90000000</color>
     <color name="colorTransparentBlack70">#70000000</color>
@@ -50,7 +51,7 @@
     <color name="colorBlueActivated">#00BBFF</color>
     <color name="colorHoloOrangeActivated">#FFC400</color>
     <color name="colorStatusUnverified">#f4706e</color>
-    <color name="colorStatusVerified">#59cd5d</color>
+    <color name="colorStatusVerified">#66BB6A</color>
     <color name="colorDocProfileButton">#FFFFFF</color>
 
     <!-- Dark Theme Special Colors -->
@@ -58,7 +59,8 @@
     <color name="colorSignOutButton">#ec6a6a</color>
     <color name="colorCatRed">#FF6666</color>
     <color name="colorCatBlue">#426DE5</color>
-    <color name="colorCatGreen">#0DF45A</color>
+    <color name="colorLightBlue">#CD426DE5</color>
+    <color name="colorCatGreen">#35C95A</color>
     <color name="colorCatIndigo">#4d5ab0</color>
     <color name="colorCatYellow">#FFEE58</color>
     <color name="colorTextRed">#ff9795</color>

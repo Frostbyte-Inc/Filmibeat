@@ -157,7 +157,7 @@ class FavouritesFragment : Fragment() {
         val viewModel = getViewModel()
         favouritesLiveData = viewModel.getFavouritesLiveData() ?: return
 
-        favouritesLiveData?.observe(this) { operation ->
+        favouritesLiveData?.observe(viewLifecycleOwner) { operation ->
             when (operation.type) {
                 R.string.add_operation -> {
                     // Add

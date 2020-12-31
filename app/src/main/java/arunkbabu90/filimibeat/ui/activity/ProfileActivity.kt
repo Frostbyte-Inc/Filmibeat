@@ -7,6 +7,7 @@ import android.graphics.drawable.Drawable
 import android.net.*
 import android.os.Bundle
 import android.provider.MediaStore
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -23,6 +24,7 @@ import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.UserProfileChangeRequest
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.SetOptions
@@ -56,6 +58,8 @@ class ProfileActivity : AppCompatActivity(), View.OnClickListener {
     private val nameTitle = "Name"
     private val emailTitle = "Email"
 
+    private val TAG = ProfileActivity::class.simpleName
+
     companion object {
         private const val REQUEST_CODE_PICK_IMAGE = 2000
     }
@@ -88,9 +92,17 @@ class ProfileActivity : AppCompatActivity(), View.OnClickListener {
             }
             binding.fabDocProfileDpEdit.id -> {
                 // Pick Image
-                val pickImg = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+                val pickImg = Intent(
+                    Intent.ACTION_PICK,
+                    MediaStore.Images.Media.EXTERNAL_CONTENT_URI
+                )
                 pickImg.type = "image/*"
-                startActivityForResult(Intent.createChooser(pickImg, getString(R.string.pick_photo)), REQUEST_CODE_PICK_IMAGE)
+                startActivityForResult(
+                    Intent.createChooser(
+                        pickImg,
+                        getString(R.string.pick_photo)
+                    ), REQUEST_CODE_PICK_IMAGE
+                )
             }
             binding.btnSignOut.id -> {
                 // Sign out
@@ -142,7 +154,11 @@ class ProfileActivity : AppCompatActivity(), View.OnClickListener {
 
         adapter = ProfileAdapter(profileData) { dataPair -> onProfileItemClick(dataPair) }
         binding.rvProfile.adapter = adapter
-        binding.rvProfile.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+        binding.rvProfile.layoutManager = LinearLayoutManager(
+            this,
+            LinearLayoutManager.VERTICAL,
+            false
+        )
         runStackedRevealAnimation(this, binding.rvProfile, true)
 
         binding.pbProfileLoading.visibility = View.GONE
@@ -179,10 +195,29 @@ class ProfileActivity : AppCompatActivity(), View.OnClickListener {
      * @param inputText The text entered in the input field of the dialog
      */
     private fun pushToDatabase(title: String, inputText: String) {
+        // Only update non empty and different values
+        if (inputText.isBlank() || fullName == inputText) return
+
+        val user = auth.currentUser
+
+        // Update the Display Name of Firebase Auth
+        val profileUpdateRequest = UserProfileChangeRequest.Builder()
+            .setDisplayName(inputText)
+            .build()
+
+        user?.updateProfile(profileUpdateRequest)?.addOnSuccessListener {
+            Log.d(TAG, "Profile Update: Success")
+        }?.addOnFailureListener { e: Exception? ->
+            // Show error
+            Toast.makeText(this, R.string.err_default, Toast.LENGTH_SHORT).show()
+            Log.d(TAG, "Profile Update: Failure")
+        }
+
         val dataMap = hashMapOf<String, String>()
 
         when (title) {
             nameTitle -> {
+                // Name Update
                 // Only add Updated values
                 if (fullName != inputText)
                     dataMap[Constants.FIELD_FULL_NAME] = inputText
@@ -192,16 +227,18 @@ class ProfileActivity : AppCompatActivity(), View.OnClickListener {
 
         if (dataMap.isEmpty()) return
 
-        val user = auth.currentUser
         if (user != null) {
+            // Push details to database
             db.collection(Constants.COLLECTION_USERS).document(user.uid)
                 .set(dataMap, SetOptions.merge())
                 .addOnSuccessListener {
+                    // Name Change Success
                     Toast.makeText(this, R.string.saved, Toast.LENGTH_SHORT).show()
                     profileData.clear()
                     profileData.add(nameTitle to inputText)
                     profileData.add(emailTitle to email)
                     adapter.notifyDataSetChanged()
+                    Constants.userFullName = inputText
 
                     isUpdatesAvailable = false
                 }.addOnFailureListener {
@@ -228,7 +265,10 @@ class ProfileActivity : AppCompatActivity(), View.OnClickListener {
 
                     if (isUpdatesAvailable) {
                         // Scale Down the bitmap & Upload
-                        val resizedBitmap = resource.resize(height = Constants.DP_UPLOAD_SIZE, width = Constants.DP_UPLOAD_SIZE)
+                        val resizedBitmap = resource.resize(
+                            height = Constants.DP_UPLOAD_SIZE,
+                            width = Constants.DP_UPLOAD_SIZE
+                        )
                         uploadImageFile(resizedBitmap)
                     }
                 }
@@ -279,9 +319,17 @@ class ProfileActivity : AppCompatActivity(), View.OnClickListener {
                                 Toast.makeText(this, getString(R.string.saved), Toast.LENGTH_SHORT).show()
                                 isUpdatesAvailable = false
                             }
-                            .addOnFailureListener { Toast.makeText(this, R.string.err_upload_failed, Toast.LENGTH_SHORT).show() }
+                            .addOnFailureListener { Toast.makeText(
+                                this,
+                                R.string.err_upload_failed,
+                                Toast.LENGTH_SHORT
+                            ).show() }
                     } else {
-                        Toast.makeText(this, getString(R.string.err_upload_failed), Toast.LENGTH_LONG).show()
+                        Toast.makeText(
+                            this,
+                            getString(R.string.err_upload_failed),
+                            Toast.LENGTH_LONG
+                        ).show()
                     }
                     binding.pbProfileDpLoading.visibility = View.GONE
                 }

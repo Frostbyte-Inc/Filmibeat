@@ -15,6 +15,8 @@ import androidx.recyclerview.widget.RecyclerView
 import arunkbabu90.filimibeat.data.api.POSTER_BASE_URL
 import arunkbabu90.filimibeat.data.api.YOUTUBE_THUMB_BASE_URL
 import arunkbabu90.filimibeat.data.api.YOUTUBE_VIDEO_BASE_URL
+import java.text.SimpleDateFormat
+import java.util.*
 
 /**
  * App lvl variable used to indicate that the User is currently in VerificationEmailFragment
@@ -139,10 +141,78 @@ fun runStackedRevealAnimation(context: Context, recyclerView: RecyclerView, reve
     } else {
         AnimationUtils.loadLayoutAnimation(context, R.anim.stacked_reveal_layout_animation)
     }
+
     recyclerView.layoutAnimation = controller
     recyclerView.scheduleLayoutAnimation()
 }
 
+/**
+ * Starts the Pull-Down Layout Animation on recycler view items
+ * @param context The context
+ * @param recyclerView The recyclerview to run the animation on
+ */
+fun runPullDownAnimation(context: Context, recyclerView: RecyclerView) {
+    val controller = AnimationUtils.loadLayoutAnimation(context, R.anim.pull_down_layout_animation_reverse)
+    recyclerView.layoutAnimation = controller
+    recyclerView.scheduleLayoutAnimation()
+}
 
+/**
+ * Converts the timestamp to a descriptive logical date string. Logical means the dates will
+ * be like "Today", "Yesterday", "Tue, 19 Jun 1997" depending on the current date
+ * @param timestamp The epoch timestamp to be converted
+ * @return String: The date string (Ex: Tuesday, 10 June 1998)
+ */
+fun getLogicalDateString(timestamp: Long): String {
+    val logicalDate: String
+    val date = Date(timestamp)
+    val currentDate = Date(System.currentTimeMillis())
+    val sdf = SimpleDateFormat("EEE, dd MMM yyyy", Locale.getDefault())
+    val df = SimpleDateFormat("dd", Locale.getDefault())
+    val myf = SimpleDateFormat("MM yyyy", Locale.getDefault())
+    sdf.timeZone = TimeZone.getDefault()
 
+    val dateStr = sdf.format(date)
+    val currentStr = sdf.format(currentDate)
+    val day = df.format(date).toInt()
+    val currDay = df.format(currentDate).toInt()
+    val mnthYr = myf.format(date)
+    val currMnthYr = myf.format(currentDate)
 
+    logicalDate = if (dateStr == currentStr) {
+        "Today"
+    } else if (day == currDay - 1 && mnthYr == currMnthYr) {
+        "Yesterday"
+    } else {
+        dateStr
+    }
+
+    return logicalDate
+}
+
+/**
+ * Converts the timestamp to a descriptive logical short date string. Logical means the dates
+ * will be like "Tue", "18 Mar" depending on the current date
+ * @param timestamp The epoch timestamp to be converted
+ * @return String: The date string
+ */
+fun getLogicalShortDate(timestamp: Long): String {
+    val date = Date(timestamp)
+    val c1 = Calendar.getInstance(TimeZone.getDefault())
+    val c2 = Calendar.getInstance(TimeZone.getDefault())
+    c1.timeInMillis = timestamp
+    c2.timeInMillis = System.currentTimeMillis()
+
+    val sdf: SimpleDateFormat
+    sdf = if (c1[Calendar.WEEK_OF_YEAR] == c2[Calendar.WEEK_OF_YEAR]) {
+        // If same week then show only the day name (Ex: Mon, Tue)
+        SimpleDateFormat("EEE", Locale.getDefault())
+    } else {
+        // Else show Date & Month (Ex: 10 Sep)
+        SimpleDateFormat("dd MMM", Locale.getDefault())
+    }
+
+    sdf.timeZone = TimeZone.getDefault()
+
+    return sdf.format(date)
+}

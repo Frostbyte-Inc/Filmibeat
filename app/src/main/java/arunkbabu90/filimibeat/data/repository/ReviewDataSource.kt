@@ -28,8 +28,8 @@ class ReviewDataSource(private val apiService: TMDBEndPoint,
                 .subscribeOn(Schedulers.io())
                 .subscribe(
                     { reviewResponse ->
-                        callback.onResult(reviewResponse.reviews, FIRST_PAGE, FIRST_PAGE + 1)
                         _networkState.postValue(NetworkState.LOADED)
+                        callback.onResult(reviewResponse.reviews, FIRST_PAGE, FIRST_PAGE + 1)
                     },
                     { e ->
                         Log.e(TAG, e.message ?: "")

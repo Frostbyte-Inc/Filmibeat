@@ -193,4 +193,10 @@ public class VerificationEmailFragment extends Fragment {
                     });
         }
     }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        binding = null;
+    }
 }

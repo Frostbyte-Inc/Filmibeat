@@ -4,6 +4,9 @@ class Constants {
     companion object {
         @JvmStatic
         var userType: Int = -1
+        var userId = ""
+        var userFullName = ""
+        var isAccountActivated = true
 
         const val COLLECTION_USERS = "Users"
         const val COLLECTION_FAVOURITES = "Favourites"
@@ -12,9 +15,6 @@ class Constants {
         const val FIELD_FULL_NAME = "name"
         const val FIELD_ACCOUNT_VERIFIED = "activated"
         const val FIELD_DP_PATH = "dpPath"
-        const val FIELD_LANGUAGE = "language"
-
-        const val FIELD_MOVIE_ID = "movieId"
         const val FIELD_TITLE = "title"
         const val FIELD_POSTER_PATH = "posterPath"
         const val FIELD_RELEASE_DATE = "releaseDate"
@@ -32,5 +32,11 @@ class Constants {
         const val IMG_FORMAT_JPG = ".jpg"
 
         const val DP_UPLOAD_SIZE = 960
+
+        const val ROOT_MOVIE_ROOMS = "MovieRooms"
+        const val FIELD_MESSAGE = "msg"
+        const val FIELD_SENDER_ID = "senderId"
+        const val FIELD_SENDER_NAME = "senderName"
+        const val FIELD_MSG_TIMESTAMP = "msgTimestamp"
     }
 }

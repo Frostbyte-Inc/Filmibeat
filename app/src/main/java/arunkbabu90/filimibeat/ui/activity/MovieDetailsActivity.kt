@@ -23,6 +23,7 @@ import arunkbabu90.filimibeat.data.repository.CastCrewRepository
 import arunkbabu90.filimibeat.data.repository.MovieDetailsRepository
 import arunkbabu90.filimibeat.data.repository.NetworkState
 import arunkbabu90.filimibeat.data.repository.VideoRepository
+import arunkbabu90.filimibeat.databinding.ActivityMovieDetailsBinding
 import arunkbabu90.filimibeat.getImageUrl
 import arunkbabu90.filimibeat.ui.adapter.CastCrewAdapter
 import arunkbabu90.filimibeat.ui.adapter.CompaniesAdapter
@@ -41,12 +42,9 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.SetOptions
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
-import kotlinx.android.synthetic.main.activity_movie_details.*
-import kotlinx.android.synthetic.main.layout_cast_crew.*
-import kotlinx.android.synthetic.main.layout_production_companies.*
-import kotlinx.android.synthetic.main.layout_related_videos.*
 
 class MovieDetailsActivity : AppCompatActivity(), View.OnClickListener {
+    private lateinit var binding: ActivityMovieDetailsBinding
     private lateinit var movieDetailsRepository: MovieDetailsRepository
     private lateinit var castCrewRepository: CastCrewRepository
     private lateinit var videoRepository: VideoRepository
@@ -84,7 +82,8 @@ class MovieDetailsActivity : AppCompatActivity(), View.OnClickListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_movie_details)
+        binding = ActivityMovieDetailsBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         auth = Firebase.auth
         db = Firebase.firestore
@@ -101,21 +100,21 @@ class MovieDetailsActivity : AppCompatActivity(), View.OnClickListener {
         val coverUrl = getImageUrl(coverPath, IMG_SIZE_LARGE)
 
         // Set enter transition name
-        iv_movie_poster.transitionName = movieId.toString()
+        binding.ivMoviePoster.transitionName = movieId.toString()
 
         // Load available data here for faster loading
         loadPosterAndCover(posterUrl, coverUrl)
-        tv_movie_title.text = title
-        tv_movie_rating.text = rating
-        tv_movie_date.text = date
+        binding.tvMovieTitle.text = title
+        binding.tvMovieRating.text = rating
+        binding.tvMovieDate.text = date
         // Hide synopsis if is empty
         if (overview.isBlank()) {
-            synopsisTitle_textView.visibility = View.GONE
-            description_card.visibility = View.GONE
+            binding.synopsisTitleTextView.visibility = View.GONE
+            binding.descriptionCard.visibility = View.GONE
         } else {
-            synopsisTitle_textView.visibility = View.VISIBLE
-            description_card.visibility = View.VISIBLE
-            tv_movie_description.text = overview
+            binding.synopsisTitleTextView.visibility = View.VISIBLE
+            binding.descriptionCard.visibility = View.VISIBLE
+            binding.tvMovieDescription.text = overview
         }
 
         // Load Favourite Movie Information
@@ -128,11 +127,11 @@ class MovieDetailsActivity : AppCompatActivity(), View.OnClickListener {
                     // Success
                     isFavourite = if (snapshot.exists()) {
                         // Favourite Movie
-                        fab_favourites.setImageResource(R.drawable.ic_favourite)
+                        binding.fabFavourites.setImageResource(R.drawable.ic_favourite)
                         true
                     } else {
                         // Not added as favourite movie
-                        fab_favourites.setImageResource(R.drawable.ic_favourite_outline)
+                        binding.fabFavourites.setImageResource(R.drawable.ic_favourite_outline)
                         false
                     }
                     isFavLoaded = true
@@ -160,19 +159,40 @@ class MovieDetailsActivity : AppCompatActivity(), View.OnClickListener {
         // Restrict Features based on the type of user signed in
         setFeaturesBasedOnUser()
 
-        fab_favourites.setOnClickListener(this)
-        review_actionCard.setOnClickListener(this)
+        binding.fabFavourites.setOnClickListener(this)
+        binding.actionCardReview.setOnClickListener(this)
+        binding.actionCardGlobalChat.setOnClickListener(this)
     }
 
     override fun onClick(p0: View?) {
         when (p0?.id) {
-            R.id.fab_favourites -> addFavMovie()
+            binding.fabFavourites.id -> {
+                if (Constants.isAccountActivated) {
+                    addFavMovie()
+                } else {
+                    Toast.makeText(this, R.string.err_feature_disabled, Toast.LENGTH_SHORT).show()
+                }
+            }
 
-            R.id.review_actionCard -> {
+            binding.actionCardReview.id -> {
                 // Open Movie Reviews
                 val reviewIntent = Intent(this, ReviewsActivity::class.java)
                 reviewIntent.putExtra(ReviewsActivity.REVIEW_MOVIE_ID_EXTRA_KEY, movieId)
                 startActivity(reviewIntent)
+            }
+
+            binding.actionCardGlobalChat.id -> {
+                // Open Movie Global Chat
+                if (Constants.userType == Constants.USER_TYPE_PERSON) {
+                    // Allow access to chat only to registered Users
+                    val chatIntent = Intent(this, ChatActivity::class.java)
+                    chatIntent.putExtra(ChatActivity.MOVIE_ID_EXTRA_KEY, movieId.toString())
+                    chatIntent.putExtra(ChatActivity.MOVIE_NAME_EXTRA_KEY, title)
+                    startActivity(chatIntent)
+                } else {
+                    // User is a Guest; Don't allow access to the chat
+                    Toast.makeText(this, R.string.feature_disabled_for_guest, Toast.LENGTH_SHORT).show()
+                }
             }
         }
     }
@@ -182,10 +202,10 @@ class MovieDetailsActivity : AppCompatActivity(), View.OnClickListener {
      * @param title String The title to show
      */
     private fun setCollapsingToolbarBehaviour(title: String) {
-        appBar_details.addOnOffsetChangedListener(AppBarLayout.OnOffsetChangedListener { _, verticalOffset ->
-            val scrollPos = appBar_details.totalScrollRange
+        binding.appBarDetails.addOnOffsetChangedListener(AppBarLayout.OnOffsetChangedListener { _, verticalOffset ->
+            val scrollPos = binding.appBarDetails.totalScrollRange
             val isCollapsed: Boolean = verticalOffset + scrollPos == 0
-            movie_detail_collapsing_toolbar.title = if (isCollapsed) title else ""
+            binding.movieDetailCollapsingToolbar.title = if (isCollapsed) title else ""
         })
     }
 
@@ -197,28 +217,28 @@ class MovieDetailsActivity : AppCompatActivity(), View.OnClickListener {
     private fun loadPosterAndCover(posterUrl: String, coverUrl: String) {
         posterTarget = object : CustomTarget<Drawable>() {
             override fun onResourceReady(resource: Drawable, transition: Transition<in Drawable>?) {
-                iv_movie_poster.setImageDrawable(resource)
+                binding.ivMoviePoster.setImageDrawable(resource)
             }
 
             override fun onLoadFailed(errorDrawable: Drawable?) {
-                iv_movie_poster.setImageDrawable(errorDrawable)
+                binding.ivMoviePoster.setImageDrawable(errorDrawable)
             }
 
             override fun onLoadCleared(placeholder: Drawable?) {
-                iv_movie_poster.setImageDrawable(null)
+                binding.ivMoviePoster.setImageDrawable(null)
             }
         }
 
         coverTarget = object : CustomTarget<Drawable>() {
             override fun onResourceReady(resource: Drawable, transition: Transition<in Drawable>?) {
-                iv_movie_cover.setImageDrawable(resource)
+                binding.ivMovieCover.setImageDrawable(resource)
             }
             override fun onLoadFailed(errorDrawable: Drawable?) {
-                iv_movie_cover.setImageDrawable(errorDrawable)
+                binding.ivMovieCover.setImageDrawable(errorDrawable)
             }
 
             override fun onLoadCleared(placeholder: Drawable?) {
-                iv_movie_cover.setImageDrawable(null)
+                binding.ivMovieCover.setImageDrawable(null)
             }
         }
 
@@ -241,13 +261,13 @@ class MovieDetailsActivity : AppCompatActivity(), View.OnClickListener {
         val castAdapter = CastCrewAdapter(true, castList)
         val crewAdapter = CastCrewAdapter(false, crewList)
 
-        rv_crew?.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
-        rv_crew?.setHasFixedSize(true)
-        rv_crew?.adapter = crewAdapter
+        binding.layoutCast.rvCrew.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+        binding.layoutCast.rvCrew.setHasFixedSize(true)
+        binding.layoutCast.rvCrew.adapter = crewAdapter
 
-        rv_cast?.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
-        rv_cast?.setHasFixedSize(true)
-        rv_cast?.adapter = castAdapter
+        binding.layoutCast.rvCast.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+        binding.layoutCast.rvCast.setHasFixedSize(true)
+        binding.layoutCast.rvCast.adapter = castAdapter
 
         // Cast & Crew Details
         val viewModel: CastCrewViewModel = getCastCrewViewModel(movieId)
@@ -264,8 +284,8 @@ class MovieDetailsActivity : AppCompatActivity(), View.OnClickListener {
             // Cast
             if (casts.isNullOrEmpty()) {
                 // Cast list empty so hide the related layout elements
-                rv_cast.visibility = View.GONE
-                cast_title.visibility = View.GONE
+                binding.layoutCast.rvCast.visibility = View.GONE
+                binding.layoutCast.castTitle.visibility = View.GONE
             } else {
                 castList.addAll(casts)
                 castAdapter.notifyDataSetChanged()
@@ -273,8 +293,8 @@ class MovieDetailsActivity : AppCompatActivity(), View.OnClickListener {
 
             // Crew
             if (filteredCrew.isNullOrEmpty()) {
-                rv_crew.visibility = View.GONE
-                crew_title.visibility = View.GONE
+                binding.layoutCast.rvCrew.visibility = View.GONE
+                binding.layoutCast.crewTitle.visibility = View.GONE
             } else {
                 crewList.addAll(filteredCrew)
                 crewAdapter.notifyDataSetChanged()
@@ -300,11 +320,12 @@ class MovieDetailsActivity : AppCompatActivity(), View.OnClickListener {
         // Populate Production Companies
         if (companyList.isNullOrEmpty()) {
             // No companies to show so hide the layout
-            layout_company.visibility = View.GONE
+            binding.layoutCompany.root.visibility = View.GONE
         }
-        rv_production_company?.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
-        rv_production_company?.adapter = CompaniesAdapter(companyList)
-        rv_production_company?.setHasFixedSize(true)
+        val lm = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+        binding.layoutCompany.rvProductionCompany.layoutManager = lm
+        binding.layoutCompany.rvProductionCompany.adapter = CompaniesAdapter(companyList)
+        binding.layoutCompany.rvProductionCompany.setHasFixedSize(true)
     }
 
     /**
@@ -315,16 +336,17 @@ class MovieDetailsActivity : AppCompatActivity(), View.OnClickListener {
             itemClickListener = { videoUrl -> onVideoClick(videoUrl) },
             itemLongClickListener = { videoUrl -> onVideoLongClick(videoUrl) })
 
-        rv_videos?.setHasFixedSize(true)
-        rv_videos?.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
-        rv_videos?.adapter = videoAdapter
+        val lm = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+        binding.layoutVideos.rvVideos.setHasFixedSize(true)
+        binding.layoutVideos.rvVideos.layoutManager = lm
+        binding.layoutVideos.rvVideos.adapter = videoAdapter
 
         val viewModel = getVideoViewModel(movieId)
         viewModel.videoList.observe(this, { videoResponse ->
             // Populate the videos to the adapter
             val videos = videoResponse.videos
             if (videos.isNullOrEmpty())
-                layout_videos.visibility = View.GONE
+                binding.layoutVideos.root.visibility = View.GONE
 
             videoList.addAll(videos)
             videoAdapter.notifyDataSetChanged()
@@ -410,10 +432,10 @@ class MovieDetailsActivity : AppCompatActivity(), View.OnClickListener {
     private fun setFeaturesBasedOnUser() {
         if (Constants.userType == Constants.USER_TYPE_PERSON) {
             // Normal User
-            fab_favourites.show()
+            binding.fabFavourites.show()
         } else {
             // Other user; Guest
-            fab_favourites.hide()
+            binding.fabFavourites.hide()
         }
     }
 
@@ -429,18 +451,18 @@ class MovieDetailsActivity : AppCompatActivity(), View.OnClickListener {
 
         if (isFavourite) {
             // Remove from Favourites
-            fab_favourites.setImageResource(R.drawable.ic_favourite_outline)
+            binding.fabFavourites.setImageResource(R.drawable.ic_favourite_outline)
             db.collection(path)
                 .document(movieId.toString())
                 .delete()
                 .addOnFailureListener { e ->
                     Toast.makeText(applicationContext, getString(R.string.err_remove_fav), Toast.LENGTH_LONG).show()
-                    fab_favourites.setImageResource(R.drawable.ic_favourite)
+                    binding.fabFavourites.setImageResource(R.drawable.ic_favourite)
                 }
                 .addOnSuccessListener { isFavourite = false }
         } else {
             // Add Movie As Favourite
-            fab_favourites.setImageResource(R.drawable.ic_favourite)
+            binding.fabFavourites.setImageResource(R.drawable.ic_favourite)
             val movie = hashMapOf(
                 Constants.FIELD_TITLE to title,
                 Constants.FIELD_POSTER_PATH to posterPath,
@@ -455,7 +477,7 @@ class MovieDetailsActivity : AppCompatActivity(), View.OnClickListener {
                 .addOnFailureListener { e ->
                     // Failed to add
                     Toast.makeText(applicationContext, getString(R.string.err_add_fav, e), Toast.LENGTH_LONG).show()
-                    fab_favourites.setImageResource(R.drawable.ic_favourite_outline)
+                    binding.fabFavourites.setImageResource(R.drawable.ic_favourite_outline)
                 }
                 .addOnSuccessListener { isFavourite = true }
         }

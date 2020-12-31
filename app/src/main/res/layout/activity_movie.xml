@@ -7,6 +7,17 @@
     android:orientation="vertical"
     tools:context=".ui.activity.MovieActivity">
 
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/tv_patient_err_msg"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPurpleDark"
+        android:gravity="center"
+        android:padding="8dp"
+        android:textColor="@android:color/white"
+        android:visibility="gone"
+        tools:text="@string/err_account_not_verified" />
+
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
