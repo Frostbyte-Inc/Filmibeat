@@ -4,6 +4,7 @@ import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.core.view.GestureDetectorCompat
 import arunkbabu90.filimibeat.R
 import arunkbabu90.filimibeat.databinding.ActivityViewPictureBinding
@@ -36,6 +37,9 @@ class ViewPictureActivity : AppCompatActivity(), GestureDetector.OnGestureListen
         setContentView(binding.root)
 
         window.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS)
+        // Status bar and Navigation bar colors
+        window.statusBarColor = ContextCompat.getColor(this, R.color.colorBlackBackground)
+        window.navigationBarColor = ContextCompat.getColor(this, R.color.colorBlackBackground)
 
         val imagePath = intent.getStringExtra(PROFILE_PICTURE_PATH_EXTRA_KEY)
 

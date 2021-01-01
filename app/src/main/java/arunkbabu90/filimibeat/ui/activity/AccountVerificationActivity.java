@@ -6,6 +6,7 @@ import android.os.CountDownTimer;
 import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import com.google.android.material.button.MaterialButton;
@@ -55,6 +56,10 @@ public class AccountVerificationActivity extends AppCompatActivity {
         mEmail = getIntent().getStringExtra(KEY_USER_EMAIL);
         mPassword = getIntent().getStringExtra(KEY_USER_PASSWORD);
         mBackButtonBehaviour = getIntent().getIntExtra(KEY_BACK_BUTTON_BEHAVIOUR, BEHAVIOUR_CLOSE);
+
+        // Set status and nav bar colors
+        getWindow().setStatusBarColor(ContextCompat.getColor(this, R.color.colorBlackBackground));
+        getWindow().setNavigationBarColor(ContextCompat.getColor(this, R.color.colorBlackBackground));
 
         mFragment = new VerificationEmailFragment(this, this);
         getSupportFragmentManager().beginTransaction()

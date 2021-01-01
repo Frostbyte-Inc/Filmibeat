@@ -39,6 +39,10 @@ class ChatActivity : AppCompatActivity(), View.OnClickListener {
         binding = ActivityChatBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        // Status bar and Navigation bar colors
+        window.statusBarColor = ContextCompat.getColor(this, R.color.colorBlackBackground)
+        window.navigationBarColor = ContextCompat.getColor(this, R.color.colorBlackBackground)
+
         if (!Constants.isAccountActivated) {
             // Account NOT Activated; Disable the input fields and Visually make them disabled
             binding.fabSendMessage.isEnabled = false
