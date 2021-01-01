@@ -4,14 +4,15 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="145dp"
+    android:layout_height="@dimen/fav_item_size"
     android:layout_margin="@dimen/small_margin"
     android:elevation="@dimen/small_card_elevation"
     app:cardCornerRadius="@dimen/smaller_card_radius">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@color/colorDarkerGrey">
 
         <ImageView
             android:id="@+id/iv_fav_poster"

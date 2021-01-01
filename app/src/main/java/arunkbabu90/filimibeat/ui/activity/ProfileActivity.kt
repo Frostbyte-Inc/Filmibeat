@@ -11,6 +11,7 @@ import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -68,6 +69,10 @@ class ProfileActivity : AppCompatActivity(), View.OnClickListener {
         super.onCreate(savedInstanceState)
         binding = ActivityProfileBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        // Status bar and Navigation bar colors
+        window.statusBarColor = ContextCompat.getColor(this, R.color.colorBlackBackground)
+        window.navigationBarColor = ContextCompat.getColor(this, R.color.colorBlackBackground)
 
         auth = Firebase.auth
         storage = Firebase.storage
