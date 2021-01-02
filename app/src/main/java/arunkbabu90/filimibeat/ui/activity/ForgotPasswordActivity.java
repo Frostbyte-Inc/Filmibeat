@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 import com.google.android.material.button.MaterialButton;
 import com.google.firebase.auth.FirebaseAuth;
@@ -22,7 +23,6 @@ import arunkbabu90.filimibeat.databinding.ActivityForgotPasswordBinding;
 import arunkbabu90.filimibeat.ui.view.CustomInputTextField;
 
 public class ForgotPasswordActivity extends AppCompatActivity {
-
     private CustomInputTextField mEmailField;
     private TextView mErrorTextView;
     private MaterialButton mSentButton;
@@ -35,6 +35,10 @@ public class ForgotPasswordActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         ActivityForgotPasswordBinding binding = ActivityForgotPasswordBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+        // Set status and nav bar colors
+        getWindow().setStatusBarColor(ContextCompat.getColor(this, R.color.colorBlackBackground));
+        getWindow().setNavigationBarColor(ContextCompat.getColor(this, R.color.colorBlackBackground));
 
         mEmailField= binding.etForgotPasswordEmail;
         mErrorTextView= binding.tvForgotPasswordErr;

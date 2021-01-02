@@ -90,7 +90,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnFocusChan
             ActivityLoginBinding binding = ActivityLoginBinding.inflate(getLayoutInflater());
             setContentView(binding.getRoot());
 
+            // Set status and nav bar colors
             getWindow().setStatusBarColor(ContextCompat.getColor(this, R.color.colorBlackBackground));
+            getWindow().setNavigationBarColor(ContextCompat.getColor(this, R.color.colorBlackBackground));
 
             mErrorTextView = binding.tvLoginError;
             mEmailField = binding.etEmail;

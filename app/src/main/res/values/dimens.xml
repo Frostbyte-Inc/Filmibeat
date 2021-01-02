@@ -75,4 +75,5 @@
     <dimen name="action_card_icon_size">20dp</dimen>
     <dimen name="edit_text_text_size">14sp</dimen>
     <dimen name="large_icon_size">200dp</dimen>
+    <dimen name="fav_item_size">145dp</dimen>
 </resources>

@@ -59,7 +59,9 @@ public class SignUpActivity extends AppCompatActivity  implements ErrorDialog.Bu
         ActivitySignUpBinding binding = ActivitySignUpBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        // Set status and nav bar colors
         getWindow().setStatusBarColor(ContextCompat.getColor(this, R.color.colorBlackBackground));
+        getWindow().setNavigationBarColor(ContextCompat.getColor(this, R.color.colorBlackBackground));
 
         mAuth = FirebaseAuth.getInstance();
         mDb = FirebaseFirestore.getInstance();
