@@ -123,23 +123,23 @@ public class ForgotPasswordActivity extends AppCompatActivity {
 
     // SEND VERIFICATION Button Click
     public void onSendVerificationClick(View view) {
-
         // If the user's email is valid try to send verification email
         if (checkEmail()) {
-            mAuth.sendPasswordResetEmail(mEmail).addOnCompleteListener(task -> {
-                if (task.isSuccessful()) {
-                    // Verification Email Sent
-                    Toast.makeText(ForgotPasswordActivity.this,
-                            getString(R.string.verification_email_sent, mEmail), Toast.LENGTH_LONG).show();
-                    mErrorTextView.setVisibility(View.INVISIBLE);
-                    mErrorTextView.setText("");
-                    finish();
-                } else {
-                    // Failed to send Verification Email
-                    mErrorTextView.setVisibility(View.VISIBLE);
-                    mErrorTextView.setText(R.string.err_send_verification_failed);
-                }
-            });
+            mAuth.sendPasswordResetEmail(mEmail)
+                    .addOnCompleteListener(task -> {
+                        if (task.isSuccessful()) {
+                            // Verification Email Sent
+                            Toast.makeText(ForgotPasswordActivity.this,
+                                    getString(R.string.verification_email_sent, mEmail), Toast.LENGTH_LONG).show();
+                            mErrorTextView.setVisibility(View.INVISIBLE);
+                            mErrorTextView.setText("");
+                            finish();
+                        } else {
+                            // Failed to send Verification Email
+                            mErrorTextView.setVisibility(View.VISIBLE);
+                            mErrorTextView.setText(R.string.err_send_verification_failed);
+                        }
+                    });
         }
     }
 }
