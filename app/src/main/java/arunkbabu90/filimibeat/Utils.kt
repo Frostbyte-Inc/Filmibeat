@@ -78,7 +78,7 @@ fun isNetworkConnected(context: Context?): Boolean {
 /**
  * Checks whether the provided email is valid
  * @param email The email id to be verified
- * @return True if the email is valid
+ * @return False if the email is valid
  */
 fun verifyEmail(email: String): Boolean {
     val mailFormat = Regex("^([a-zA-B 0-9.-]+)@([a-zA-B 0-9]+)\\.([a-zA-Z]{2,8})(\\.[a-zA-Z]{2,8})?$")

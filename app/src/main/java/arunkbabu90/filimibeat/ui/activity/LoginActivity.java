@@ -1,4 +1,4 @@
-  package arunkbabu90.filimibeat.ui.activity;
+package arunkbabu90.filimibeat.ui.activity;
 
 import android.content.Intent;
 import android.net.ConnectivityManager;
@@ -153,26 +153,27 @@ public class LoginActivity extends AppCompatActivity implements View.OnFocusChan
             String password = "";
             if (passText != null) password = passText.toString();
 
-            mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(this, task -> {
-                if (task.isSuccessful()) {
-                    // Login Success
-                    mErrorTextView.setVisibility(View.INVISIBLE);
+            mAuth.signInWithEmailAndPassword(email, password)
+                    .addOnCompleteListener(this, task -> {
+                        if (task.isSuccessful()) {
+                            // Login Success
+                            mErrorTextView.setVisibility(View.INVISIBLE);
 
-                    FirebaseUser user = mAuth.getCurrentUser();
-                    if (user != null) {
-                        // The result will be available in onComplete() callback
-                        mDb.collection(Constants.COLLECTION_USERS)
-                                .document(user.getUid())
-                                .get().addOnCompleteListener(LoginActivity.this);
-                    }
-                } else {
-                    // Login Failure
-                    mErrorTextView.setText(getString(R.string.err_login));
-                    mErrorTextView.setVisibility(View.VISIBLE);
-                    mLoginProgressBar.setVisibility(View.GONE);
-                    mLoginButton.setClickable(true);
-                }
-            });
+                            FirebaseUser user = mAuth.getCurrentUser();
+                            if (user != null) {
+                                // The result will be available in onComplete() callback
+                                mDb.collection(Constants.COLLECTION_USERS)
+                                        .document(user.getUid())
+                                        .get().addOnCompleteListener(LoginActivity.this);
+                            }
+                        } else {
+                            // Login Failure
+                            mErrorTextView.setText(getString(R.string.err_login));
+                            mErrorTextView.setVisibility(View.VISIBLE);
+                            mLoginProgressBar.setVisibility(View.GONE);
+                            mLoginButton.setClickable(true);
+                        }
+                    });
         }
     }
 
