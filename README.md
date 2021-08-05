@@ -1,5 +1,5 @@
 # 📽 Filmibeat
-Filmibeat shows the Popular, Top-Rated and Now Playing Hollywood movies. You can read movie reviews, plot, trailers, cast etc. The app uses theMovieDb API to get the movies and also use many popular libraries such as Glide, Retrofit etc.. and uses Room library to cache data offline
+Filmibeat shows the Popular, Top-Rated and Now Playing Hollywood movies. You can read movie reviews, plot, trailers, cast etc. The app uses theMovieDb API to get the movies and also use many popular libraries such as Glide, Retrofit etc..
 
 # 🎑 How to use
  * First, You need to obtain an API key from https://www.themoviedb.org/
